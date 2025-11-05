@@ -1,3 +1,52 @@
+// --- =============================== ---
+    // --- I18N (TRANSLATION) LOGIC ---
+    // --- =============================== ---
+    
+    // Get toggle buttons
+    const langEnBtn = document.getElementById('lang-en');
+    const langFilBtn = document.getElementById('lang-fil');
+
+    // Find all elements that need translation
+    const translatableElements = document.querySelectorAll('[data-key]');
+    
+    const setLanguage = (lang) => {
+        // 1. Set HTML lang attribute
+        document.documentElement.lang = lang;
+        
+        // 2. Loop through all tagged elements
+        translatableElements.forEach(el => {
+            const key = el.getAttribute('data-key');
+            // 3. Find the translation
+            const translation = langStrings[lang][key];
+            
+            if (translation) {
+                // Special case for <title>
+                if (el.tagName === 'TITLE') {
+                    el.textContent = "KomuniKonek | " + translation;
+                } else {
+                    el.textContent = translation;
+                }
+            }
+        });
+        
+        // 4. Update button active state
+        if (lang === 'fil') {
+            langFilBtn.classList.add('active');
+            langEnBtn.classList.remove('active');
+        } else {
+            langEnBtn.classList.add('active');
+            langFilBtn.classList.remove('active');
+        }
+    };
+
+    // Add click listeners
+    langEnBtn.addEventListener('click', () => setLanguage('en'));
+    langFilBtn.addEventListener('click', () => setLanguage('fil'));
+
+    // Set default language on load
+    setLanguage('en');
+    
+    
 document.addEventListener("DOMContentLoaded", function() {
 
     // --- 1. Get ALL Elements ---
