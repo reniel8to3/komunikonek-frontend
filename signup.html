@@ -6,7 +6,6 @@
     <title>KomuniKonek | Create Account</title>
     
     <link rel="stylesheet" href="css/signup.css">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -25,41 +24,54 @@
                 </div>
 
                 <p class="section-title">Register with</p>
-                <div class="role-selector">
-                    <button class="role-button active"><i class="fa-solid fa-envelope"></i> Email</button>
-                    <button class="role-button"><i class="fa-solid fa-phone"></i> Phone Number</button>
+                <div id="register-with-selector" class="role-selector">
+                    <button id="register-email-btn" class="role-button active"><i class="fa-solid fa-envelope"></i> Email</button>
+                    <button id="register-phone-btn" class="role-button"><i class="fa-solid fa-phone"></i> Phone Number</button>
                 </div>
 
-                <form id="signup-form-step1">
-                    <div class="form-group">
+                <form id="signup-form-step1" novalidate>
+                    <div id="email-form-group" class="form-group">
                         <label for="email">Email <span class="required">*</span></label>
                         <div class="input-with-icon">
                             <i class="fa-solid fa-envelope"></i>
-                            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                            <input type="email" id="email" name="email" placeholder="Enter your email">
                         </div>
+                        <small class="error-message"></small>
+                    </div>
+
+                    <div id="phone-form-group" class="form-group" style="display: none;">
+                        <label for="phone">Phone Number <span class="required">*</span></label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-phone"></i>
+                            <span class="phone-prefix">+63</span>
+                            <input type="tel" id="phone" name="phone" placeholder="912 345 6789" maxlength="10">
+                        </div>
+                        <small class="error-message"></small>
                     </div>
 
                     <div class="form-group">
                         <label for="password">Password <span class="required">*</span></label>
                         <div class="input-with-icon">
                             <i class="fa-solid fa-lock"></i>
-                            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                            <input type="password" id="password" name="password" placeholder="Enter your password">
                             <i class="fa-solid fa-eye password-toggle"></i>
                         </div>
+                        <small class="error-message"></small>
                     </div>
 
                     <button type="button" id="send-otp-button" class="sign-in-button">Send OTP</button>
 
                     <div id="otp-section">
                         <p class="otp-success-text">OTP sent successfully!</p>
-                        <label for="otp">Enter the OTP code <span class="required">*</span></label>
+                        <label>Enter the OTP code <span class="required">*</span></label>
+                        
                         <div class="otp-inputs">
-                            <input type="text" maxlength="1" class="otp-input" />
-                            <input type="text" maxlength="1" class="otp-input" />
-                            <input type="text" maxlength="1" class="otp-input" />
-                            <input type="text" maxlength="1" class="otp-input" />
-                            <input type="text" maxlength="1" class="otp-input" />
-                            <input type="text" maxlength="1" class="otp-input" />
+                            <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
+                            <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
+                            <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
+                            <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
+                            <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
+                            <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
                         </div>
                         <button type="button" id="verify-otp-button" class="sign-in-button">Verify OTP</button>
                     </div>
@@ -87,7 +99,7 @@
                     <span>Or fill the form manually</span>
                 </div>
 
-                <form id="signup-form-step2">
+                <form id="signup-form-step2" novalidate>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="first-name">First Name <span class="required">*</span></label>
@@ -105,13 +117,22 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label for="middle-name">Middle Name</label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-user"></i>
+                            <input type="text" id="middle-name" name="middle-name" placeholder="Enter your middle name">
+                        </div>
+                    </div>
+
                     <label class="section-title">Address</label>
                     <div class="form-group">
                         <label for="region">Region <span class="required">*</span></label>
                         <select id="region" name="region" required>
                             <option value="" disabled selected>Select region</option>
-                            </select>
+                        </select>
                     </div>
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="house-number">House Number <span class="required">*</span></label>
@@ -129,19 +150,19 @@
                             <label for="month">Month <span class="required">*</span></label>
                             <select id="month" name="month" required>
                                 <option value="" disabled selected>Select month</option>
-                                </select>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="day">Day <span class="required">*</span></label>
                             <select id="day" name="day" required>
                                 <option value="" disabled selected>Select day</option>
-                                </select>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="year">Year <span class="required">*</span></label>
                             <select id="year" name="year" required>
                                 <option value="" disabled selected>Select year</option>
-                                </select>
+                            </select>
                         </div>
                     </div>
 

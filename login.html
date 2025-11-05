@@ -24,44 +24,79 @@
                 </div>
             </div>
 
-            <form id="login-form" action="#" method="POST">
+            <form id="login-form" action="#" method="POST" novalidate>
                 
-                <div class="form-group">
-                    <label for="email">Email <span class="required">*</span></label>
-                    <div class="input-with-icon">
-                        <i class="fa-solid fa-envelope"></i> <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                <div id="email-login-section">
+                    <div class="form-group">
+                        <label for="email">Email <span class="required">*</span></label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-envelope"></i> <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                        </div>
+                        <small class="error-message"></small>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label for="password">Password <span class="required">*</span></label>
-                    <div class="input-with-icon">
-                        <i class="fa-solid fa-lock"></i> <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                        <i class="fa-solid fa-eye password-toggle"></i> </div>
-                </div>
+                    <div class="form-group">
+                        <label for="password">Password <span class="required">*</span></label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-lock"></i> <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                            <i class="fa-solid fa-eye password-toggle"></i> </div>
+                        <small class="error-message"></small>
+                    </div>
 
-                <div class="form-options">
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="remember-me"> Remember me
-                    </label>
-                    <a href="#" class="forgot-password">Forgot password?</a>
-                </div>
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="remember-me"> Remember me
+                        </label>
+                        <a href="#" class="forgot-password">Forgot password?</a>
+                    </div>
 
-                <button type="submit" class="sign-in-button">Sign in</button>
-                
-                <div class="separator">
-                    <span>Or sign in with</span>
-                </div>
+                    <button type="submit" class="sign-in-button">Sign in</button>
+                    
+                    <div class="separator">
+                        <span>Or sign in with</span>
+                    </div>
 
-                <button type="button" class="phone-sign-in-button">
-                    <i class="fa-solid fa-phone"></i> Phone Number
-                </button>
+                    <button type="button" id="show-phone-login-btn" class="phone-sign-in-button">
+                        <i class="fa-solid fa-phone"></i> Phone Number
+                    </button>
+                </div> <div id="phone-login-section" style="display: none;">
+                    
+                    <div class="form-group">
+                        <label for="login-phone">Phone Number <span class="required">*</span></label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-phone"></i>
+                            <span class="phone-prefix">+63</span>
+                            <input type="tel" id="login-phone" name="login-phone" placeholder="912 345 6789" maxlength="10">
+                        </div>
+                        <small class="error-message"></small>
+                    </div>
 
-                <p class="signup-prompt">
-                    Don't have an account? <a href="signup.html" class="signup-link">Sign up</a>
-                </p>
+                    <button type="button" id="login-send-otp-btn" class="sign-in-button">Send OTP</button>
 
-            </form>
+                    <div id="login-otp-section" style="display: none;">
+                        <p class="otp-success-text">OTP sent successfully!</p>
+                        <label>Enter the OTP code <span class="required">*</span></label>
+                        <div class="otp-inputs">
+                            <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
+                            <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
+                            <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
+                            <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
+                            <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
+                            <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
+                        </div>
+                        <button type="button" id="login-verify-otp-btn" class="sign-in-button">Verify & Sign In</button>
+                        <small class="error-message"></small>
+                    </div>
+
+                    <p class="signup-prompt">
+                        <a href="#" id="show-email-login-link" class="signup-link">Sign in with Email instead</a>
+                    </p>
+                </div> </form>
+
+            <p class="signup-prompt">
+                Don't have an account? <a href="signup.html" class="signup-link">Sign up</a>
+            </p>
+
         </div>
     </div>
 

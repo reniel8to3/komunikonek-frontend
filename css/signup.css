@@ -1,4 +1,4 @@
-/* --- Global Styles and Background (Copied from login.css) --- */
+/* --- Global Styles and Background --- */
 body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     margin: 0;
@@ -23,16 +23,15 @@ body {
     padding: 20px;
 }
 
-/* --- The Modern Card (Renamed to .signup-card) --- */
+/* --- The Modern Card --- */
 .signup-card {
     background-color: #ffffff;
     padding: 40px;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
     width: 100%;
-    max-width: 450px; /* Made slightly wider for the forms */
+    max-width: 450px;
     text-align: center;
-    /* Added for smooth step transition */
     overflow: hidden; 
 }
 
@@ -43,7 +42,6 @@ body {
     font-size: 1.8em;
     font-weight: 600;
 }
-
 .sign-in-text {
     color: #6c757d;
     margin-bottom: 25px;
@@ -57,7 +55,6 @@ body {
     margin-top: 20px;
     margin-bottom: 8px;
 }
-
 .role-selector {
     display: inline-flex;
     background-color: #f0f0f0;
@@ -65,7 +62,6 @@ body {
     overflow: hidden;
     margin-bottom: 15px;
 }
-
 .role-button {
     background: none;
     border: none;
@@ -76,7 +72,6 @@ body {
     font-weight: 500;
 }
 .role-button i { margin-right: 5px; }
-
 .role-button.active {
     background-color: #ffffff;
     color: #212529;
@@ -89,7 +84,6 @@ body {
     text-align: left;
     margin-bottom: 15px;
 }
-
 .form-group label {
     display: block;
     margin-bottom: 5px;
@@ -97,10 +91,7 @@ body {
     font-size: 0.9em;
     font-weight: 500;
 }
-
-.required {
-    color: #C8102E; 
-}
+.required { color: #C8102E; }
 
 /* Base style for all inputs, including select */
 input[type="text"],
@@ -117,9 +108,8 @@ select {
     font-family: inherit;
     font-size: 1em;
     color: #212529;
-    box-sizing: border-box; /* Important for padding */
+    box-sizing: border-box;
 }
-
 input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus,
@@ -136,37 +126,33 @@ select:focus {
     align-items: center;
     border: 1px solid #dee2e6;
     border-radius: 8px;
-    padding: 0 15px; /* Padding is on the wrapper, not input */
+    padding: 0 15px;
     background-color: #fdfdfd;
     transition: border-color 0.3s;
 }
-
 .input-with-icon:focus-within {
     border-color: #E63946;
     box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1);
 }
-
 .input-with-icon i {
     color: #6c757d;
     margin-right: 10px;
 }
-
 .input-with-icon input {
     flex-grow: 1;
     border: none;
     outline: none;
-    padding: 12px 0; /* Vertical padding */
+    padding: 12px 0;
     background: none;
     color: #212529;
 }
-
 .password-toggle {
     cursor: pointer;
     color: #6c757d !important;
     margin-left: 10px;
 }
 
-/* --- Sign In/Up Links (Copied from login.css) --- */
+/* --- Sign In/Up Links --- */
 .signup-prompt {
     font-size: 0.9em;
     color: #6c757d;
@@ -178,7 +164,7 @@ select:focus {
 }
 .signup-link:hover { text-decoration: underline; }
 
-/* --- Main Buttons (Copied from login.css) --- */
+/* --- Main Buttons --- */
 .sign-in-button {
     width: 100%;
     padding: 12px;
@@ -190,14 +176,12 @@ select:focus {
     font-size: 1.1em;
     font-weight: bold;
     transition: background-color 0.3s;
-    margin-top: 10px; /* Added margin */
+    margin-top: 10px;
     margin-bottom: 20px;
 }
-.sign-in-button:hover {
-    background-color: #C8102E;
-}
+.sign-in-button:hover { background-color: #C8102E; }
 
-/* --- Separator (Copied from login.css) --- */
+/* --- Separator --- */
 .separator {
     display: flex;
     align-items: center;
@@ -214,23 +198,17 @@ select:focus {
 .separator:not(:empty)::before { margin-right: .5em; }
 .separator:not(:empty)::after { margin-left: .5em; }
 
-/* --- ================== --- */
-/* --- NEW SIGNUP STYLES --- */
-/* --- ================== --- */
-
 /* --- Step Indicators --- */
 .step-indicator {
     color: #6c757d;
     font-size: 0.9em;
     margin-bottom: 15px;
 }
-
 .step-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-
 .back-button {
     background: none;
     border: none;
@@ -242,16 +220,16 @@ select:focus {
 
 /* --- OTP Section --- */
 #otp-section {
-    display: none; /* Hidden by default */
+    display: none;
     margin-top: 20px;
 }
 .otp-success-text {
-    color: #28a745; /* Green for success */
+    color: #28a745;
     font-weight: 500;
 }
 .otp-inputs {
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* Centered */
     gap: 10px;
     margin: 15px 0;
 }
@@ -265,8 +243,8 @@ select:focus {
 
 /* --- Step 2: Personal Info --- */
 #step-2-personal {
-    display: none; /* Hidden by default */
-    text-align: left; /* Align labels left */
+    display: none;
+    text-align: left;
 }
 
 /* Scan ID Button */
@@ -283,9 +261,7 @@ select:focus {
     margin: 15px 0;
     font-weight: 500;
 }
-.scan-id-button:hover {
-    background-color: #f8f9fa;
-}
+.scan-id-button:hover { background-color: #f8f9fa; }
 .scan-id-button i {
     margin-right: 8px;
     color: #C8102E;
@@ -296,6 +272,34 @@ select:focus {
     display: flex;
     gap: 15px;
 }
-.form-row .form-group {
-    flex: 1; /* Makes fields in a row share space */
+.form-row .form-group { flex: 1; }
+
+/* --- Style for the +63 phone prefix --- */
+.phone-prefix {
+    font-weight: 500;
+    color: #212529;
+    padding-right: 10px;
+    margin-right: 10px;
+    border-right: 1px solid #dee2e6;
+}
+
+/* --- ================== --- */
+/* --- VALIDATION STYLES --- */
+/* --- ================== --- */
+
+.error-message {
+    color: #C8102E;
+    font-size: 0.85em;
+    font-weight: 500;
+    display: none;
+    margin-top: 5px;
+}
+.form-group.error .input-with-icon,
+.form-group.error input[type="text"], /* For step 2 */
+.form-group.error select { /* For step 2 */
+    border-color: #C8102E;
+    background-color: #fff6f6;
+}
+.form-group.error .error-message {
+    display: block;
 }
