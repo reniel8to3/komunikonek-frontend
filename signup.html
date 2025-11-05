@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KomuniKonek | Create Account</title>
+    
+    <link rel="stylesheet" href="css/signup.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="signup-container">
+        <div class="signup-card">
+
+            <section id="step-1-account">
+                <p class="step-indicator">Step 1 of 2</p>
+                <h2 class="welcome-header">Create Your Account</h2>
+                <p class="sign-in-text">Join KomuniKonek to connect with your community</p>
+
+                <p class="section-title">Sign up as</p>
+                <div class="role-selector">
+                    <button class="role-button active">User</button>
+                    <button class="role-button">Admin</button>
+                </div>
+
+                <p class="section-title">Register with</p>
+                <div class="role-selector">
+                    <button class="role-button active"><i class="fa-solid fa-envelope"></i> Email</button>
+                    <button class="role-button"><i class="fa-solid fa-phone"></i> Phone Number</button>
+                </div>
+
+                <form id="signup-form-step1">
+                    <div class="form-group">
+                        <label for="email">Email <span class="required">*</span></label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-envelope"></i>
+                            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password <span class="required">*</span></label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                            <i class="fa-solid fa-eye password-toggle"></i>
+                        </div>
+                    </div>
+
+                    <button type="button" id="send-otp-button" class="sign-in-button">Send OTP</button>
+
+                    <div id="otp-section">
+                        <p class="otp-success-text">OTP sent successfully!</p>
+                        <label for="otp">Enter the OTP code <span class="required">*</span></label>
+                        <div class="otp-inputs">
+                            <input type="text" maxlength="1" class="otp-input" />
+                            <input type="text" maxlength="1" class="otp-input" />
+                            <input type="text" maxlength="1" class="otp-input" />
+                            <input type="text" maxlength="1" class="otp-input" />
+                            <input type="text" maxlength="1" class="otp-input" />
+                            <input type="text" maxlength="1" class="otp-input" />
+                        </div>
+                        <button type="button" id="verify-otp-button" class="sign-in-button">Verify OTP</button>
+                    </div>
+
+                    <p class="signup-prompt">
+                        Already have an account? <a href="login.html" class="signup-link">Sign in</a>
+                    </p>
+                </form>
+            </section>
+
+            <section id="step-2-personal">
+                <div class="step-header">
+                    <button id="back-button" class="back-button">&larr; Back</button>
+                    <p class="step-indicator">Step 2 of 2</p>
+                </div>
+
+                <h2 class="welcome-header">Create Your Account</h2>
+                <p class="section-title">Personal Information</p>
+
+                <button type="button" class="scan-id-button">
+                    <i class="fa-solid fa-camera"></i> Scan ID
+                </button>
+
+                <div class="separator">
+                    <span>Or fill the form manually</span>
+                </div>
+
+                <form id="signup-form-step2">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="first-name">First Name <span class="required">*</span></label>
+                            <div class="input-with-icon">
+                                <i class="fa-solid fa-user"></i>
+                                <input type="text" id="first-name" name="first-name" placeholder="Enter your first name" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="last-name">Last Name <span class="required">*</span></label>
+                            <div class="input-with-icon">
+                                <i class="fa-solid fa-user"></i>
+                                <input type="text" id="last-name" name="last-name" placeholder="Enter your last name" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <label class="section-title">Address</label>
+                    <div class="form-group">
+                        <label for="region">Region <span class="required">*</span></label>
+                        <select id="region" name="region" required>
+                            <option value="" disabled selected>Select region</option>
+                            </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="house-number">House Number <span class="required">*</span></label>
+                            <input type="text" id="house-number" name="house-number" placeholder="Enter house number">
+                        </div>
+                        <div class="form-group">
+                            <label for="street">Street <span class="required">*</span></label>
+                            <input type="text" id="street" name="street" placeholder="Enter street name">
+                        </div>
+                    </div>
+
+                    <label class="section-title">Birth Date</label>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="month">Month <span class="required">*</span></label>
+                            <select id="month" name="month" required>
+                                <option value="" disabled selected>Select month</option>
+                                </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="day">Day <span class="required">*</span></label>
+                            <select id="day" name="day" required>
+                                <option value="" disabled selected>Select day</option>
+                                </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="year">Year <span class="required">*</span></label>
+                            <select id="year" name="year" required>
+                                <option value="" disabled selected>Select year</option>
+                                </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="sign-in-button">Create Account</button>
+                </form>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="js/signup.js"></script>
+</body>
+</html>

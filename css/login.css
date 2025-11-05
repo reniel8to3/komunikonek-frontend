@@ -16,7 +16,7 @@ body {
         radial-gradient(circle at 85% 50%, rgba(230, 57, 70, 0.08) 0%, transparent 40%); /* Action Red, subtle opacity */
     
     
-    background-size: cover; /
+    background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
    
