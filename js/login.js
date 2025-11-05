@@ -1,62 +1,11 @@
-// --- =============================== ---
-    // --- I18N (TRANSLATION) LOGIC ---
-    // --- =============================== ---
-    
-    // Get toggle buttons
-    const langEnBtn = document.getElementById('lang-en');
-    const langFilBtn = document.getElementById('lang-fil');
-
-    // Find all elements that need translation
-    const translatableElements = document.querySelectorAll('[data-key]');
-    
-    const setLanguage = (lang) => {
-        // 1. Set HTML lang attribute
-        document.documentElement.lang = lang;
-        
-        // 2. Loop through all tagged elements
-        translatableElements.forEach(el => {
-            const key = el.getAttribute('data-key');
-            // 3. Find the translation
-            const translation = langStrings[lang][key];
-            
-            if (translation) {
-                // Special case for <title>
-                if (el.tagName === 'TITLE') {
-                    el.textContent = "KomuniKonek | " + translation;
-                } else {
-                    el.textContent = translation;
-                }
-            }
-        });
-        
-        // 4. Update button active state
-        if (lang === 'fil') {
-            langFilBtn.classList.add('active');
-            langEnBtn.classList.remove('active');
-        } else {
-            langEnBtn.classList.add('active');
-            langFilBtn.classList.remove('active');
-        }
-    };
-
-    // Add click listeners
-    langEnBtn.addEventListener('click', () => setLanguage('en'));
-    langFilBtn.addEventListener('click', () => setLanguage('fil'));
-
-    // Set default language on load
-    setLanguage('en');
-    
-    
 document.addEventListener("DOMContentLoaded", function() {
-
-    // --- 1. Get ALL Elements ---
+    
+    const loginForm = document.getElementById('login-form');
+    
     const roleButtons = document.querySelectorAll('.role-button');
     const passwordInput = document.getElementById('password');
     const togglePassword = document.querySelector('.password-toggle');
-    const loginForm = document.getElementById('login-form');
-    const emailInput = document.getElementById('email');
 
-    // Phone Toggle Elements
     const emailLoginSection = document.getElementById('email-login-section');
     const phoneLoginSection = document.getElementById('phone-login-section');
     const showPhoneLoginBtn = document.getElementById('show-phone-login-btn');
@@ -66,16 +15,23 @@ document.addEventListener("DOMContentLoaded", function() {
     const loginOtpSection = document.getElementById('login-otp-section');
     const loginOtpInputs = loginOtpSection.querySelectorAll('.otp-input');
     
-    // --- 2. Role Selector (User/Admin) ---
-    roleButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            roleButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active'); 
-        });
-    });
+    const emailInput = document.getElementById('email');
 
-    // --- 3. Password Show/Hide Toggle ---
-    if (togglePassword) {
+    const langEnBtn = document.getElementById('lang-en');
+    const langFilBtn = document.getElementById('lang-fil');
+    const translatableElements = document.querySelectorAll('[data-key]');
+    let currentLang = 'en'; 
+
+    if (roleButtons.length > 0) {
+        roleButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                roleButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active'); 
+            });
+        });
+    }
+
+    if (togglePassword && passwordInput) {
         togglePassword.addEventListener('click', function() {
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
@@ -84,60 +40,53 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // --- 4. Phone Login Toggle Logic ---
-    showPhoneLoginBtn.addEventListener('click', function() {
-        emailLoginSection.style.display = 'none';
-        phoneLoginSection.style.display = 'block';
-    });
-    showEmailLoginLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        emailLoginSection.style.display = 'block';
-        phoneLoginSection.style.display = 'none';
-    });
+    if (showPhoneLoginBtn && showEmailLoginLink && emailLoginSection && phoneLoginSection) {
+        showPhoneLoginBtn.addEventListener('click', function() {
+            emailLoginSection.style.display = 'none';
+            phoneLoginSection.style.display = 'block';
+        });
+        showEmailLoginLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            emailLoginSection.style.display = 'block';
+            phoneLoginSection.style.display = 'none';
+        });
+    }
 
-    // --- 5. "Send OTP" (Login) Button Logic ---
-    loginSendOtpBtn.addEventListener('click', function() {
-        // Validate phone number
-        const phoneValue = loginPhoneInput.value.trim();
-        if (phoneValue.length === 10) {
-            setSuccess(loginPhoneInput);
-            loginOtpSection.style.display = 'block';
-            loginSendOtpBtn.textContent = 'Resend OTP';
-            console.log('Login OTP Sent (simulation)');
-        } else {
-            setError(loginPhoneInput, 'Please enter a 10-digit phone number.');
-        }
-    });
+    if (loginSendOtpBtn) {
+        loginSendOtpBtn.addEventListener('click', function() {
+            if (validatePhoneInput()) {
+                setSuccess(loginPhoneInput);
+                loginOtpSection.style.display = 'block';
+                loginSendOtpBtn.textContent = langStrings[currentLang]['sendOtp'];
+                console.log('Login OTP Sent (simulation)');
+            }
+        });
+    }
 
-    // --- 6. Phone Input Validation (Numbers Only) ---
     if (loginPhoneInput) {
         loginPhoneInput.addEventListener('input', function() {
             this.value = this.value.replace(/[^0-9]/g, '');
         });
     }
 
-    // --- 7. Continuous OTP Input Logic ---
     setupOtpInput(loginOtpInputs);
-
     
-    // --- =============================== ---
-    // --- VALIDATION LOGIC ---
-    // --- =============================== ---
-
-    // 8. Helper Functions
-    function setError(input, message) {
+    function setError(input, messageKey) {
+        const message = langStrings[currentLang][messageKey] || messageKey; 
         const formGroup = input.closest('.form-group');
+        if (!formGroup) return;
         const errorDisplay = formGroup.querySelector('.error-message');
-
-        errorDisplay.innerText = message;
+        if (errorDisplay) {
+            errorDisplay.innerText = message;
+        }
         formGroup.classList.add('error');
     }
 
     function setSuccess(input) {
         const formGroup = input.closest('.form-group');
+        if (!formGroup) return;
         const errorDisplay = formGroup.querySelector('.error-message');
-
-        if(errorDisplay) {
+        if (errorDisplay) {
             errorDisplay.innerText = '';
         }
         formGroup.classList.remove('error');
@@ -148,61 +97,62 @@ document.addEventListener("DOMContentLoaded", function() {
         return re.test(String(email).toLowerCase());
     }
 
-    // 9. Main Form Submit Listener
-    loginForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        let isEmailValid = validateEmailForm();
-        
-        if (isEmailValid) {
-            console.log('Email Form is Valid! Submitting... (simulation)');
-            // loginForm.submit();
-        }
-    });
+    if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            let isEmailValid = validateEmailForm();
+            if (isEmailValid) {
+                console.log('Email Form is Valid! Submitting... (simulation)');
+            }
+        });
+    }
 
-    // UPDATED validation function
     function validateEmailForm() {
         let isValid = true;
         const emailValue = emailInput.value.trim();
         const passwordValue = passwordInput.value.trim();
 
-        // Validate Email
         if (emailValue === '') {
-            setError(emailInput, 'Email is required');
+            setError(emailInput, 'errRequired');
             isValid = false;
         } else if (!isValidEmail(emailValue)) {
-            setError(emailInput, 'Provide a valid email address (e.g., user@domain.com)');
+            setError(emailInput, 'errEmail');
             isValid = false;
         } else {
             setSuccess(emailInput);
         }
 
-        // Validate Password
         if (passwordValue === '') {
-            setError(passwordInput, 'Password is required');
+            setError(passwordInput, 'errRequired');
             isValid = false;
-        } else if (passwordValue.length < 8) { // <-- NEW CHECK
-            setError(passwordInput, 'Password must be at least 8 characters long');
+        } else if (passwordValue.length < 8) {
+            setError(passwordInput, 'errPassLength');
             isValid = false;
         } else {
             setSuccess(passwordInput);
         }
-        
         return isValid;
     }
 
-    // 10. Central OTP setup function
+    function validatePhoneInput() {
+        const phoneValue = loginPhoneInput.value.trim();
+        if (phoneValue.length < 10) {
+            setError(loginPhoneInput, 'errPhoneLength');
+            return false;
+        } else {
+            setSuccess(loginPhoneInput);
+            return true;
+        }
+    }
+
     function setupOtpInput(otpInputs) {
         otpInputs.forEach((input, index) => {
-            // 1. Restrict to numbers ONLY and auto-tab forward
             input.addEventListener('input', function() {
                 this.value = this.value.replace(/[^0-9]/g, '');
                 if (this.value && index < otpInputs.length - 1) {
                     otpInputs[index + 1].focus();
                 }
             });
-
-            // 2. Handle Backspace & Arrow keys
             input.addEventListener('keydown', (e) => {
                 if (e.key === 'Backspace' && !input.value && index > 0) {
                     e.preventDefault();
@@ -215,24 +165,61 @@ document.addEventListener("DOMContentLoaded", function() {
                     otpInputs[index + 1].focus();
                 }
             });
-
-            // 3. Handle PASTE
             input.addEventListener('paste', function(e) {
                 e.preventDefault();
                 const pastedData = e.clipboardData.getData('text').replace(/[^0-9]/g, '');
-                
                 for (let i = 0; i < pastedData.length; i++) {
                     if (index + i < otpInputs.length) {
                         otpInputs[index + i].value = pastedData[i];
                     }
                 }
-                
                 const lastFilledIndex = Math.min(index + pastedData.length - 1, otpInputs.length - 1);
                 if (lastFilledIndex >= 0) {
                     otpInputs[lastFilledIndex].focus();
                 }
             });
         });
+    }
+
+    try {
+        const setLanguage = (lang) => {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            
+            translatableElements.forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (!key) return;
+               
+                const translation = (langStrings[lang] && langStrings[lang][key]) ? langStrings[lang][key] : langStrings['en'][key];
+                
+                if (translation) {
+                    if (el.tagName === 'TITLE') {
+                        document.title = "KomuniKonek | " + translation;
+                    } else {
+                        el.textContent = translation;
+                    }
+                }
+            });
+            
+            if (lang === 'fil') {
+                langFilBtn.classList.add('active');
+                langEnBtn.classList.remove('active');
+            } else {
+                langEnBtn.classList.add('active');
+                langFilBtn.classList.remove('active');
+            }
+        };
+
+        if (langEnBtn && langFilBtn) {
+            langEnBtn.addEventListener('click', () => setLanguage('en'));
+            langFilBtn.addEventListener('click', () => setLanguage('fil'));
+        }
+
+
+        setLanguage('en');
+    } catch (e) {
+        console.error("Translation script failed. Page will work in default language.", e);
+
     }
 
 });

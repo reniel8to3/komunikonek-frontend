@@ -1,4 +1,3 @@
-/* --- Global Styles and Background --- */
 body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     margin: 0;
@@ -23,7 +22,6 @@ body {
     padding: 20px;
 }
 
-/* --- The Modern Card --- */
 .signup-card {
     background-color: #ffffff;
     padding: 40px;
@@ -35,7 +33,6 @@ body {
     overflow: hidden; 
 }
 
-/* --- Header Text --- */
 .welcome-header {
     color: #212529; 
     margin-bottom: 5px;
@@ -48,7 +45,6 @@ body {
     font-size: 1em;
 }
 
-/* --- Role Selector (User/Admin) --- */
 .section-title {
     color: #6c757d;
     font-size: 0.9em;
@@ -79,7 +75,6 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* --- Form Groups and Inputs --- */
 .form-group {
     text-align: left;
     margin-bottom: 15px;
@@ -93,7 +88,6 @@ body {
 }
 .required { color: #C8102E; }
 
-/* Base style for all inputs, including select */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -120,7 +114,6 @@ select:focus {
     box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1);
 }
 
-/* Style for inputs with icons */
 .input-with-icon {
     display: flex;
     align-items: center;
@@ -152,7 +145,6 @@ select:focus {
     margin-left: 10px;
 }
 
-/* --- Sign In/Up Links --- */
 .signup-prompt {
     font-size: 0.9em;
     color: #6c757d;
@@ -164,7 +156,6 @@ select:focus {
 }
 .signup-link:hover { text-decoration: underline; }
 
-/* --- Main Buttons --- */
 .sign-in-button {
     width: 100%;
     padding: 12px;
@@ -181,7 +172,6 @@ select:focus {
 }
 .sign-in-button:hover { background-color: #C8102E; }
 
-/* --- Separator --- */
 .separator {
     display: flex;
     align-items: center;
@@ -198,7 +188,6 @@ select:focus {
 .separator:not(:empty)::before { margin-right: .5em; }
 .separator:not(:empty)::after { margin-left: .5em; }
 
-/* --- Step Indicators --- */
 .step-indicator {
     color: #6c757d;
     font-size: 0.9em;
@@ -218,7 +207,6 @@ select:focus {
     font-weight: 500;
 }
 
-/* --- OTP Section --- */
 #otp-section {
     display: none;
     margin-top: 20px;
@@ -229,7 +217,7 @@ select:focus {
 }
 .otp-inputs {
     display: flex;
-    justify-content: center; /* Centered */
+    justify-content: center; 
     gap: 10px;
     margin: 15px 0;
 }
@@ -241,13 +229,11 @@ select:focus {
     padding: 0;
 }
 
-/* --- Step 2: Personal Info --- */
 #step-2-personal {
     display: none;
     text-align: left;
 }
 
-/* Scan ID Button */
 .scan-id-button {
     width: 100%;
     padding: 12px;
@@ -267,14 +253,12 @@ select:focus {
     color: #C8102E;
 }
 
-/* Form Row for side-by-side fields */
 .form-row {
     display: flex;
     gap: 15px;
 }
 .form-row .form-group { flex: 1; }
 
-/* --- Style for the +63 phone prefix --- */
 .phone-prefix {
     font-weight: 500;
     color: #212529;
@@ -282,10 +266,6 @@ select:focus {
     margin-right: 10px;
     border-right: 1px solid #dee2e6;
 }
-
-/* --- ================== --- */
-/* --- VALIDATION STYLES --- */
-/* --- ================== --- */
 
 .error-message {
     color: #C8102E;
@@ -295,8 +275,8 @@ select:focus {
     margin-top: 5px;
 }
 .form-group.error .input-with-icon,
-.form-group.error input[type="text"], /* For step 2 */
-.form-group.error select { /* For step 2 */
+.form-group.error input[type="text"], 
+.form-group.error select { 
     border-color: #C8102E;
     background-color: #fff6f6;
 }

@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-    // --- 1. Get ALL Elements ---
     const step1Account = document.getElementById('step-1-account');
     const step2Personal = document.getElementById('step-2-personal');
     
@@ -9,28 +8,21 @@ document.addEventListener("DOMContentLoaded", function() {
     const verifyOtpButton = document.getElementById('verify-otp-button');
     const backButton = document.getElementById('back-button');
 
-    // Step 1 Form Inputs
     const signupEmailInput = document.getElementById('email');
     const signupPasswordInput = document.getElementById('password');
     const signupPhoneInput = document.getElementById('phone');
     const togglePassword = document.querySelector('.password-toggle');
 
-    // Email/Phone Toggle
     const registerEmailBtn = document.getElementById('register-email-btn');
     const registerPhoneBtn = document.getElementById('register-phone-btn');
     const emailFormGroup = document.getElementById('email-form-group');
     const phoneFormGroup = document.getElementById('phone-form-group');
     
-    // OTP Inputs
     const signupOtpInputs = otpSection.querySelectorAll('.otp-input');
 
-
-    // --- 2. "Send OTP" Button Click (NOW WITH VALIDATION) ---
     sendOtpButton.addEventListener('click', function() {
         
-        // Run validation first
         if (validateStep1()) {
-            // If valid, show OTP section
             otpSection.style.display = 'block';
             sendOtpButton.textContent = 'Resend OTP';
             console.log('OTP Sent (simulation)');
@@ -39,21 +31,17 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // --- 3. "Verify OTP" Button Click ---
     verifyOtpButton.addEventListener('click', function() {
-        // Here you would validate the OTP
         console.log('OTP Verified (simulation)');
         step1Account.style.display = 'none';
         step2Personal.style.display = 'block';
     });
 
-    // --- 4. "Back" Button Click ---
     backButton.addEventListener('click', function() {
         step2Personal.style.display = 'none';
         step1Account.style.display = 'block';
     });
 
-    // --- 5. Password Toggle ---
     if (togglePassword) {
         togglePassword.addEventListener('click', function() {
             const type = signupPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -63,11 +51,10 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // --- 6. Role Selector Toggles ---
     const allRoleSelectors = document.querySelectorAll('.role-selector');
     allRoleSelectors.forEach(selector => {
         if (selector.id === 'register-with-selector') {
-            return; // Skip this one, it has custom logic
+            return; 
         }
         const buttons = selector.querySelectorAll('.role-button');
         buttons.forEach(button => {
@@ -78,11 +65,8 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // --- 7. Continuous OTP Input Logic ---
     setupOtpInput(signupOtpInputs);
 
-
-    // --- 8. Email/Phone Toggle Logic ---
     registerEmailBtn.addEventListener('click', function() {
         this.classList.add('active');
         registerPhoneBtn.classList.remove('active');
@@ -96,18 +80,12 @@ document.addEventListener("DOMContentLoaded", function() {
         phoneFormGroup.style.display = 'block';
     });
 
-    // --- 9. Phone Input Validation (Numbers Only) ---
     if (signupPhoneInput) {
         signupPhoneInput.addEventListener('input', function() {
             this.value = this.value.replace(/[^0-9]/g, '');
         });
     }
 
-    // --- =============================== ---
-    // --- NEW: VALIDATION HELPER FUNCTIONS ---
-    // --- =============================== ---
-
-    // 10. Helper Functions
     function setError(input, message) {
         const formGroup = input.closest('.form-group');
         const errorDisplay = formGroup.querySelector('.error-message');
@@ -129,16 +107,13 @@ document.addEventListener("DOMContentLoaded", function() {
         return re.test(String(email).toLowerCase());
     }
 
-    // 11. Step 1 Validation Function
     function validateStep1() {
         let isValid = true;
         const passwordValue = signupPasswordInput.value.trim();
         
-        // Check which tab is active
         const isEmailActive = registerEmailBtn.classList.contains('active');
 
         if (isEmailActive) {
-            // Validate Email
             const emailValue = signupEmailInput.value.trim();
             if (emailValue === '') {
                 setError(signupEmailInput, 'Email is required');
@@ -150,7 +125,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 setSuccess(signupEmailInput);
             }
         } else {
-            // Validate Phone
             const phoneValue = signupPhoneInput.value.trim();
             if (phoneValue === '') {
                 setError(signupPhoneInput, 'Phone number is required');
@@ -163,7 +137,6 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
 
-        // Validate Password (common to both)
         if (passwordValue === '') {
             setError(signupPasswordInput, 'Password is required');
             isValid = false;
@@ -177,10 +150,8 @@ document.addEventListener("DOMContentLoaded", function() {
         return isValid;
     }
 
-    // 12. Central OTP setup function
     function setupOtpInput(otpInputs) {
         otpInputs.forEach((input, index) => {
-            // 1. Restrict to numbers ONLY and auto-tab forward
             input.addEventListener('input', function() {
                 this.value = this.value.replace(/[^0-9]/g, '');
                 if (this.value && index < otpInputs.length - 1) {
@@ -188,7 +159,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
 
-            // 2. Handle Backspace & Arrow keys
             input.addEventListener('keydown', (e) => {
                 if (e.key === 'Backspace' && !input.value && index > 0) {
                     e.preventDefault();
@@ -202,7 +172,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
 
-            // 3. Handle PASTE
             input.addEventListener('paste', function(e) {
                 e.preventDefault();
                 const pastedData = e.clipboardData.getData('text').replace(/[^0-9]/g, '');
