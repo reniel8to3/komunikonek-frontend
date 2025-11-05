@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KomuniKonek | Login</title>
+    
+    <link rel="stylesheet" href="css/login.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            
+            <h2 class="welcome-header">Welcome to KomuniKonek</h2>
+            <p class="sign-in-text">Sign in to your account to continue</p>
+            
+            <div class="role-selector-wrapper">
+                <p class="login-as-text">Login as</p>
+                <div class="role-selector">
+                    <button class="role-button active">User</button>
+                    <button class="role-button">Admin</button>
+                </div>
+            </div>
+
+            <form id="login-form" action="#" method="POST">
+                
+                <div class="form-group">
+                    <label for="email">Email <span class="required">*</span></label>
+                    <div class="input-with-icon">
+                        <i class="fa-solid fa-envelope"></i> <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password <span class="required">*</span></label>
+                    <div class="input-with-icon">
+                        <i class="fa-solid fa-lock"></i> <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                        <i class="fa-solid fa-eye password-toggle"></i> </div>
+                </div>
+
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="remember-me"> Remember me
+                    </label>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="sign-in-button">Sign in</button>
+                
+                <div class="separator">
+                    <span>Or sign in with</span>
+                </div>
+
+                <button type="button" class="phone-sign-in-button">
+                    <i class="fa-solid fa-phone"></i> Phone Number
+                </button>
+
+                <p class="signup-prompt">
+                    Don't have an account? <a href="signup.html" class="signup-link">Sign up</a>
+                </p>
+
+            </form>
+        </div>
+    </div>
+
+    <script src="js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+/* --- Global Styles and Background --- */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    
+    background-color: #f0f2f5; 
+    
+    
+    background-image: 
+        radial-gradient(circle at 15% 50%, rgba(200, 16, 46, 0.08) 0%, transparent 40%), /* Primary Red, subtle opacity */
+        radial-gradient(circle at 85% 50%, rgba(230, 57, 70, 0.08) 0%, transparent 40%); /* Action Red, subtle opacity */
+    
+    
+    background-size: cover; /
+    background-position: center center;
+    background-repeat: no-repeat;
+   
+}
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+
+.login-card {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+
+.welcome-header {
+    /* Dark Text (Charcoal) */
+    color: #212529; 
+    margin-bottom: 5px;
+    font-size: 1.8em;
+    font-weight: 600;
+}
+
+.sign-in-text {
+    /* Secondary Text (Gray) */
+    color: #6c757d;
+    margin-bottom: 25px;
+    font-size: 1em;
+}
+
+/* --- Role Selector (User/Admin) --- */
+.role-selector-wrapper {
+    margin-bottom: 20px;
+}
+
+.login-as-text {
+    color: #6c757d;
+    font-size: 0.9em;
+}
+
+.role-selector {
+    display: inline-flex;
+    background-color: #f0f0f0;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.role-button {
+    background: none;
+    border: none;
+    padding: 8px 20px;
+    cursor: pointer;
+    color: #6c757d; /* Secondary text */
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.role-button.active {
+    background-color: #ffffff;
+    color: #212529; /* Dark text */
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Form Groups and Inputs --- */
+.form-group {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #212529; /* Dark text */
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.required {
+    /* Primary Red for accents */
+    color: #C8102E; 
+}
+
+.input-with-icon {
+    display: flex;
+    align-items: center;
+    /* Border/Divider color */
+    border: 1px solid #dee2e6; 
+    border-radius: 8px;
+    padding: 10px 15px;
+    background-color: #fdfdfd;
+    transition: border-color 0.3s;
+}
+
+/* Add a red glow when the input is focused */
+.input-with-icon:focus-within {
+    /* Action Red for focus */
+    border-color: #E63946;
+    box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1); /* 10% opacity of Action Red */
+}
+
+.input-with-icon i {
+    color: #6c757d; /* Secondary text */
+    margin-right: 10px;
+}
+
+.input-with-icon input {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    padding: 0;
+    background: none;
+    color: #212529; /* Dark text */
+}
+
+.password-toggle {
+    cursor: pointer;
+    color: #6c757d !important; /* Secondary text */
+    margin-left: 10px;
+}
+
+/* --- Form Options --- */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+}
+
+.checkbox-label {
+    cursor: pointer;
+    color: #6c757d; /* Secondary text */
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-label input {
+    margin-right: 5px;
+}
+
+.forgot-password,
+.signup-link {
+    /* Primary Red for links */
+    color: #C8102E;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.forgot-password:hover, .signup-link:hover {
+    text-decoration: underline;
+}
+
+/* --- Main Buttons --- */
+.sign-in-button {
+    width: 100%;
+    padding: 12px;
+    /* Action Red for main button */
+    background-color: #E63946;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    margin-bottom: 20px;
+}
+
+.sign-in-button:hover {
+    /* Primary Red for hover (darker) */
+    background-color: #C8102E;
+}
+
+/* --- Separator --- */
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+    color: #6c757d; /* Secondary text */
+    font-size: 0.9em;
+}
+
+.separator::before, .separator::after {
+    content: '';
+    flex: 1;
+    /* Border/Divider color */
+    border-bottom: 1px solid #dee2e6;
+}
+
+.separator:not(:empty)::before { margin-right: .5em; }
+.separator:not(:empty)::after { margin-left: .5em; }
+
+/* --- Phone Sign In Button (Ghost Button) --- */
+.phone-sign-in-button {
+    width: 100%;
+    padding: 12px;
+    background-color: white;
+    color: #212529; /* Dark text */
+    /* Border/Divider color */
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: all 0.3s;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+
+.phone-sign-in-button i {
+    margin-right: 8px;
+}
+
+.phone-sign-in-button:hover {
+    /* Use Neutral Background on hover */
+    background-color: #f8f9fa;
+    border-color: #6c757d; /* Darker border on hover */
+}
+
+/* --- Sign Up Prompt --- */
+.signup-prompt {
+    font-size: 0.9em;
+    color: #6c757d; /* Secondary text */
+}
