@@ -1,5 +1,7 @@
 const langStrings = {
     "en": {
+        // --- Login Page ---
+        "titleLogin": "Login",
         "welcome": "Welcome to KomuniKonek",
         "signInPrompt": "Sign in to your account to continue",
         "loginAs": "Login as",
@@ -12,8 +14,52 @@ const langStrings = {
         "phoneButton": "Phone Number",
         "noAccount": "Don't have an account?",
         "signUpLink": "Sign up",
+        
+        // Phone Login Section
+        "phoneNumLabel": "Phone Number",
+        "sendOtp": "Send OTP",
+        "otpSent": "OTP sent successfully!",
+        "otpLabel": "Enter the OTP code",
+        "verifySignIn": "Verify & Sign In",
+        "signInWithEmail": "Sign in with Email instead",
+
+        // --- Signup Page ---
+        "titleSignup": "Create Account",
+        "step1": "Step 1 of 2",
+        "createAccount": "Create Your Account",
+        "joinPrompt": "Join KomuniKonek to connect with your community",
+        "signUpAs": "Sign up as",
+        "registerWith": "Register with",
+        "verifyOtp": "Verify OTP",
+        "haveAccount": "Already have an account?",
+        "signInLink": "Sign in",
+        "step2": "Step 2 of 2",
+        "back": "Back",
+        "personalInfo": "Personal Information",
+        "scanId": "Scan ID",
+        "fillManually": "Or fill the form manually",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "middleName": "Middle Name",
+        "address": "Address",
+        "region": "Region",
+        "houseNum": "House Number",
+        "street": "Street",
+        "birthDate": "Birth Date",
+        "month": "Month",
+        "day": "Day",
+        "year": "Year",
+        "createAccountBtn": "Create Account",
+
+        // Errors
+        "errRequired": "This field is required",
+        "errEmail": "Provide a valid email address (e.g., user@domain.com)",
+        "errPassLength": "Password must be at least 8 characters long",
+        "errPhoneLength": "Please enter a 10-digit phone number"
     },
     "fil": {
+        // --- Login Page ---
+        "titleLogin": "Mag-login",
         "welcome": "Maligayang Pagdating sa KomuniKonek",
         "signInPrompt": "Mag-sign in sa iyong account upang magpatuloy",
         "loginAs": "Mag-login bilang",
@@ -26,5 +72,47 @@ const langStrings = {
         "phoneButton": "Numero ng Telepono",
         "noAccount": "Wala ka pang account?",
         "signUpLink": "Mag-sign up",
+        
+        // Phone Login Section
+        "phoneNumLabel": "Numero ng Telepono",
+        "sendOtp": "Ipadala ang OTP",
+        "otpSent": "Matagumpay na naipadala ang OTP!",
+        "otpLabel": "Ilagay ang OTP code",
+        "verifySignIn": "Patunayan at Mag-sign In",
+        "signInWithEmail": "Mag-sign in gamit ang Email",
+
+        // --- Signup Page ---
+        "titleSignup": "Gumawa ng Account",
+        "step1": "Unang Hakbang sa 2",
+        "createAccount": "Gumawa ng Iyong Account",
+        "joinPrompt": "Sumali sa KomuniKonek para kumonekta sa iyong komunidad",
+        "signUpAs": "Mag-sign up bilang",
+        "registerWith": "Magrehistro gamit ang",
+        "verifyOtp": "Patunayan ang OTP",
+        "haveAccount": "May account ka na?",
+        "signInLink": "Mag-sign in",
+        "step2": "Ikalawang Hakbang sa 2",
+        "back": "Bumalik",
+        "personalInfo": "Personal na Impormasyon",
+        "scanId": "I-scan ang ID",
+        "fillManually": "O punan ang form nang manu-mano",
+        "firstName": "Pangalan",
+        "lastName": "Apelyido",
+        "middleName": "Gitnang Pangalan",
+        "address": "Tirahan",
+        "region": "Rehiyon",
+        "houseNum": "Numero ng Bahay",
+        "street": "Kalye",
+        "birthDate": "Araw ng Kapanganakan",
+        "month": "Buwan",
+        "day": "Araw",
+        "year": "Taon",
+        "createAccountBtn": "Gumawa ng Account",
+
+        // Errors
+        "errRequired": "Kinakailangan ang field na ito",
+        "errEmail": "Magbigay ng wastong email address (hal., user@domain.com)",
+        "errPassLength": "Ang password ay dapat na hindi bababa sa 8 character",
+        "errPhoneLength": "Magpasok ng 10-digit na numero ng telepono"
     }
 };

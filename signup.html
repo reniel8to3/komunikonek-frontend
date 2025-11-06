@@ -3,27 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KomuniKonek | Create Account</title>
+    <title data-key="titleSignup">KomuniKonek | Create Account</title>
     
     <link rel="stylesheet" href="css/signup.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="signup-container">
+
+        <div class="lang-toggle-container">
+            <button id="lang-en" class="lang-button active">ENG</button>
+            <span class="lang-separator">|</span>
+            <button id="lang-fil" class="lang-button">FIL</button>
+        </div>
+
         <div class="signup-card">
 
             <section id="step-1-account">
-                <p class="step-indicator">Step 1 of 2</p>
-                <h2 class="welcome-header">Create Your Account</h2>
-                <p class="sign-in-text">Join KomuniKonek to connect with your community</p>
+                <p class="step-indicator" data-key="step1">Step 1 of 2</p>
+                <h2 class="welcome-header" data-key="createAccount">Create Your Account</h2>
+                <p class="sign-in-text" data-key="joinPrompt">Join KomuniKonek to connect with your community</p>
 
-                <p class="section-title">Sign up as</p>
+                <p class="section-title" data-key="signUpAs">Sign up as</p>
                 <div class="role-selector">
                     <button class="role-button active">User</button>
                     <button class="role-button">Admin</button>
                 </div>
 
-                <p class="section-title">Register with</p>
+                <p class="section-title" data-key="registerWith">Register with</p>
                 <div id="register-with-selector" class="role-selector">
                     <button id="register-email-btn" class="role-button active"><i class="fa-solid fa-envelope"></i> Email</button>
                     <button id="register-phone-btn" class="role-button"><i class="fa-solid fa-phone"></i> Phone Number</button>
@@ -31,7 +38,7 @@
 
                 <form id="signup-form-step1" novalidate>
                     <div id="email-form-group" class="form-group">
-                        <label for="email">Email <span class="required">*</span></label>
+                        <label for="email"><span data-key="emailLabel">Email</span> <span class="required">*</span></label>
                         <div class="input-with-icon">
                             <i class="fa-solid fa-envelope"></i>
                             <input type="email" id="email" name="email" placeholder="Enter your email">
@@ -40,7 +47,7 @@
                     </div>
 
                     <div id="phone-form-group" class="form-group" style="display: none;">
-                        <label for="phone">Phone Number <span class="required">*</span></label>
+                        <label for="phone"><span data-key="phoneNumLabel">Phone Number</span> <span class="required">*</span></label>
                         <div class="input-with-icon">
                             <i class="fa-solid fa-phone"></i>
                             <span class="phone-prefix">+63</span>
@@ -50,7 +57,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="password">Password <span class="required">*</span></label>
+                        <label for="password"><span data-key="passwordLabel">Password</span> <span class="required">*</span></label>
                         <div class="input-with-icon">
                             <i class="fa-solid fa-lock"></i>
                             <input type="password" id="password" name="password" placeholder="Enter your password">
@@ -59,11 +66,11 @@
                         <small class="error-message"></small>
                     </div>
 
-                    <button type="button" id="send-otp-button" class="sign-in-button">Send OTP</button>
+                    <button type="button" id="send-otp-button" class="sign-in-button" data-key="sendOtp">Send OTP</button>
 
-                    <div id="otp-section">
-                        <p class="otp-success-text">OTP sent successfully!</p>
-                        <label>Enter the OTP code <span class="required">*</span></label>
+                    <div id="otp-section" style="display: none;">
+                        <p class="otp-success-text" data-key="otpSent">OTP sent successfully!</p>
+                        <label><span data-key="otpLabel">Enter the OTP code</span> <span class="required">*</span></label>
                         
                         <div class="otp-inputs">
                             <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
@@ -73,43 +80,43 @@
                             <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
                             <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
                         </div>
-                        <button type="button" id="verify-otp-button" class="sign-in-button">Verify OTP</button>
+                        <button type="button" id="verify-otp-button" class="sign-in-button" data-key="verifyOtp">Verify OTP</button>
                     </div>
 
                     <p class="signup-prompt">
-                        Already have an account? <a href="login.html" class="signup-link">Sign in</a>
+                        <span data-key="haveAccount">Already have an account?</span> <a href="login.html" class="signup-link" data-key="signInLink">Sign in</a>
                     </p>
                 </form>
             </section>
 
-            <section id="step-2-personal">
+            <section id="step-2-personal" style="display: none;">
                 <div class="step-header">
-                    <button id="back-button" class="back-button">&larr; Back</button>
-                    <p class="step-indicator">Step 2 of 2</p>
+                    <button id="back-button" class="back-button"><span data-key="back">&larr; Back</span></button>
+                    <p class="step-indicator" data-key="step2">Step 2 of 2</p>
                 </div>
 
-                <h2 class="welcome-header">Create Your Account</h2>
-                <p class="section-title">Personal Information</p>
+                <h2 class="welcome-header" data-key="createAccount">Create Your Account</h2>
+                <p class="section-title" data-key="personalInfo">Personal Information</p>
 
                 <button type="button" class="scan-id-button">
-                    <i class="fa-solid fa-camera"></i> Scan ID
+                    <i class="fa-solid fa-camera"></i> <span data-key="scanId">Scan ID</span>
                 </button>
 
                 <div class="separator">
-                    <span>Or fill the form manually</span>
+                    <span data-key="fillManually">Or fill the form manually</span>
                 </div>
 
                 <form id="signup-form-step2" novalidate>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="first-name">First Name <span class="required">*</span></label>
+                            <label for="first-name"><span data-key="firstName">First Name</span> <span class="required">*</span></label>
                             <div class="input-with-icon">
                                 <i class="fa-solid fa-user"></i>
                                 <input type="text" id="first-name" name="first-name" placeholder="Enter your first name" required>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="last-name">Last Name <span class="required">*</span></label>
+                            <label for="last-name"><span data-key="lastName">Last Name</span> <span class="required">*</span></label>
                             <div class="input-with-icon">
                                 <i class="fa-solid fa-user"></i>
                                 <input type="text" id="last-name" name="last-name" placeholder="Enter your last name" required>
@@ -118,16 +125,16 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="middle-name">Middle Name</label>
+                        <label for="middle-name" data-key="middleName">Middle Name</label>
                         <div class="input-with-icon">
                             <i class="fa-solid fa-user"></i>
                             <input type="text" id="middle-name" name="middle-name" placeholder="Enter your middle name">
                         </div>
                     </div>
 
-                    <label class="section-title">Address</label>
+                    <label class="section-title" data-key="address">Address</label>
                     <div class="form-group">
-                        <label for="region">Region <span class="required">*</span></label>
+                        <label for="region"><span data-key="region">Region</span> <span class="required">*</span></label>
                         <select id="region" name="region" required>
                             <option value="" disabled selected>Select region</option>
                         </select>
@@ -135,44 +142,45 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="house-number">House Number <span class="required">*</span></label>
+                            <label for="house-number"><span data-key="houseNum">House Number</span> <span class="required">*</span></label>
                             <input type="text" id="house-number" name="house-number" placeholder="Enter house number">
                         </div>
                         <div class="form-group">
-                            <label for="street">Street <span class="required">*</span></label>
+                            <label for="street"><span data-key="street">Street</span> <span class="required">*</span></label>
                             <input type="text" id="street" name="street" placeholder="Enter street name">
                         </div>
                     </div>
 
-                    <label class="section-title">Birth Date</label>
+                    <label class="section-title" data-key="birthDate">Birth Date</label>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="month">Month <span class="required">*</span></label>
+                            <label for="month"><span data-key="month">Month</span> <span class="required">*</span></label>
                             <select id="month" name="month" required>
                                 <option value="" disabled selected>Select month</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="day">Day <span class="required">*</span></label>
+                            <label for="day"><span data-key="day">Day</span> <span class="required">*</span></label>
                             <select id="day" name="day" required>
                                 <option value="" disabled selected>Select day</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="year">Year <span class="required">*</span></label>
+                            <label for="year"><span data-key="year">Year</span> <span class="required">*</span></label>
                             <select id="year" name="year" required>
                                 <option value="" disabled selected>Select year</option>
                             </select>
                         </div>
                     </div>
 
-                    <button type="submit" class="sign-in-button">Create Account</button>
+                    <button type="submit" class="sign-in-button" data-key="createAccountBtn">Create Account</button>
                 </form>
             </section>
 
         </div>
     </div>
 
+    <script src="js/translations.js"></script>
     <script src="js/signup.js"></script>
 </body>
 </html>

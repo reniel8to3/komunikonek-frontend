@@ -1,11 +1,10 @@
 document.addEventListener("DOMContentLoaded", function() {
     
+    // --- 1. Get ALL Elements ---
     const loginForm = document.getElementById('login-form');
-    
     const roleButtons = document.querySelectorAll('.role-button');
     const passwordInput = document.getElementById('password');
     const togglePassword = document.querySelector('.password-toggle');
-
     const emailLoginSection = document.getElementById('email-login-section');
     const phoneLoginSection = document.getElementById('phone-login-section');
     const showPhoneLoginBtn = document.getElementById('show-phone-login-btn');
@@ -13,15 +12,18 @@ document.addEventListener("DOMContentLoaded", function() {
     const loginPhoneInput = document.getElementById('login-phone');
     const loginSendOtpBtn = document.getElementById('login-send-otp-btn');
     const loginOtpSection = document.getElementById('login-otp-section');
-    const loginOtpInputs = loginOtpSection.querySelectorAll('.otp-input');
-    
+    const loginOtpInputs = document.querySelectorAll('#login-otp-section .otp-input'); // More specific
     const emailInput = document.getElementById('email');
-
     const langEnBtn = document.getElementById('lang-en');
     const langFilBtn = document.getElementById('lang-fil');
     const translatableElements = document.querySelectorAll('[data-key]');
-    let currentLang = 'en'; 
+    let currentLang = 'en';
 
+    // --- =============================== ---
+    // --- CORE LOGIC (Resilient) ---
+    // --- =============================== ---
+
+    // --- 2. Role Selector (User/Admin) ---
     if (roleButtons.length > 0) {
         roleButtons.forEach(button => {
             button.addEventListener('click', function() {
@@ -31,6 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    // --- 3. Password Show/Hide Toggle ---
     if (togglePassword && passwordInput) {
         togglePassword.addEventListener('click', function() {
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -40,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    // --- 4. Phone Login Toggle Logic ---
     if (showPhoneLoginBtn && showEmailLoginLink && emailLoginSection && phoneLoginSection) {
         showPhoneLoginBtn.addEventListener('click', function() {
             emailLoginSection.style.display = 'none';
@@ -52,27 +56,35 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    // --- 5. "Send OTP" (Login) Button Logic ---
     if (loginSendOtpBtn) {
         loginSendOtpBtn.addEventListener('click', function() {
             if (validatePhoneInput()) {
                 setSuccess(loginPhoneInput);
-                loginOtpSection.style.display = 'block';
-                loginSendOtpBtn.textContent = langStrings[currentLang]['sendOtp'];
+                if(loginOtpSection) loginOtpSection.style.display = 'block';
+                this.textContent = (langStrings[currentLang] && langStrings[currentLang]['sendOtp']) ? langStrings[currentLang]['sendOtp'] : 'Send OTP';
                 console.log('Login OTP Sent (simulation)');
             }
         });
     }
 
+    // --- 6. Phone Input Validation (Numbers Only) ---
     if (loginPhoneInput) {
         loginPhoneInput.addEventListener('input', function() {
             this.value = this.value.replace(/[^0-9]/g, '');
         });
     }
 
+    // --- 7. Continuous OTP Input Logic ---
     setupOtpInput(loginOtpInputs);
     
+    // --- 8. Validation Helper Functions ---
     function setError(input, messageKey) {
-        const message = langStrings[currentLang][messageKey] || messageKey; 
+        let message = messageKey;
+        if (typeof langStrings !== 'undefined' && langStrings[currentLang] && langStrings[currentLang][messageKey]) {
+            message = langStrings[currentLang][messageKey];
+        }
+        
         const formGroup = input.closest('.form-group');
         if (!formGroup) return;
         const errorDisplay = formGroup.querySelector('.error-message');
@@ -97,12 +109,15 @@ document.addEventListener("DOMContentLoaded", function() {
         return re.test(String(email).toLowerCase());
     }
 
+    // --- 9. Main Form Submit Listener ---
     if (loginForm) {
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
             let isEmailValid = validateEmailForm();
             if (isEmailValid) {
                 console.log('Email Form is Valid! Submitting... (simulation)');
+                // This is where you would redirect to index.html
+                window.location.href = 'index.html';
             }
         });
     }
@@ -145,6 +160,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    // --- 10. Central OTP setup function ---
     function setupOtpInput(otpInputs) {
         otpInputs.forEach((input, index) => {
             input.addEventListener('input', function() {
@@ -181,45 +197,53 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    try {
-        const setLanguage = (lang) => {
-            currentLang = lang;
-            document.documentElement.lang = lang;
-            
-            translatableElements.forEach(el => {
-                const key = el.getAttribute('data-key');
-                if (!key) return;
-               
-                const translation = (langStrings[lang] && langStrings[lang][key]) ? langStrings[lang][key] : langStrings['en'][key];
-                
-                if (translation) {
-                    if (el.tagName === 'TITLE') {
-                        document.title = "KomuniKonek | " + translation;
-                    } else {
-                        el.textContent = translation;
-                    }
-                }
-            });
-            
-            if (lang === 'fil') {
-                langFilBtn.classList.add('active');
-                langEnBtn.classList.remove('active');
-            } else {
-                langEnBtn.classList.add('active');
-                langFilBtn.classList.remove('active');
-            }
-        };
-
-        if (langEnBtn && langFilBtn) {
-            langEnBtn.addEventListener('click', () => setLanguage('en'));
-            langFilBtn.addEventListener('click', () => setLanguage('fil'));
+    // --- =============================== ---
+    // --- I18N (TRANSLATION) LOGIC ---
+    // --- =============================== ---
+    
+    const setLanguage = (lang) => {
+        if (typeof langStrings === 'undefined' || !langStrings[lang]) {
+            console.error(`Translation for language "${lang}" not found.`);
+            return;
         }
 
+        currentLang = lang;
+        document.documentElement.lang = lang;
+        
+        translatableElements.forEach(el => {
+            const key = el.getAttribute('data-key');
+            if (!key) return;
+            
+            const translation = langStrings[lang][key];
+            
+            if (translation) {
+                if (el.tagName === 'TITLE') {
+                    document.title = "KomuniKonek | " + translation;
+                } else {
+                    el.textContent = translation;
+                }
+            }
+        });
+        
+        if (lang === 'fil') {
+            if(langFilBtn) langFilBtn.classList.add('active');
+            if(langEnBtn) langEnBtn.classList.remove('active');
+        } else {
+            if(langEnBtn) langEnBtn.classList.add('active');
+            if(langFilBtn) langFilBtn.classList.remove('active');
+        }
+    };
 
+    if (langEnBtn && langFilBtn) {
+        langEnBtn.addEventListener('click', () => setLanguage('en'));
+        langFilBtn.addEventListener('click', () => setLanguage('fil'));
+    }
+    
+    // Set default language on load, but in a way that doesn't crash
+    if (typeof langStrings !== 'undefined') {
         setLanguage('en');
-    } catch (e) {
-        console.error("Translation script failed. Page will work in default language.", e);
-
+    } else {
+        console.error("translations.js not found. Page will not be translated.");
     }
 
 });

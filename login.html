@@ -19,11 +19,11 @@
 
         <div class="login-card">
             
-            <h2 class="welcome-header" data-key="welcome">Welcome to KomuniKonek</h2>
-            <p class="sign-in-text" data-key="signInPrompt">Sign in to your account to continue</p>
+            <h2 class="welcome-header"><span data-key="welcome">Welcome to KomuniKonek</span></h2>
+            <p class="sign-in-text"><span data-key="signInPrompt">Sign in to your account to continue</span></p>
             
             <div class="role-selector-wrapper">
-                <p class="login-as-text" data-key="loginAs">Login as</p>
+                <p class="login-as-text"><span data-key="loginAs">Login as</span></p>
                 <div class="role-selector">
                     <button class="role-button active">User</button>
                     <button class="role-button">Admin</button>
@@ -34,7 +34,7 @@
                 
                 <div id="email-login-section">
                     <div class="form-group">
-                        <label for="email" data-key="emailLabel">Email <span class="required">*</span></label>
+                        <label for="email"><span data-key="emailLabel">Email</span> <span class="required">*</span></label>
                         <div class="input-with-icon">
                             <i class="fa-solid fa-envelope"></i>
                             <input type="email" id="email" name="email" placeholder="Enter your email" required>
@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="password" data-key="passwordLabel">Password <span class="required">*</span></label>
+                        <label for="password"><span data-key="passwordLabel">Password</span> <span class="required">*</span></label>
                         <div class="input-with-icon">
                             <i class="fa-solid fa-lock"></i>
                             <input type="password" id="password" name="password" placeholder="Enter your password" required>
@@ -73,7 +73,7 @@
 
                 <div id="phone-login-section" style="display: none;">
                     <div class="form-group">
-                        <label for="login-phone" data-key="phoneNumLabel">Phone Number <span class="required">*</span></label>
+                        <label for="login-phone"><span data-key="phoneNumLabel">Phone Number</span> <span class="required">*</span></label>
                         <div class="input-with-icon">
                             <i class="fa-solid fa-phone"></i>
                             <span class="phone-prefix">+63</span>
@@ -86,7 +86,7 @@
 
                     <div id="login-otp-section" style="display: none;">
                         <p class="otp-success-text" data-key="otpSent">OTP sent successfully!</p>
-                        <label data-key="otpLabel">Enter the OTP code <span class="required">*</span></label>
+                        <label><span data-key="otpLabel">Enter the OTP code</span> <span class="required">*</span></label>
                         <div class="otp-inputs">
                             <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
                             <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
