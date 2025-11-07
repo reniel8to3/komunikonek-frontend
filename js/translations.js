@@ -49,12 +49,34 @@ const langStrings = {
         "year": "Year",
         "createAccountBtn": "Create Account",
         
-        // --- NEW: Forgot Password Page ---
-        "titleForgotPass": "Forgot Password",
-        "forgotPassTitle": "Forgot Your Password?",
-        "forgotPassPrompt": "No problem! Enter your email below and we'll send you a link to reset it.",
-        "sendResetLink": "Send Reset Link",
-        "backToLogin": "Back to Sign in",
+        // --- Homepage ---
+        "titleDashboard": "Dashboard",
+        "myProfile": "My Profile",
+        "trackComplaints": "Track Complaints",
+        "trackDocs": "Track Document Requests",
+        "settings": "Settings",
+        "logout": "Logout",
+        "card1Title": "Submit a Complaint",
+        "card1Desc": "Report an issue or concern in your community.",
+        "card2Title": "Request a Document",
+        "card2Desc": "Get barangay clearances, permits, and more.",
+        "card3Title": "View Announcements",
+        "card3Desc": "Stay updated with the latest news and events.",
+        
+        // --- NEW: Admin Page ---
+        "adminTitle": "Admin Dashboard",
+        "adminHeader": "KomuniKonek Admin",
+        "navDashboard": "Dashboard",
+        "navUsers": "Manage Users",
+        "navComplaints": "Manage Complaints",
+        "navDocs": "Manage Documents",
+        "navAnnouncements": "Manage Announcements",
+        "dashboardOverview": "Dashboard Overview",
+        "pendingComplaints": "Pending Complaints",
+        "pendingDocs": "Pending Documents",
+        "newSignups": "New User Signups",
+        "recentActivity": "Recent Activity",
+        "activityPlaceholder": "A table of recent activity would go here.",
 
         // Errors
         "errRequired": "This field is required",
@@ -112,13 +134,35 @@ const langStrings = {
         "year": "Taon",
         "createAccountBtn": "Gumawa ng Account",
 
-        // --- NEW: Forgot Password Page ---
-        "titleForgotPass": "Nakalimutan ang Password",
-        "forgotPassTitle": "Nakalimutan ang Iyong Password?",
-        "forgotPassPrompt": "Walang problema! Ilagay ang iyong email sa ibaba at padadalhan ka namin ng link para i-reset ito.",
-        "sendResetLink": "Ipadala ang Reset Link",
-        "backToLogin": "Bumalik sa Sign in",
+        // --- Homepage ---
+        "titleDashboard": "Dashboard",
+        "myProfile": "Aking Profile",
+        "trackComplaints": "Subaybayan ang Reklamo",
+        "trackDocs": "Subaybayan ang Hiling sa Dokumento",
+        "settings": "Mga Setting",
+        "logout": "Mag-logout",
+        "card1Title": "Magsumite ng Reklamo",
+        "card1Desc": "I-report ang isyu o alalahanin sa iyong komunidad.",
+        "card2Title": "Humiling ng Dokumento",
+        "card2Desc": "Kumuha ng barangay clearance, permit, at iba pa.",
+        "card3Title": "Tingnan ang mga Anunsyo",
+        "card3Desc": "Manatiling updated sa mga pinakabagong balita at kaganapan.",
 
+        // --- NEW: Admin Page ---
+        "adminTitle": "Admin Dashboard",
+        "adminHeader": "KomuniKonek Admin",
+        "navDashboard": "Dashboard",
+        "navUsers": "Pamahalaan ang Users",
+        "navComplaints": "Pamahalaan ang Reklamo",
+        "navDocs": "Pamahalaan ang Dokumento",
+        "navAnnouncements": "Pamahalaan ang Anunsyo",
+        "dashboardOverview": "Pangkalahatang-ideya ng Dashboard",
+        "pendingComplaints": "Mga Nakabinbing Reklamo",
+        "pendingDocs": "Mga Nakabinbing Dokumento",
+        "newSignups": "Mga Bagong Nag-signup",
+        "recentActivity": "Kamakailang Aktibidad",
+        "activityPlaceholder": "Dito ilalagay ang talaan ng mga kamakailang aktibidad.",
+        
         // Errors
         "errRequired": "Kinakailangan ang field na ito",
         "errEmail": "Magbigay ng wastong email address (hal., user@domain.com)",

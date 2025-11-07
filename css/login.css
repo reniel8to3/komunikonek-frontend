@@ -57,7 +57,9 @@ body {
     background-color: #f0f0f0;
     border-radius: 20px;
     overflow: hidden;
+    border: 1px solid #dee2e6; /* <-- ADD THIS LINE */
 }
+
 .role-button {
     background: none;
     border: none;

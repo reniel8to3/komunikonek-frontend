@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin | Dashboard</title>
+    <title data-key="adminTitle">Admin | Dashboard</title>
     
     <link rel="stylesheet" href="css/admin.css">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -15,30 +14,30 @@
         
         <aside class="sidebar" id="admin-sidebar">
             <div class="sidebar-header">
-                <h3>KomuniKonek Admin</h3>
+                <h3 data-key="adminHeader">KomuniKonek Admin</h3>
             </div>
             <nav class="sidebar-nav">
                 <ul>
                     <li class="active">
-                        <a href="admin.html"><i class="fa-solid fa-tachograph-digital"></i> Dashboard</a>
+                        <a href="admin.html"><i class="fa-solid fa-tachograph-digital"></i> <span data-key="navDashboard">Dashboard</span></a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa-solid fa-users"></i> Manage Users</a>
+                        <a href="#"><i class="fa-solid fa-users"></i> <span data-key="navUsers">Manage Users</span></a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa-solid fa-comments"></i> Manage Complaints</a>
+                        <a href="#"><i class="fa-solid fa-comments"></i> <span data-key="navComplaints">Manage Complaints</span></a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa-solid fa-file-lines"></i> Manage Documents</a>
+                        <a href="#"><i class="fa-solid fa-file-lines"></i> <span data-key="navDocs">Manage Documents</span></a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa-solid fa-bullhorn"></i> Manage Announcements</a>
+                        <a href="#"><i class="fa-solid fa-bullhorn"></i> <span data-key="navAnnouncements">Manage Announcements</span></a>
                     </li>
                 </ul>
             </nav>
             <div class="sidebar-footer">
                 <a href="login.html" class="logout-link">
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> <span data-key="logout">Logout</span>
                 </a>
             </div>
         </aside>
@@ -48,17 +47,23 @@
                 <button class="menu-toggle" id="menu-toggle">
                     <i class="fa-solid fa-bars"></i>
                 </button>
-                <h2>Dashboard Overview</h2>
+                <h2 data-key="dashboardOverview">Dashboard Overview</h2>
+                
+                <div class="lang-toggle-container-admin">
+                    <button id="lang-en" class="lang-button active">ENG</button>
+                    <span class="lang-separator">|</span>
+                    <button id="lang-fil" class="lang-button">FIL</button>
+                </div>
             </header>
             
             <div class="content-wrapper">
-                <h1 class="desktop-title">Dashboard Overview</h1>
+                <h1 class="desktop-title" data-key="dashboardOverview">Dashboard Overview</h1>
 
                 <section class="stat-grid">
                     <div class="stat-card">
                         <div class="card-content">
                             <div class="card-value">12</div>
-                            <div class="card-label">Pending Complaints</div>
+                            <div class="card-label" data-key="pendingComplaints">Pending Complaints</div>
                         </div>
                         <div class="card-icon">
                             <i class="fa-solid fa-comments"></i>
@@ -68,7 +73,7 @@
                     <div class="stat-card">
                         <div class="card-content">
                             <div class="card-value">8</div>
-                            <div class="card-label">Pending Documents</div>
+                            <div class="card-label" data-key="pendingDocs">Pending Documents</div>
                         </div>
                         <div class="card-icon">
                             <i class="fa-solid fa-file-lines"></i>
@@ -78,7 +83,7 @@
                     <div class="stat-card">
                         <div class="card-content">
                             <div class="card-value">4</div>
-                            <div class="card-label">New User Signups</div>
+                            <div class="card-label" data-key="newSignups">New User Signups</div>
                         </div>
                         <div class="card-icon">
                             <i class="fa-solid fa-user-plus"></i>
@@ -87,8 +92,8 @@
                 </section>
 
                 <section class="content-section">
-                    <h2>Recent Activity</h2>
-                    <p>A table of recent complaints or document requests would go here...</p>
+                    <h2 data-key="recentActivity">Recent Activity</h2>
+                    <p data-key="activityPlaceholder">A table of recent complaints or document requests would go here...</p>
                 </section>
             </div>
         </main>
@@ -97,6 +102,7 @@
 
     </div>
 
+    <script src="js/translations.js"></script>
     <script src="js/admin.js"></script>
 </body>
 </html>

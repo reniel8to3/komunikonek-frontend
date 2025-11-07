@@ -96,19 +96,29 @@ body {
     box-sizing: border-box;
 }
 
+/* --- THIS IS THE FIX --- */
+/* This header is now always visible */
 .admin-header {
-    display: none; /* Hidden on desktop */
+    display: flex;
+    justify-content: space-between; /* Pushes items to ends */
     align-items: center;
     gap: 15px;
     margin-bottom: 20px;
 }
+/* The hamburger button is hidden on desktop */
 .menu-toggle {
+    display: none; 
     background: none;
     border: none;
     font-size: 1.5em;
     cursor: pointer;
     color: #333;
 }
+/* The mobile-only title is hidden on desktop */
+.admin-header h2 {
+    display: none;
+}
+/* The desktop-only title is visible */
 .desktop-title {
     margin-top: 0;
     font-size: 2em;
@@ -186,11 +196,65 @@ body {
         padding: 15px;
     }
     
-    .admin-header {
-        display: flex; /* Show mobile header */
+    /* --- THIS IS THE FIX --- */
+    /* Show the hamburger button */
+    .menu-toggle {
+        display: block;
+    }
+    /* Show the mobile title */
+    .admin-header h2 {
+        display: block;
+        margin: 0;
+        font-size: 1.2em;
     }
     
+    /* Hide the big desktop title */
     .desktop-title {
-        display: none; /* Hide desktop title */
+        display: none;
+    }
+}
+
+/* --- ================== --- */
+/* --- ADMIN LANG TOGGLE --- */
+/* --- ================== --- */
+/* This style now works on all screen sizes */
+.lang-toggle-container-admin {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 20px;
+}
+.lang-toggle-container-admin .lang-separator {
+    color: #dee2e6;
+    font-size: 0.9em;
+}
+.lang-toggle-container-admin .lang-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9em;
+    font-weight: 500;
+    color: #6c757d;
+    padding: 5px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+.lang-toggle-container-admin .lang-button.active {
+    color: #212529;
+    font-weight: 700;
+}
+
+/* On mobile, we need to shrink the toggle a bit */
+@media (max-width: 768px) {
+    .admin-header {
+        /* This ensures the items don't get too crowded */
+        gap: 10px;
+    }
+    .admin-header h2 {
+        /* Hide text to save space */
+        display: none;
     }
 }
