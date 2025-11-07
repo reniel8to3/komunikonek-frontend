@@ -7,7 +7,6 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-
     background: linear-gradient(135deg, #FFD700, #CE1126, #0038A8);
     background-size: cover;
 }
@@ -40,24 +39,30 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    text-align: center;
 }
 .welcome-content {
-    background: #fff;
-    padding: 30px;
-    border-radius: 8px;
     text-align: center;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    margin-bottom: 40px;
+    width: 100%;
+    box-sizing: border-box;
 }
 .welcome-content h2 {
     margin-top: 0;
     color: #212529;
-    font-size: 1.8em;
+    font-size: 2em; /* Made larger */
     font-weight: 600;
 }
 .welcome-content p {
     color: #6c757d;
-    font-size: 1em;
+    font-size: 1.1em; /* Made larger */
     margin-bottom: 0;
+}
+.tagline {
+    font-size: 1em;
+    color: #0038A8;
+    font-weight: 500;
+    margin-top: 15px;
 }
 
 /* --- Right Signup Panel --- */
@@ -68,11 +73,12 @@ body {
     flex-direction: column;
     justify-content: center;
     text-align: center;
+    align-items: center;
     position: relative;
 }
 
 /* --- ========================== --- */
-/* --- NEW ROBUST TOGGLE STYLE --- */
+/* --- NEW SLIDING TOGGLE STYLE --- */
 /* --- ========================== --- */
 .section-title {
     color: #6c757d;
@@ -80,39 +86,61 @@ body {
     margin-top: 20px;
     margin-bottom: 8px;
 }
+
 .role-selector {
-    display: inline-flex;
+    display: flex;
+    position: relative;
     background-color: #f0f0f0;
     border-radius: 20px;
-    overflow: hidden;
-    margin-bottom: 15px;
     border: 1px solid #dee2e6;
     padding: 3px;
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 300px; /* Wider for the icons */
 }
+
 .role-button {
+    flex: 1;
     background: transparent;
     border: none;
-    padding: 8px 20px;
+    padding: 8px 10px;
     cursor: pointer;
     color: #6c757d;
-    transition: all 0.3s ease;
+    transition: color 0.3s ease;
     font-weight: 500;
     border-radius: 17px;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 }
-.role-button i { margin-right: 5px; }
 .role-button.active {
-    background-color: #ffffff;
-    color: #212529;
+    color: #0038A8;
     font-weight: 700;
+}
+
+.glider {
+    position: absolute;
+    top: 3px;
+    height: calc(100% - 6px);
+    width: 50%; /* JS will override this */
+    background-color: #ffffff;
+    border-radius: 17px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: all 0.3s ease-in-out;
+    z-index: 1;
 }
 /* --- END OF TOGGLE FIX --- */
 
 
 /* --- Form Groups and Inputs --- */
+/* (Rest of form styles are unchanged) */
 .form-group {
     text-align: left;
     margin-bottom: 15px;
+    width: 100%;
 }
 .form-group label {
     display: block;
@@ -123,7 +151,6 @@ body {
 }
 .required { color: #CE1126; }
 
-/* Base style for all inputs, including select */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -150,7 +177,6 @@ select:focus {
     box-shadow: 0 0 0 3px rgba(0, 56, 168, 0.1);
 }
 
-/* Style for inputs with icons */
 .input-with-icon {
     display: flex;
     align-items: center;
@@ -182,7 +208,6 @@ select:focus {
     margin-left: 10px;
 }
 
-/* --- Sign In/Up Links --- */
 .signup-prompt {
     font-size: 0.9em;
     color: #6c757d;
@@ -194,7 +219,6 @@ select:focus {
 }
 .signup-link:hover { text-decoration: underline; }
 
-/* --- Main Buttons --- */
 .sign-in-button {
     width: 100%;
     padding: 12px;
@@ -211,7 +235,6 @@ select:focus {
 }
 .sign-in-button:hover { background-color: #002a7e; }
 
-/* --- Separator --- */
 .separator {
     display: flex;
     align-items: center;
@@ -228,7 +251,6 @@ select:focus {
 .separator:not(:empty)::before { margin-right: .5em; }
 .separator:not(:empty)::after { margin-left: .5em; }
 
-/* --- Step Indicators --- */
 .step-indicator {
     position: absolute;
     top: 20px;
@@ -253,7 +275,6 @@ select:focus {
     padding: 0;
 }
 
-/* --- OTP Section --- */
 #otp-section {
     display: none;
     margin-top: 20px;
@@ -276,13 +297,11 @@ select:focus {
     padding: 0;
 }
 
-/* --- Step 2: Personal Info --- */
 #step-2-personal {
     display: none; 
     text-align: left;
 }
 
-/* Scan ID Button */
 .scan-id-button {
     width: 100%;
     padding: 12px;
@@ -302,14 +321,12 @@ select:focus {
     color: #CE1126;
 }
 
-/* Form Row for side-by-side fields */
 .form-row {
     display: flex;
     gap: 15px;
 }
 .form-row .form-group { flex: 1; }
 
-/* --- Style for the +63 phone prefix --- */
 .phone-prefix {
     font-weight: 500;
     color: #212529;
@@ -318,7 +335,6 @@ select:focus {
     border-right: 1px solid #dee2e6;
 }
 
-/* --- VALIDATION STYLES --- */
 .error-message {
     color: #CE1126;
     font-size: 0.85em;
@@ -336,7 +352,6 @@ select:focus {
     display: block;
 }
 
-/* --- LANGUAGE TOGGLE --- */
 .lang-toggle-container {
     display: flex;
     justify-content: center;
@@ -369,7 +384,6 @@ select:focus {
     font-weight: 700;
 }
 
-/* --- PASSWORD CHECKLIST --- */
 #password-checklist {
     margin-top: 15px;
     text-align: left;
@@ -401,7 +415,6 @@ select:focus {
     color: #28a745;
 }
 
-/* --- RESPONSIVENESS --- */
 @media (max-width: 768px) {
     .split-container {
         flex-direction: column;

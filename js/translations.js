@@ -4,6 +4,7 @@ const langStrings = {
         "titleLogin": "Login",
         "welcome": "Welcome to KomuniKonek",
         "signInPrompt": "Sign in to your account to continue",
+        "tagline": "Connecting Communities, Strengthening Support.", // NEW
         "loginAs": "Login as",
         "emailLabel": "Email",
         "passwordLabel": "Password",
@@ -63,7 +64,7 @@ const langStrings = {
         "card3Title": "View Announcements",
         "card3Desc": "Stay updated with the latest news and events.",
         
-        // --- NEW: Admin Page ---
+        // --- Admin Page ---
         "adminTitle": "Admin Dashboard",
         "adminHeader": "KomuniKonek Admin",
         "navDashboard": "Dashboard",
@@ -89,6 +90,7 @@ const langStrings = {
         "titleLogin": "Mag-login",
         "welcome": "Maligayang Pagdating sa KomuniKonek",
         "signInPrompt": "Mag-sign in sa iyong account upang magpatuloy",
+        "tagline": "Pag-uugnay ng Komunidad, Pagpapalakas ng Suporta.", // NEW
         "loginAs": "Mag-login bilang",
         "emailLabel": "Email",
         "passwordLabel": "Password",
@@ -148,7 +150,7 @@ const langStrings = {
         "card3Title": "Tingnan ang mga Anunsyo",
         "card3Desc": "Manatiling updated sa mga pinakabagong balita at kaganapan.",
 
-        // --- NEW: Admin Page ---
+        // --- Admin Page ---
         "adminTitle": "Admin Dashboard",
         "adminHeader": "KomuniKonek Admin",
         "navDashboard": "Dashboard",

@@ -4,7 +4,6 @@ body {
     margin: 0;
     padding: 0;
     
-    /* NEW: Bright gradient background */
     background: linear-gradient(135deg, #FFD700, #CE1126, #0038A8);
     background-size: cover;
     min-height: 100vh;
@@ -29,7 +28,7 @@ body {
 .navbar-logo {
     font-size: 1.5em;
     font-weight: 700;
-    color: #FFFFFF;
+    color: #FFD700; /* NEW: Changed to Yellow */
     text-decoration: none;
 }
 
@@ -46,7 +45,12 @@ body {
 .main-container {
     max-width: 1200px;
     margin: 30px auto;
-    padding: 20px;
+    padding: 30px; /* Increased padding */
+    
+    /* NEW: This creates the rounded border/card effect */
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
 }
 
 /* --- Responsive Grid --- */
@@ -59,6 +63,7 @@ body {
 /* --- Dashboard Card Styling --- */
 .dashboard-card {
     background-color: #FFFFFF;
+    border: 1px solid #f0f0f0; /* Added subtle border */
     border-radius: 12px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     padding: 25px;

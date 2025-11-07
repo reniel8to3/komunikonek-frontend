@@ -2,7 +2,9 @@ document.addEventListener("DOMContentLoaded", function() {
     
     // --- 1. Get ALL Elements ---
     const loginForm = document.getElementById('login-form');
+    const roleSelector = document.querySelector('.role-selector'); // <-- ADDED THIS
     const roleButtons = document.querySelectorAll('.role-button');
+    const glider = document.querySelector('.glider');
     const passwordInput = document.getElementById('password');
     const togglePassword = document.querySelector('.password-toggle');
     const emailLoginSection = document.getElementById('email-login-section');
@@ -18,8 +20,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const langFilBtn = document.getElementById('lang-fil');
     const translatableElements = document.querySelectorAll('[data-key]');
     let currentLang = 'en';
-
-    // Get the phone login "Verify" button
     const loginVerifyOtpBtn = document.getElementById('login-verify-otp-btn');
 
 
@@ -27,12 +27,19 @@ document.addEventListener("DOMContentLoaded", function() {
     // --- CORE LOGIC (Resilient) ---
     // --- =============================== ---
 
-    // --- 2. Role Selector (User/Admin) ---
-    if (roleButtons.length > 0) {
+    // --- 2. Sliding Role Selector ---
+    if (roleSelector && roleButtons.length > 0 && glider) {
+        const activeButton = document.querySelector('.role-button.active');
+        if (activeButton) {
+            glider.style.width = `${activeButton.offsetWidth}px`;
+            glider.style.transform = `translateX(${activeButton.offsetLeft - 3}px)`;
+        }
         roleButtons.forEach(button => {
             button.addEventListener('click', function() {
                 roleButtons.forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active'); 
+                this.classList.add('active');
+                glider.style.width = `${this.offsetWidth}px`;
+                glider.style.transform = `translateX(${this.offsetLeft - 3}px)`;
             });
         });
     }
@@ -47,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // --- 4. Phone Login Toggle Logic ---
+    // --- 4. Phone Login Toggle Logic (UPDATED) ---
     if (showPhoneLoginBtn && showEmailLoginLink && emailLoginSection && phoneLoginSection) {
         showPhoneLoginBtn.addEventListener('click', function() {
             emailLoginSection.style.display = 'none';
@@ -57,10 +64,18 @@ document.addEventListener("DOMContentLoaded", function() {
             e.preventDefault();
             emailLoginSection.style.display = 'block';
             phoneLoginSection.style.display = 'none';
+            
+            // --- NEW: Re-enable fields ---
+            if(loginPhoneInput) loginPhoneInput.disabled = false;
+            if(loginSendOtpBtn) loginSendOtpBtn.disabled = false;
+            if(roleSelector) roleSelector.classList.remove('disabled');
+            roleButtons.forEach(btn => btn.disabled = false);
+            if(loginOtpSection) loginOtpSection.style.display = 'none';
+            // --- End of new code ---
         });
     }
 
-    // --- 5. "Send OTP" (Login) Button Logic ---
+    // --- 5. "Send OTP" (Login) Button Logic (UPDATED) ---
     if (loginSendOtpBtn) {
         loginSendOtpBtn.addEventListener('click', function() {
             if (validatePhoneInput()) {
@@ -68,24 +83,27 @@ document.addEventListener("DOMContentLoaded", function() {
                 if(loginOtpSection) loginOtpSection.style.display = 'block';
                 this.textContent = (langStrings[currentLang] && langStrings[currentLang]['sendOtp']) ? langStrings[currentLang]['sendOtp'] : 'Send OTP';
                 console.log('Login OTP Sent (simulation)');
+
+                // --- NEW: Disable fields ---
+                if(loginPhoneInput) loginPhoneInput.disabled = true;
+                if(loginSendOtpBtn) loginSendOtpBtn.disabled = true;
+                if(roleSelector) roleSelector.classList.add('disabled');
+                roleButtons.forEach(btn => btn.disabled = true);
+                // --- End of new code ---
             }
         });
     }
 
-    // --- 5b. "Verify & Sign In" (Phone) Button Logic (UPDATED) ---
+    // --- 5b. "Verify & Sign In" (Phone) Button Logic ---
     if (loginVerifyOtpBtn) {
         loginVerifyOtpBtn.addEventListener('click', function() {
-            // In a real app, you'd validate the 6-digit OTP here.
             console.log('Phone OTP Verified! Submitting... (simulation)');
-            
-            // --- THIS IS THE FIX ---
             const activeRoleButton = document.querySelector('.role-selector .role-button.active');
             if (activeRoleButton && activeRoleButton.textContent.trim() === 'Admin') {
-                window.location.href = 'admin.html'; // Go to admin page
+                window.location.href = 'admin.html';
             } else {
-                window.location.href = 'index.html'; // Go to user page
+                window.location.href = 'index.html';
             }
-            // --- END OF FIX ---
         });
     }
 
@@ -105,7 +123,6 @@ document.addEventListener("DOMContentLoaded", function() {
         if (typeof langStrings !== 'undefined' && langStrings[currentLang] && langStrings[currentLang][messageKey]) {
             message = langStrings[currentLang][messageKey];
         }
-        
         const formGroup = input.closest('.form-group');
         if (!formGroup) return;
         const errorDisplay = formGroup.querySelector('.error-message');
@@ -114,7 +131,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         formGroup.classList.add('error');
     }
-
     function setSuccess(input) {
         const formGroup = input.closest('.form-group');
         if (!formGroup) return;
@@ -124,37 +140,31 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         formGroup.classList.remove('error');
     }
-
     function isValidEmail(email) {
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
     }
 
-    // --- 9. Main Form Submit Listener (for EMAIL form) (UPDATED) ---
+    // --- 9. Main Form Submit Listener (for EMAIL form) ---
     if (loginForm) {
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
             let isEmailValid = validateEmailForm();
             if (isEmailValid) {
                 console.log('Email Form is Valid! Submitting... (simulation)');
-                
-                // --- THIS IS THE FIX ---
                 const activeRoleButton = document.querySelector('.role-selector .role-button.active');
                 if (activeRoleButton && activeRoleButton.textContent.trim() === 'Admin') {
-                    window.location.href = 'admin.html'; // Go to admin page
+                    window.location.href = 'admin.html';
                 } else {
-                    window.location.href = 'index.html'; // Go to user page
+                    window.location.href = 'index.html';
                 }
-                // --- END OF FIX ---
             }
         });
     }
-
     function validateEmailForm() {
         let isValid = true;
         const emailValue = emailInput.value.trim();
         const passwordValue = passwordInput.value.trim();
-
         if (emailValue === '') {
             setError(emailInput, 'errRequired');
             isValid = false;
@@ -164,7 +174,6 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
             setSuccess(emailInput);
         }
-
         if (passwordValue === '') {
             setError(passwordInput, 'errRequired');
             isValid = false;
@@ -176,7 +185,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         return isValid;
     }
-
     function validatePhoneInput() {
         const phoneValue = loginPhoneInput.value.trim();
         if (phoneValue.length < 10) {
@@ -225,25 +233,18 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // --- =============================== ---
-    // --- I18N (TRANSLATION) LOGIC ---
-    // --- =============================== ---
-    
+    // --- 11. I18N (TRANSLATION) LOGIC ---
     const setLanguage = (lang) => {
         if (typeof langStrings === 'undefined' || !langStrings[lang]) {
             console.error(`Translation for language "${lang}" not found.`);
             return;
         }
-
         currentLang = lang;
         document.documentElement.lang = lang;
-        
         translatableElements.forEach(el => {
             const key = el.getAttribute('data-key');
             if (!key) return;
-            
             const translation = langStrings[lang][key];
-            
             if (translation) {
                 if (el.tagName === 'TITLE') {
                     document.title = "KomuniKonek | " + translation;
@@ -252,7 +253,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             }
         });
-        
         if (lang === 'fil') {
             if(langFilBtn) langFilBtn.classList.add('active');
             if(langEnBtn) langEnBtn.classList.remove('active');
@@ -261,17 +261,64 @@ document.addEventListener("DOMContentLoaded", function() {
             if(langFilBtn) langFilBtn.classList.remove('active');
         }
     };
-
     if (langEnBtn && langFilBtn) {
         langEnBtn.addEventListener('click', () => setLanguage('en'));
         langFilBtn.addEventListener('click', () => setLanguage('fil'));
     }
-    
-    // Set default language on load, but in a way that doesn't crash
     if (typeof langStrings !== 'undefined') {
         setLanguage('en');
     } else {
         console.error("translations.js not found. Page will not be translated.");
     }
+    
+    // --- =============================== ---
+    // --- 12. SLIDESHOW LOGIC ---
+    // --- =============================== ---
+    
+    let slideIndex = 0;
+    const slides = document.querySelectorAll(".slide");
+    const dots = document.querySelectorAll(".dot");
+    let slideInterval; 
+
+    function showSlide(n) {
+        if (slides.length === 0) return;
+        if (n >= slides.length) { slideIndex = 0; }
+        if (n < 0) { slideIndex = slides.length - 1; }
+        slides.forEach(slide => slide.style.display = "none");
+        dots.forEach(dot => dot.classList.remove("active"));
+        slides[slideIndex].style.display = "block";
+        dots[slideIndex].classList.add("active");
+    }
+
+    function plusSlides(n) {
+        slideIndex += n;
+        showSlide(slideIndex);
+        resetSlideTimer();
+    }
+
+    function resetSlideTimer() {
+        clearInterval(slideInterval);
+        slideInterval = setInterval(() => {
+            slideIndex++;
+            showSlide(slideIndex);
+        }, 4000);
+    }
+
+    dots.forEach(dot => {
+        dot.addEventListener("click", function() {
+            const slideNumber = parseInt(this.getAttribute("data-slide"));
+            slideIndex = slideNumber;
+            showSlide(slideIndex);
+            resetSlideTimer();
+        });
+    });
+
+    if (slidePrevBtn && slideNextBtn) {
+        slidePrevBtn.addEventListener('click', () => plusSlides(-1));
+        slideNextBtn.addEventListener('click', () => plusSlides(1));
+    }
+
+    resetSlideTimer();
+    showSlide(slideIndex);
 
 });
