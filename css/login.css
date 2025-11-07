@@ -7,13 +7,9 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #f0f2f5; 
-    background-image: 
-        radial-gradient(circle at 15% 50%, rgba(0, 56, 168, 0.08) 0%, transparent 40%), /* Flag Blue */
-        radial-gradient(circle at 85% 50%, rgba(206, 17, 38, 0.08) 0%, transparent 40%); /* Flag Red */
+    
+    background: linear-gradient(135deg, #FFD700, #CE1126, #0038A8);
     background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
 }
 
 .login-container {
@@ -24,32 +20,59 @@ body {
     padding: 20px;
 }
 
-/* --- The Modern Card (White Triangle) --- */
-.login-card {
+/* --- Split Container --- */
+.split-container {
+    display: flex;
     background-color: #ffffff;
-    padding: 40px;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
     width: 100%;
-    max-width: 400px;
-    text-align: center;
+    max-width: 900px;
     overflow: hidden; 
 }
 
-/* --- Header Text --- */
-.welcome-header {
-    color: #212529; 
-    margin-bottom: 5px;
+/* --- Left Welcome Panel --- */
+.welcome-panel {
+    flex: 1;
+    background-color: #f0f2f5;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.welcome-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+.welcome-content h2 {
+    margin-top: 0;
+    color: #212529;
     font-size: 1.8em;
     font-weight: 600;
 }
-.sign-in-text {
+.welcome-content p {
     color: #6c757d;
-    margin-bottom: 25px;
     font-size: 1em;
+    margin-bottom: 0;
 }
 
-/* --- Role Selector --- */
+/* --- Right Login Panel --- */
+.login-panel {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+/* --- ========================== --- */
+/* --- NEW ROBUST TOGGLE STYLE --- */
+/* --- ========================== --- */
 .role-selector-wrapper { margin-bottom: 20px; }
 .login-as-text { color: #6c757d; font-size: 0.9em; }
 .role-selector {
@@ -57,24 +80,27 @@ body {
     background-color: #f0f0f0;
     border-radius: 20px;
     overflow: hidden;
-    border: 1px solid #dee2e6; /* <-- ADD THIS LINE */
+    border: 1px solid #dee2e6;
+    padding: 3px; /* Add padding to create the "inset" look */
 }
-
 .role-button {
-    background: none;
+    background: transparent; /* Inactive is transparent */
     border: none;
     padding: 8px 20px;
     cursor: pointer;
     color: #6c757d;
     transition: all 0.3s ease;
     font-weight: 500;
+    border-radius: 17px; /* Make the button itself rounded */
 }
 .role-button.active {
-    background-color: #ffffff;
+    background-color: #ffffff; /* Active has white background */
     color: #212529;
-    border-radius: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-weight: 700;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
+/* --- END OF TOGGLE FIX --- */
+
 
 /* --- Form Groups and Inputs --- */
 .form-group {
@@ -88,9 +114,8 @@ body {
     font-size: 0.9em;
     font-weight: 500;
 }
-.required { color: #CE1126; } /* Flag Red */
+.required { color: #CE1126; }
 
-/* Base style for all inputs */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -106,7 +131,6 @@ input[type="tel"] {
     color: #212529;
     box-sizing: border-box;
 }
-/* Flag Blue Focus */
 input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus,
@@ -125,7 +149,6 @@ input[type="tel"]:focus {
     background-color: #fdfdfd;
     transition: border-color 0.3s;
 }
-/* Flag Blue Focus */
 .input-with-icon:focus-within {
     border-color: #0038A8;
     box-shadow: 0 0 0 3px rgba(0, 56, 168, 0.1);
@@ -163,7 +186,6 @@ input[type="tel"]:focus {
     align-items: center;
 }
 .checkbox-label input { margin-right: 5px; }
-/* Flag Red Links */
 .forgot-password,
 .signup-link {
     color: #CE1126;
@@ -176,7 +198,7 @@ input[type="tel"]:focus {
 .sign-in-button {
     width: 100%;
     padding: 12px;
-    background-color: #0038A8; /* Flag Blue */
+    background-color: #0038A8;
     color: white;
     border: none;
     border-radius: 8px;
@@ -186,7 +208,7 @@ input[type="tel"]:focus {
     transition: background-color 0.3s;
     margin-bottom: 20px;
 }
-.sign-in-button:hover { background-color: #002a7e; } /* Darker Blue */
+.sign-in-button:hover { background-color: #002a7e; }
 
 /* --- Separator --- */
 .separator {
@@ -260,14 +282,14 @@ input[type="tel"]:focus {
 
 /* --- VALIDATION STYLES --- */
 .error-message {
-    color: #CE1126; /* Flag Red */
+    color: #CE1126;
     font-size: 0.85em;
     font-weight: 500;
     display: none;
     margin-top: 5px;
 }
 .form-group.error .input-with-icon {
-    border-color: #CE1126; /* Flag Red */
+    border-color: #CE1126;
     background-color: #fff6f6;
 }
 .form-group.error .error-message {
@@ -305,4 +327,18 @@ input[type="tel"]:focus {
 .lang-button.active {
     color: #212529;
     font-weight: 700;
+}
+
+/* --- RESPONSIVENESS --- */
+@media (max-width: 768px) {
+    .split-container {
+        flex-direction: column;
+        max-width: 450px;
+    }
+    .welcome-panel {
+        display: none;
+    }
+    .login-panel {
+        padding: 40px;
+    }
 }

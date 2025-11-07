@@ -7,49 +7,73 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #f0f2f5; 
-    background-image: 
-        radial-gradient(circle at 15% 50%, rgba(0, 56, 168, 0.08) 0%, transparent 40%), /* Flag Blue */
-        radial-gradient(circle at 85% 50%, rgba(206, 17, 38, 0.08) 0%, transparent 40%); /* Flag Red */
+
+    background: linear-gradient(135deg, #FFD700, #CE1126, #0038A8);
     background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
 }
 
 .signup-container {
     display: flex;
-    flex-direction: column; /* Stack toggle and card */
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 20px;
 }
 
-/* --- The Modern Card --- */
-.signup-card {
+/* --- Split Container --- */
+.split-container {
+    display: flex;
     background-color: #ffffff;
-    padding: 40px;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
     width: 100%;
-    max-width: 450px;
-    text-align: center;
+    max-width: 900px;
     overflow: hidden; 
 }
 
-/* --- Header Text --- */
-.welcome-header {
-    color: #212529; 
-    margin-bottom: 5px;
+/* --- Left Welcome Panel --- */
+.welcome-panel {
+    flex: 1;
+    background-color: #f0f2f5;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.welcome-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+.welcome-content h2 {
+    margin-top: 0;
+    color: #212529;
     font-size: 1.8em;
     font-weight: 600;
 }
-.sign-in-text {
+.welcome-content p {
     color: #6c757d;
-    margin-bottom: 25px;
     font-size: 1em;
+    margin-bottom: 0;
 }
 
-/* --- Role Selector --- */
+/* --- Right Signup Panel --- */
+.signup-panel {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+}
+
+/* --- ========================== --- */
+/* --- NEW ROBUST TOGGLE STYLE --- */
+/* --- ========================== --- */
 .section-title {
     color: #6c757d;
     font-size: 0.9em;
@@ -62,24 +86,28 @@ body {
     border-radius: 20px;
     overflow: hidden;
     margin-bottom: 15px;
-    border: 1px solid #dee2e6; /* <-- ADD THIS LINE */
+    border: 1px solid #dee2e6;
+    padding: 3px;
 }
 .role-button {
-    background: none;
+    background: transparent;
     border: none;
     padding: 8px 20px;
     cursor: pointer;
     color: #6c757d;
     transition: all 0.3s ease;
     font-weight: 500;
+    border-radius: 17px;
 }
 .role-button i { margin-right: 5px; }
 .role-button.active {
     background-color: #ffffff;
     color: #212529;
-    border-radius: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-weight: 700;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
+/* --- END OF TOGGLE FIX --- */
+
 
 /* --- Form Groups and Inputs --- */
 .form-group {
@@ -93,7 +121,7 @@ body {
     font-size: 0.9em;
     font-weight: 500;
 }
-.required { color: #CE1126; } /* Flag Red */
+.required { color: #CE1126; }
 
 /* Base style for all inputs, including select */
 input[type="text"],
@@ -112,7 +140,6 @@ select {
     color: #212529;
     box-sizing: border-box;
 }
-/* Flag Blue Focus */
 input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus,
@@ -133,7 +160,6 @@ select:focus {
     background-color: #fdfdfd;
     transition: border-color 0.3s;
 }
-/* Flag Blue Focus */
 .input-with-icon:focus-within {
     border-color: #0038A8;
     box-shadow: 0 0 0 3px rgba(0, 56, 168, 0.1);
@@ -162,7 +188,7 @@ select:focus {
     color: #6c757d;
 }
 .signup-link {
-    color: #CE1126; /* Flag Red */
+    color: #CE1126;
     text-decoration: none;
     font-weight: 500;
 }
@@ -172,7 +198,7 @@ select:focus {
 .sign-in-button {
     width: 100%;
     padding: 12px;
-    background-color: #0038A8; /* Flag Blue */
+    background-color: #0038A8;
     color: white;
     border: none;
     border-radius: 8px;
@@ -183,7 +209,7 @@ select:focus {
     margin-top: 10px;
     margin-bottom: 20px;
 }
-.sign-in-button:hover { background-color: #002a7e; } /* Darker Blue */
+.sign-in-button:hover { background-color: #002a7e; }
 
 /* --- Separator --- */
 .separator {
@@ -204,22 +230,27 @@ select:focus {
 
 /* --- Step Indicators --- */
 .step-indicator {
+    position: absolute;
+    top: 20px;
+    right: 40px;
     color: #6c757d;
     font-size: 0.9em;
-    margin-bottom: 15px;
+    margin: 0;
 }
 .step-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
+    margin-bottom: 15px;
 }
 .back-button {
     background: none;
     border: none;
-    color: #0038A8; /* Flag Blue */
+    color: #0038A8;
     cursor: pointer;
     font-size: 0.9em;
     font-weight: 500;
+    padding: 0;
 }
 
 /* --- OTP Section --- */
@@ -268,7 +299,7 @@ select:focus {
 .scan-id-button:hover { background-color: #f8f9fa; }
 .scan-id-button i {
     margin-right: 8px;
-    color: #CE1126; /* Flag Red */
+    color: #CE1126;
 }
 
 /* Form Row for side-by-side fields */
@@ -289,7 +320,7 @@ select:focus {
 
 /* --- VALIDATION STYLES --- */
 .error-message {
-    color: #CE1126; /* Flag Red */
+    color: #CE1126;
     font-size: 0.85em;
     font-weight: 500;
     display: none;
@@ -298,7 +329,7 @@ select:focus {
 .form-group.error .input-with-icon,
 .form-group.error input[type="text"],
 .form-group.error select {
-    border-color: #CE1126; /* Flag Red */
+    border-color: #CE1126;
     background-color: #fff6f6;
 }
 .form-group.error .error-message {
@@ -338,9 +369,7 @@ select:focus {
     font-weight: 700;
 }
 
-/* --- ======================== --- */
-/* --- NEW: PASSWORD CHECKLIST --- */
-/* --- ======================== --- */
+/* --- PASSWORD CHECKLIST --- */
 #password-checklist {
     margin-top: 15px;
     text-align: left;
@@ -352,24 +381,44 @@ select:focus {
 }
 #password-checklist li {
     font-size: 0.85em;
-    color: #6c757d; /* Default gray text */
+    color: #6c757d;
     margin-bottom: 5px;
     transition: color 0.3s;
 }
-/* Default "x" icon */
 #password-checklist li::before {
-    content: '✕'; /* X mark */
-    color: #CE1126; /* Flag Red */
+    content: '✕';
+    color: #CE1126;
     font-weight: bold;
     margin-right: 8px;
     display: inline-block;
 }
-/* "Valid" state */
 #password-checklist li.valid {
-    color: #28a745; /* Green text */
+    color: #28a745;
     text-decoration: line-through;
 }
 #password-checklist li.valid::before {
-    content: '✓'; /* Check mark */
-    color: #28a745; /* Green icon */
+    content: '✓';
+    color: #28a745;
+}
+
+/* --- RESPONSIVENESS --- */
+@media (max-width: 768px) {
+    .split-container {
+        flex-direction: column;
+        max-width: 450px;
+    }
+    .welcome-panel {
+        display: none;
+    }
+    .signup-panel {
+        padding: 40px;
+    }
+    .step-indicator {
+        position: static;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    .step-header {
+        justify-content: flex-start;
+    }
 }

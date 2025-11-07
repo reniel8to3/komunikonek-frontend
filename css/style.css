@@ -3,13 +3,10 @@ body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f0f2f5; 
-    background-image: 
-        radial-gradient(circle at 15% 50%, rgba(0, 56, 168, 0.08) 0%, transparent 40%), /* Flag Blue */
-        radial-gradient(circle at 85% 50%, rgba(206, 17, 38, 0.08) 0%, transparent 40%); /* Flag Red */
+    
+    /* NEW: Bright gradient background */
+    background: linear-gradient(135deg, #FFD700, #CE1126, #0038A8);
     background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
     min-height: 100vh;
 }
 
@@ -168,10 +165,7 @@ body {
 }
 
 
-/* --- ======================= --- */
-/* --- NEW: NAVBAR LANG TOGGLE --- */
-/* --- ======================= --- */
-
+/* --- NAVBAR LANG TOGGLE --- */
 .lang-toggle-container-nav {
     display: flex;
     align-items: center;
@@ -193,13 +187,13 @@ body {
     font-family: inherit;
     font-size: 0.9em;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.7); /* Lighter text for inactive */
+    color: rgba(255, 255, 255, 0.7);
     padding: 5px;
     border-radius: 20px;
     transition: all 0.3s ease;
 }
 
 .lang-toggle-container-nav .lang-button.active {
-    color: #FFFFFF; /* Bright white for active */
+    color: #FFFFFF;
     font-weight: 700;
 }
