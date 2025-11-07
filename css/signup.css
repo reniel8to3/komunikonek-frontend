@@ -43,26 +43,26 @@ body {
 }
 .welcome-content {
     text-align: center;
-    margin-bottom: 40px;
     width: 100%;
     box-sizing: border-box;
+    margin-bottom: 60px;
 }
 .welcome-content h2 {
     margin-top: 0;
     color: #212529;
-    font-size: 2em; /* Made larger */
+    font-size: 2.2em;
     font-weight: 600;
 }
 .welcome-content p {
     color: #6c757d;
-    font-size: 1.1em; /* Made larger */
+    font-size: 1.1em;
     margin-bottom: 0;
 }
 .tagline {
     font-size: 1em;
     color: #0038A8;
     font-weight: 500;
-    margin-top: 15px;
+    margin-top: 5px;
 }
 
 /* --- Right Signup Panel --- */
@@ -77,16 +77,18 @@ body {
     position: relative;
 }
 
-/* --- ========================== --- */
-/* --- NEW SLIDING TOGGLE STYLE --- */
-/* --- ========================== --- */
+.signup-panel section {
+    width: 100%;
+}
+
+
+/* --- Role Selector --- */
 .section-title {
     color: #6c757d;
     font-size: 0.9em;
     margin-top: 20px;
     margin-bottom: 8px;
 }
-
 .role-selector {
     display: flex;
     position: relative;
@@ -96,9 +98,9 @@ body {
     padding: 3px;
     margin-bottom: 15px;
     width: 100%;
-    max-width: 300px; /* Wider for the icons */
+    max-width: 300px;
+    transition: opacity 0.3s; /* Added for disabled state */
 }
-
 .role-button {
     flex: 1;
     background: transparent;
@@ -120,23 +122,19 @@ body {
     color: #0038A8;
     font-weight: 700;
 }
-
 .glider {
     position: absolute;
     top: 3px;
     height: calc(100% - 6px);
-    width: 50%; /* JS will override this */
+    width: 50%;
     background-color: #ffffff;
     border-radius: 17px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     transition: all 0.3s ease-in-out;
     z-index: 1;
 }
-/* --- END OF TOGGLE FIX --- */
-
 
 /* --- Form Groups and Inputs --- */
-/* (Rest of form styles are unchanged) */
 .form-group {
     text-align: left;
     margin-bottom: 15px;
@@ -151,6 +149,7 @@ body {
 }
 .required { color: #CE1126; }
 
+/* Base style for all inputs, including select */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -161,7 +160,7 @@ select {
     border-radius: 8px;
     padding: 12px 15px;
     background-color: #fdfdfd;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s, background-color 0.3s;
     font-family: inherit;
     font-size: 1em;
     color: #212529;
@@ -184,7 +183,7 @@ select:focus {
     border-radius: 8px;
     padding: 0 15px;
     background-color: #fdfdfd;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s, background-color 0.3s;
 }
 .input-with-icon:focus-within {
     border-color: #0038A8;
@@ -201,6 +200,7 @@ select:focus {
     padding: 12px 0;
     background: none;
     color: #212529;
+    transition: background-color 0.3s;
 }
 .password-toggle {
     cursor: pointer;
@@ -208,6 +208,7 @@ select:focus {
     margin-left: 10px;
 }
 
+/* --- Sign In/Up Links --- */
 .signup-prompt {
     font-size: 0.9em;
     color: #6c757d;
@@ -219,6 +220,7 @@ select:focus {
 }
 .signup-link:hover { text-decoration: underline; }
 
+/* --- Main Buttons --- */
 .sign-in-button {
     width: 100%;
     padding: 12px;
@@ -229,12 +231,13 @@ select:focus {
     cursor: pointer;
     font-size: 1.1em;
     font-weight: bold;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, opacity 0.3s;
     margin-top: 10px;
     margin-bottom: 20px;
 }
 .sign-in-button:hover { background-color: #002a7e; }
 
+/* --- Separator --- */
 .separator {
     display: flex;
     align-items: center;
@@ -251,9 +254,10 @@ select:focus {
 .separator:not(:empty)::before { margin-right: .5em; }
 .separator:not(:empty)::after { margin-left: .5em; }
 
+/* --- Step Indicators --- */
 .step-indicator {
     position: absolute;
-    top: 20px;
+    top: 60px;
     right: 40px;
     color: #6c757d;
     font-size: 0.9em;
@@ -275,6 +279,7 @@ select:focus {
     padding: 0;
 }
 
+/* --- OTP Section --- */
 #otp-section {
     display: none;
     margin-top: 20px;
@@ -297,11 +302,13 @@ select:focus {
     padding: 0;
 }
 
+/* --- Step 2: Personal Info --- */
 #step-2-personal {
     display: none; 
     text-align: left;
 }
 
+/* Scan ID Button */
 .scan-id-button {
     width: 100%;
     padding: 12px;
@@ -321,12 +328,14 @@ select:focus {
     color: #CE1126;
 }
 
+/* Form Row for side-by-side fields */
 .form-row {
     display: flex;
     gap: 15px;
 }
 .form-row .form-group { flex: 1; }
 
+/* --- Style for the +63 phone prefix --- */
 .phone-prefix {
     font-weight: 500;
     color: #212529;
@@ -335,6 +344,7 @@ select:focus {
     border-right: 1px solid #dee2e6;
 }
 
+/* --- VALIDATION STYLES --- */
 .error-message {
     color: #CE1126;
     font-size: 0.85em;
@@ -352,16 +362,21 @@ select:focus {
     display: block;
 }
 
+/* --- LANGUAGE TOGGLE --- */
 .lang-toggle-container {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    
     display: flex;
-    justify-content: center;
     align-items: center;
     gap: 5px;
-    margin-bottom: 15px;
-    background-color: #fff;
+    background-color: #f0f0f0;
     padding: 5px 10px;
     border-radius: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    
+    margin-bottom: 0; 
+    box-shadow: none;
 }
 .lang-separator {
     color: #dee2e6;
@@ -384,6 +399,7 @@ select:focus {
     font-weight: 700;
 }
 
+/* --- PASSWORD CHECKLIST --- */
 #password-checklist {
     margin-top: 15px;
     text-align: left;
@@ -415,6 +431,7 @@ select:focus {
     color: #28a745;
 }
 
+/* --- RESPONSIVENESS --- */
 @media (max-width: 768px) {
     .split-container {
         flex-direction: column;
@@ -428,10 +445,40 @@ select:focus {
     }
     .step-indicator {
         position: static;
-        text-align: center;
+        text-align: right;
+        margin-bottom: 10px;
+    }
+    .lang-toggle-container {
+        position: static;
         margin-bottom: 15px;
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin-left: auto;
+        margin-right: auto;
     }
     .step-header {
         justify-content: flex-start;
     }
+}
+
+/* --- ================== --- */
+/* --- NEW: DISABLED STATES --- */
+/* --- ================== --- */
+
+/* Style for the toggle when disabled */
+.role-selector.disabled {
+    opacity: 0.6;
+    pointer-events: none; /* Makes it unclickable */
+}
+
+/* Style for inputs when disabled */
+.input-with-icon input:disabled {
+    background-color: #f9f9f9;
+    cursor: not-allowed;
+}
+
+/* Style for buttons when disabled */
+.sign-in-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }

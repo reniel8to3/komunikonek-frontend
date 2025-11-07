@@ -41,7 +41,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: center; /* This centers the inner wrapper */
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -139,12 +139,13 @@ body {
   to {opacity: 1}
 }
 
+/* --- THIS IS THE FIX (Part 1) --- */
 .slide-nav {
     cursor: pointer;
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
-    margin-top: -22px;
+    transform: translateY(-50%); /* This correctly centers the button */
+    /* margin-top: -22px; <-- REMOVED this incorrect line */
     padding: 12px;
     color: white;
     font-weight: bold;
@@ -156,7 +157,17 @@ body {
     border: none;
     background-color: rgba(0, 0, 0, 0.3);
     z-index: 10;
+    
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.3s ease;
 }
+
+/* --- THIS IS THE FIX (Part 2) --- */
+/* Show nav buttons on slideshow hover */
+.slideshow-container:hover .slide-nav {
+    opacity: 1;
+}
+
 .slide-nav:hover {
     background-color: rgba(0, 0, 0, 0.5);
 }
@@ -196,6 +207,7 @@ body {
     justify-content: center;
     text-align: center;
     align-items: center;
+    position: relative;
 }
 
 /* --- Role Selector --- */
@@ -217,7 +229,6 @@ body {
     padding: 3px;
     width: 100%;
     max-width: 250px;
-    transition: opacity 0.3s; /* Added for disabled state */
 }
 .role-button {
     flex: 1;
@@ -294,7 +305,7 @@ input[type="tel"]:focus {
     border-radius: 8px;
     padding: 0 15px;
     background-color: #fdfdfd;
-    transition: border-color 0.3s, background-color 0.3s;
+    transition: border-color 0.3s;
 }
 .input-with-icon:focus-within {
     border-color: #0038A8;
@@ -311,7 +322,6 @@ input[type="tel"]:focus {
     padding: 12px 0;
     background: none;
     color: #212529;
-    transition: background-color 0.3s;
 }
 .password-toggle {
     cursor: pointer;
@@ -446,15 +456,19 @@ input[type="tel"]:focus {
 
 /* --- LANGUAGE TOGGLE --- */
 .lang-toggle-container {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    
     display: flex;
-    justify-content: center;
     align-items: center;
     gap: 5px;
-    margin-bottom: 15px;
-    background-color: #fff;
+    background-color: #f0f0f0;
     padding: 5px 10px;
     border-radius: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    
+    margin-bottom: 0; 
+    box-shadow: none;
 }
 .lang-separator {
     color: #dee2e6;
@@ -489,25 +503,23 @@ input[type="tel"]:focus {
     .login-panel {
         padding: 40px;
     }
+    .lang-toggle-container {
+        position: static;
+        margin-bottom: 15px;
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
 }
 
-/* --- ================== --- */
-/* --- NEW: DISABLED STATES --- */
-/* --- ================== --- */
-
-/* Style for the toggle when disabled */
+/* --- DISABLED STATES --- */
 .role-selector.disabled {
     opacity: 0.6;
-    pointer-events: none; /* Makes it unclickable */
+    pointer-events: none;
 }
-
-/* Style for inputs when disabled */
 .input-with-icon input:disabled {
     background-color: #f9f9f9;
     cursor: not-allowed;
 }
-
-/* Style for buttons when disabled */
 .sign-in-button:disabled {
     opacity: 0.6;
     cursor: not-allowed;

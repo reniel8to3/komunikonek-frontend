@@ -11,23 +11,23 @@
 <body>
     <div class="signup-container">
 
-        <div class="lang-toggle-container">
-            <button id="lang-en" class="lang-button active">ENG</button>
-            <span class="lang-separator">|</span>
-            <button id="lang-fil" class="lang-button">FIL</button>
-        </div>
-
         <div class="split-container">
 
             <div class="welcome-panel">
                 <div class="welcome-content">
                     <h2 data-key="createAccount">Create Your Account</h2>
-                    <p data-key="joinPrompt">Join KomuniKonek to connect with your community</p>
                     <p class="tagline" data-key="tagline">Connecting Communities, Strengthening Support.</p>
                 </div>
             </div>
 
             <div class="signup-panel">
+                
+                <div class="lang-toggle-container">
+                    <button id="lang-en" class="lang-button active">ENG</button>
+                    <span class="lang-separator">|</span>
+                    <button id="lang-fil" class="lang-button">FIL</button>
+                </div>
+
                 <section id="step-1-account">
                     <p class="step-indicator" data-key="step1">Step 1 of 2</p>
                     
@@ -46,11 +46,150 @@
                     </div>
 
                     <form id="signup-form-step1" novalidate>
-                        </form>
+                        <div id="email-form-group" class="form-group">
+                            <label for="email"><span data-key="emailLabel">Email</span> <span class="required">*</span></label>
+                            <div class="input-with-icon">
+                                <i class="fa-solid fa-envelope"></i>
+                                <input type="email" id="email" name="email" placeholder="Enter your email">
+                            </div>
+                            <small class="error-message"></small>
+                        </div>
+
+                        <div id="phone-form-group" class="form-group" style="display: none;">
+                            <label for="phone"><span data-key="phoneNumLabel">Phone Number</span> <span class="required">*</span></label>
+                            <div class="input-with-icon">
+                                <i class="fa-solid fa-phone"></i>
+                                <span class="phone-prefix">+63</span>
+                                <input type="tel" id="phone" name="phone" placeholder="912 345 6789" maxlength="10">
+                            </div>
+                            <small class="error-message"></small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password"><span data-key="passwordLabel">Password</span> <span class="required">*</span></label>
+                            <div class="input-with-icon">
+                                <i class="fa-solid fa-lock"></i>
+                                <input type="password" id="password" name="password" placeholder="Enter your password">
+                                <i class="fa-solid fa-eye password-toggle"></i>
+                            </div>
+                            <small class="error-message"></small>
+                            <div id="password-checklist" style="display: none;">
+                                <ul>
+                                    <li id="pass-length">At least 8 characters</li>
+                                    <li id="pass-capital">At least one capital letter</li>
+                                    <li id="pass-number">At least one number</li>
+                                    <li id="pass-symbol">At least one symbol</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <button type="button" id="send-otp-button" class="sign-in-button" data-key="sendOtp">Send OTP</button>
+
+                        <div id="otp-section" style="display: none;">
+                            <p class="otp-success-text" data-key="otpSent">OTP sent successfully!</p>
+                            <label><span data-key="otpLabel">Enter the OTP code</span> <span class="required">*</span></label>
+                            
+                            <div class="otp-inputs">
+                                <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
+                                <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
+                                <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
+                                <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
+                                <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
+                                <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
+                            </div>
+                            <button type="button" id="verify-otp-button" class="sign-in-button" data-key="verifyOtp">Verify OTP</button>
+                        </div>
+
+                        <p class="signup-prompt">
+                            <span data-key="haveAccount">Already have an account?</span> <a href="login.html" class="signup-link" data-key="signInLink">Sign in</a>
+                        </p>
+                    </form>
                 </section>
                 
                 <section id="step-2-personal" style="display: none;">
-                    </section>
+                    <div class="step-header">
+                        <button id="back-button" class="back-button"><span data-key="back">&larr; Back</span></button>
+                        <p class="step-indicator" data-key="step2">Step 2 of 2</p>
+                    </div>
+                    <h2 class="welcome-header" data-key="createAccount">Create Your Account</h2>
+                    <p class="section-title" data-key="personalInfo">Personal Information</p>
+                    <button type="button" class="scan-id-button">
+                        <i class="fa-solid fa-camera"></i> <span data-key="scanId">Scan ID</span>
+                    </button>
+                    <div class="separator">
+                        <span data-key="fillManually">Or fill the form manually</span>
+                    </div>
+                    <form id="signup-form-step2" novalidate>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="first-name"><span data-key="firstName">First Name</span> <span class="required">*</span></label>
+                                <div class="input-with-icon">
+                                    <i class="fa-solid fa-user"></i>
+                                    <input type="text" id="first-name" name="first-name" placeholder="Enter your first name" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="last-name"><span data-key="lastName">Last Name</span> <span class="required">*</span></label>
+                                <div class="input-with-icon">
+                                    <i class="fa-solid fa-user"></i>
+                                    <input type="text" id="last-name" name="last-name" placeholder="Enter your last name" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="middle-name" data-key="middleName">Middle Name</label>
+                            <div class="input-with-icon">
+                                <i class="fa-solid fa-user"></i>
+                                <input type="text" id="middle-name" name="middle-name" placeholder="Enter your middle name">
+                            </div>
+                        </div>
+                        <label class="section-title" data-key="address">Address</label>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="house-number"><span data-key="houseNum">House Number</span> <span class="required">*</span></label>
+                                <input type="text" id="house-number" name="house-number" placeholder="Enter house number">
+                            </div>
+                            <div class="form-group">
+                                <label for="street"><span data-key="street">Street</span> <span class="required">*</span></label>
+                                <input type="text" id="street" name="street" placeholder="Enter street name">
+                            </div>
+                        </div>
+                        <label class="section-title" data-key="birthDate">Birth Date</label>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="month"><span data-key="month">Month</span> <span class="required">*</span></label>
+                                <select id="month" name="month" required>
+                                    <option value="" disabled selected>Select month</option>
+                                    <option value="1">January</option>
+                                    <option value="2">February</option>
+                                    <option value="3">March</option>
+                                    <option value="4">April</option>
+                                    <option value="5">May</option>
+                                    <option value="6">June</option>
+                                    <option value="7">July</option>
+                                    <option value="8">August</option>
+                                    <option value="9">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="day"><span data-key="day">Day</span> <span class="required">*</span></label>
+                                <select id="day" name="day" required>
+                                    <option value="" disabled selected>Select day</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="year"><span data-key="year">Year</span> <span class="required">*</span></label>
+                                <select id="year" name="year" required>
+                                    <option value="" disabled selected>Select year</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="sign-in-button" data-key="createAccountBtn">Create Account</button>
+                    </form>
+                </section>
             </div>
         </div>
     </div>
