@@ -12,12 +12,16 @@ document.addEventListener("DOMContentLoaded", function() {
     const loginPhoneInput = document.getElementById('login-phone');
     const loginSendOtpBtn = document.getElementById('login-send-otp-btn');
     const loginOtpSection = document.getElementById('login-otp-section');
-    const loginOtpInputs = document.querySelectorAll('#login-otp-section .otp-input'); // More specific
+    const loginOtpInputs = document.querySelectorAll('#login-otp-section .otp-input');
     const emailInput = document.getElementById('email');
     const langEnBtn = document.getElementById('lang-en');
     const langFilBtn = document.getElementById('lang-fil');
     const translatableElements = document.querySelectorAll('[data-key]');
     let currentLang = 'en';
+
+    // Get the phone login "Verify" button
+    const loginVerifyOtpBtn = document.getElementById('login-verify-otp-btn');
+
 
     // --- =============================== ---
     // --- CORE LOGIC (Resilient) ---
@@ -68,6 +72,23 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    // --- 5b. "Verify & Sign In" (Phone) Button Logic (UPDATED) ---
+    if (loginVerifyOtpBtn) {
+        loginVerifyOtpBtn.addEventListener('click', function() {
+            // In a real app, you'd validate the 6-digit OTP here.
+            console.log('Phone OTP Verified! Submitting... (simulation)');
+            
+            // --- THIS IS THE FIX ---
+            const activeRoleButton = document.querySelector('.role-selector .role-button.active');
+            if (activeRoleButton && activeRoleButton.textContent.trim() === 'Admin') {
+                window.location.href = 'admin.html'; // Go to admin page
+            } else {
+                window.location.href = 'index.html'; // Go to user page
+            }
+            // --- END OF FIX ---
+        });
+    }
+
     // --- 6. Phone Input Validation (Numbers Only) ---
     if (loginPhoneInput) {
         loginPhoneInput.addEventListener('input', function() {
@@ -109,15 +130,22 @@ document.addEventListener("DOMContentLoaded", function() {
         return re.test(String(email).toLowerCase());
     }
 
-    // --- 9. Main Form Submit Listener ---
+    // --- 9. Main Form Submit Listener (for EMAIL form) (UPDATED) ---
     if (loginForm) {
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
             let isEmailValid = validateEmailForm();
             if (isEmailValid) {
                 console.log('Email Form is Valid! Submitting... (simulation)');
-                // This is where you would redirect to index.html
-                window.location.href = 'index.html';
+                
+                // --- THIS IS THE FIX ---
+                const activeRoleButton = document.querySelector('.role-selector .role-button.active');
+                if (activeRoleButton && activeRoleButton.textContent.trim() === 'Admin') {
+                    window.location.href = 'admin.html'; // Go to admin page
+                } else {
+                    window.location.href = 'index.html'; // Go to user page
+                }
+                // --- END OF FIX ---
             }
         });
     }

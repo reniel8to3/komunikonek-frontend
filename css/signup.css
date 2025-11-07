@@ -336,3 +336,39 @@ select:focus {
     color: #212529;
     font-weight: 700;
 }
+
+/* --- ======================== --- */
+/* --- NEW: PASSWORD CHECKLIST --- */
+/* --- ======================== --- */
+#password-checklist {
+    margin-top: 15px;
+    text-align: left;
+}
+#password-checklist ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+#password-checklist li {
+    font-size: 0.85em;
+    color: #6c757d; /* Default gray text */
+    margin-bottom: 5px;
+    transition: color 0.3s;
+}
+/* Default "x" icon */
+#password-checklist li::before {
+    content: '✕'; /* X mark */
+    color: #CE1126; /* Flag Red */
+    font-weight: bold;
+    margin-right: 8px;
+    display: inline-block;
+}
+/* "Valid" state */
+#password-checklist li.valid {
+    color: #28a745; /* Green text */
+    text-decoration: line-through;
+}
+#password-checklist li.valid::before {
+    content: '✓'; /* Check mark */
+    color: #28a745; /* Green icon */
+}

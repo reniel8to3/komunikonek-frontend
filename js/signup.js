@@ -1,29 +1,13 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-    // --- 1. Get ALL Elements ---
-    const step1Account = document.getElementById('step-1-account');
-    const step2Personal = document.getElementById('step-2-personal');
-    const sendOtpButton = document.getElementById('send-otp-button');
-    const otpSection = document.getElementById('otp-section');
-    const verifyOtpButton = document.getElementById('verify-otp-button');
-    const backButton = document.getElementById('back-button');
-    const signupEmailInput = document.getElementById('email');
-    const signupPasswordInput = document.getElementById('password');
-    const signupPhoneInput = document.getElementById('phone');
-    const togglePassword = document.querySelector('.password-toggle');
-    const registerEmailBtn = document.getElementById('register-email-btn');
-    const registerPhoneBtn = document.getElementById('register-phone-btn');
-    const emailFormGroup = document.getElementById('email-form-group');
-    const phoneFormGroup = document.getElementById('phone-form-group');
-    const signupOtpInputs = document.querySelectorAll('#otp-section .otp-input'); // More specific
+    // --- =============================== ---
+    // --- I18N (TRANSLATION) LOGIC ---
+    // --- =============================== ---
+    
     const langEnBtn = document.getElementById('lang-en');
     const langFilBtn = document.getElementById('lang-fil');
     const translatableElements = document.querySelectorAll('[data-key]');
     let currentLang = 'en';
-
-    // --- =============================== ---
-    // --- I18N (TRANSLATION) LOGIC (FIXED) ---
-    // --- =============================== ---
     
     const setLanguage = (lang) => {
         if (typeof langStrings === 'undefined' || !langStrings[lang]) {
@@ -74,6 +58,30 @@ document.addEventListener("DOMContentLoaded", function() {
     // --- SIGNUP PAGE LOGIC ---
     // --- =============================== ---
 
+    // --- 1. Get ALL Elements ---
+    const step1Account = document.getElementById('step-1-account');
+    const step2Personal = document.getElementById('step-2-personal');
+    const sendOtpButton = document.getElementById('send-otp-button');
+    const otpSection = document.getElementById('otp-section');
+    const verifyOtpButton = document.getElementById('verify-otp-button');
+    const backButton = document.getElementById('back-button');
+    const signupEmailInput = document.getElementById('email');
+    const signupPasswordInput = document.getElementById('password');
+    const signupPhoneInput = document.getElementById('phone');
+    const togglePassword = document.querySelector('.password-toggle');
+    const registerEmailBtn = document.getElementById('register-email-btn');
+    const registerPhoneBtn = document.getElementById('register-phone-btn');
+    const emailFormGroup = document.getElementById('email-form-group');
+    const phoneFormGroup = document.getElementById('phone-form-group');
+    const signupOtpInputs = document.querySelectorAll('#otp-section .otp-input');
+    const signUpAsToggle = document.querySelector('.role-selector');
+    const signUpAsButtons = signUpAsToggle ? signUpAsToggle.querySelectorAll('.role-button') : [];
+
+    // --- NEW: Birthday Dropdowns ---
+    const dayDropdown = document.getElementById('day');
+    const yearDropdown = document.getElementById('year');
+
+
     // --- 2. "Send OTP" Button Click ---
     if (sendOtpButton) {
         sendOtpButton.addEventListener('click', function() {
@@ -81,6 +89,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 if(otpSection) otpSection.style.display = 'block';
                 this.textContent = (langStrings[currentLang] && langStrings[currentLang]['sendOtp']) ? langStrings[currentLang]['sendOtp'] : 'Send OTP';
                 console.log('OTP Sent (simulation)');
+
+                if(signupEmailInput) signupEmailInput.disabled = true;
+                if(signupPhoneInput) signupPhoneInput.disabled = true;
+                if(signupPasswordInput) signupPasswordInput.disabled = true;
+                if(registerEmailBtn) registerEmailBtn.disabled = true;
+                if(registerPhoneBtn) registerPhoneBtn.disabled = true;
+                signUpAsButtons.forEach(btn => btn.disabled = true);
+                sendOtpButton.disabled = true;
+
             } else {
                 console.log('Step 1 Validation Failed');
             }
@@ -90,7 +107,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // --- 3. "Verify OTP" Button Click ---
     if (verifyOtpButton) {
         verifyOtpButton.addEventListener('click', function() {
-            // Here you would validate the OTP
             console.log('OTP Verified (simulation)');
             if(step1Account) step1Account.style.display = 'none';
             if(step2Personal) step2Personal.style.display = 'block';
@@ -102,6 +118,15 @@ document.addEventListener("DOMContentLoaded", function() {
         backButton.addEventListener('click', function() {
             if(step2Personal) step2Personal.style.display = 'none';
             if(step1Account) step1Account.style.display = 'block';
+
+            if(signupEmailInput) signupEmailInput.disabled = false;
+            if(signupPhoneInput) signupPhoneInput.disabled = false;
+            if(signupPasswordInput) signupPasswordInput.disabled = false;
+            if(registerEmailBtn) registerEmailBtn.disabled = false;
+            if(registerPhoneBtn) registerPhoneBtn.disabled = false;
+            signUpAsButtons.forEach(btn => btn.disabled = false);
+            if(sendOtpButton) sendOtpButton.disabled = false;
+            if(otpSection) otpSection.style.display = 'none';
         });
     }
 
@@ -113,6 +138,36 @@ document.addEventListener("DOMContentLoaded", function() {
             this.classList.toggle('fa-eye');
             this.classList.toggle('fa-eye-slash');
         });
+    }
+
+    // --- 5b. PASSWORD CHECKLIST LOGIC ---
+    const passChecklist = document.getElementById('password-checklist');
+    const passLength = document.getElementById('pass-length');
+    const passCapital = document.getElementById('pass-capital');
+    const passNumber = document.getElementById('pass-number');
+    const passSymbol = document.getElementById('pass-symbol');
+
+    if (signupPasswordInput && passChecklist) {
+        signupPasswordInput.addEventListener('focus', () => {
+            passChecklist.style.display = 'block';
+        });
+        
+        signupPasswordInput.addEventListener('keyup', () => {
+            const pass = signupPasswordInput.value;
+            validateCheck(passLength, pass.length >= 8);
+            validateCheck(passCapital, /[A-Z]/.test(pass));
+            validateCheck(passNumber, /[0-9]/.test(pass));
+            validateCheck(passSymbol, /[^A-Za-z0-9]/.test(pass));
+        });
+    }
+    
+    function validateCheck(element, is_valid) {
+        if (!element) return;
+        if (is_valid) {
+            element.classList.add('valid');
+        } else {
+            element.classList.remove('valid');
+        }
     }
 
     // --- 6. Role Selector Toggles ---
@@ -267,5 +322,33 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         });
     }
+
+    // --- 13. NEW: Populate Birthday Dropdowns ---
+    function populateDays() {
+        if (!dayDropdown) return;
+        for (let i = 1; i <= 31; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.text = i;
+            dayDropdown.appendChild(option);
+        }
+    }
+
+    function populateYears() {
+        if (!yearDropdown) return;
+        const currentYear = new Date().getFullYear();
+        const maxYear = currentYear - 18; // Must be 18+
+        const minYear = currentYear - 100; // Max 100 years old
+
+        for (let i = maxYear; i >= minYear; i--) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.text = i;
+            yearDropdown.appendChild(option);
+        }
+    }
+
+    populateDays();
+    populateYears();
 
 });

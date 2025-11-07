@@ -14,8 +14,6 @@ const langStrings = {
         "phoneButton": "Phone Number",
         "noAccount": "Don't have an account?",
         "signUpLink": "Sign up",
-        
-        // Phone Login Section
         "phoneNumLabel": "Phone Number",
         "sendOtp": "Send OTP",
         "otpSent": "OTP sent successfully!",
@@ -50,6 +48,13 @@ const langStrings = {
         "day": "Day",
         "year": "Year",
         "createAccountBtn": "Create Account",
+        
+        // --- NEW: Forgot Password Page ---
+        "titleForgotPass": "Forgot Password",
+        "forgotPassTitle": "Forgot Your Password?",
+        "forgotPassPrompt": "No problem! Enter your email below and we'll send you a link to reset it.",
+        "sendResetLink": "Send Reset Link",
+        "backToLogin": "Back to Sign in",
 
         // Errors
         "errRequired": "This field is required",
@@ -72,8 +77,6 @@ const langStrings = {
         "phoneButton": "Numero ng Telepono",
         "noAccount": "Wala ka pang account?",
         "signUpLink": "Mag-sign up",
-        
-        // Phone Login Section
         "phoneNumLabel": "Numero ng Telepono",
         "sendOtp": "Ipadala ang OTP",
         "otpSent": "Matagumpay na naipadala ang OTP!",
@@ -108,6 +111,13 @@ const langStrings = {
         "day": "Araw",
         "year": "Taon",
         "createAccountBtn": "Gumawa ng Account",
+
+        // --- NEW: Forgot Password Page ---
+        "titleForgotPass": "Nakalimutan ang Password",
+        "forgotPassTitle": "Nakalimutan ang Iyong Password?",
+        "forgotPassPrompt": "Walang problema! Ilagay ang iyong email sa ibaba at padadalhan ka namin ng link para i-reset ito.",
+        "sendResetLink": "Ipadala ang Reset Link",
+        "backToLogin": "Bumalik sa Sign in",
 
         // Errors
         "errRequired": "Kinakailangan ang field na ito",

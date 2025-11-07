@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | Dashboard</title>
+    
+    <link rel="stylesheet" href="css/admin.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <div class="admin-layout">
+        
+        <aside class="sidebar" id="admin-sidebar">
+            <div class="sidebar-header">
+                <h3>KomuniKonek Admin</h3>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active">
+                        <a href="admin.html"><i class="fa-solid fa-tachograph-digital"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa-solid fa-users"></i> Manage Users</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa-solid fa-comments"></i> Manage Complaints</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa-solid fa-file-lines"></i> Manage Documents</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa-solid fa-bullhorn"></i> Manage Announcements</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="login.html" class="logout-link">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="admin-header">
+                <button class="menu-toggle" id="menu-toggle">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <h2>Dashboard Overview</h2>
+            </header>
+            
+            <div class="content-wrapper">
+                <h1 class="desktop-title">Dashboard Overview</h1>
+
+                <section class="stat-grid">
+                    <div class="stat-card">
+                        <div class="card-content">
+                            <div class="card-value">12</div>
+                            <div class="card-label">Pending Complaints</div>
+                        </div>
+                        <div class="card-icon">
+                            <i class="fa-solid fa-comments"></i>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="card-content">
+                            <div class="card-value">8</div>
+                            <div class="card-label">Pending Documents</div>
+                        </div>
+                        <div class="card-icon">
+                            <i class="fa-solid fa-file-lines"></i>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="card-content">
+                            <div class="card-value">4</div>
+                            <div class="card-label">New User Signups</div>
+                        </div>
+                        <div class="card-icon">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content-section">
+                    <h2>Recent Activity</h2>
+                    <p>A table of recent complaints or document requests would go here...</p>
+                </section>
+            </div>
+        </main>
+        
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>
