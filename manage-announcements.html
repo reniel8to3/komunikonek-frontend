@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-key="adminTitle">Admin | Dashboard</title>
+    <title data-key="titleManageAnnouncements">Admin | Manage Announcements</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/admin-tables.css">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -51,7 +53,7 @@
                 <button class="menu-toggle" id="menu-toggle">
                     <i class="fa-solid fa-bars"></i>
                 </button>
-                <h2 data-key="dashboardOverview">Dashboard Overview</h2>
+                <h2 data-key="titleManageAnnouncements">Manage Announcements</h2>
                 
                 <div class="lang-toggle-container-admin">
                     <button id="lang-en" class="lang-button active">ENG</button>
@@ -61,41 +63,48 @@
             </header>
             
             <div class="content-wrapper">
-                <h1 class="desktop-title" data-key="dashboardOverview">Dashboard Overview</h1>
-
-                <section class="stat-grid">
-                    <div class="stat-card">
-                        <div class="card-content">
-                            <div class="card-value">12</div>
-                            <div class="card-label" data-key="pendingComplaints">Pending Complaints</div>
-                        </div>
-                        <div class="card-icon">
-                            <i class="fa-solid fa-comments"></i>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="card-content">
-                            <div class="card-value">8</div>
-                            <div class="card-label" data-key="pendingDocs">Pending Documents</div>
-                        </div>
-                        <div class="card-icon">
-                            <i class="fa-solid fa-file-lines"></i>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="card-content">
-                            <div class="card-value">4</div>
-                            <div class="card-label" data-key="newSignups">New User Signups</div>
-                        </div>
-                        <div class="card-icon">
-                            <i class="fa-solid fa-user-plus"></i>
-                        </div>
-                    </div>
-                </section>
+                <h1 class="desktop-title" data-key="titleManageAnnouncements">Manage Announcements</h1>
 
                 <section class="content-section">
-                    <h2 data-key="recentActivity">Recent Activity</h2>
-                    <p data-key="activityPlaceholder">A table of recent activity would go here.</p>
+                    <div class="table-header">
+                        <h2 data-key="allAnnouncements">All Announcements</h2>
+                        <button class="form-button-filled">
+                            <i class="fa-solid fa-plus"></i> <span data-key="addNew">Add New</span>
+                        </button>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th data-key="title">Title</th>
+                                    <th data-key="author">Author</th>
+                                    <th data-key="date">Date</th>
+                                    <th data-key="actions">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td data-label="Title">Bayanihan: Community Clean-Up Drive</td>
+                                    <td data-label="Author">Admin KomuniKonek</td>
+                                    <td data-label="Date">Nov 10, 2025</td>
+                                    <td data-label="Actions">
+                                        <button class="action-button edit" data-key="edit">Edit</button>
+                                        <button class="action-button delete" data-key="delete">Delete</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td data-label="Title">Free Vaccination Schedule for Week 2</td>
+                                    <td data-label="Author">Admin KomuniKonek</td>
+                                    <td data-label="Date">Nov 08, 2025</td>
+                                    <td data-label="Actions">
+                                        <button class="action-button edit" data-key="edit">Edit</button>
+                                        <button class="action-button delete" data-key="delete">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </section>
             </div>
         </main>

@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-key="adminTitle">Admin | Dashboard</title>
+    <title data-key="titleManageDocs">Admin | Manage Documents</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/admin-tables.css">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -31,7 +33,7 @@
                     <li data-page="manage-complaints">
                         <a href="manage-complaints.html"><i class="fa-solid fa-comments"></i> <span data-key="navComplaints">Manage Complaints</span></a>
                     </li>
-                    <li data-page="manage-documents">
+                    <li data-page="manage-documents" class="active">
                         <a href="manage-documents.html"><i class="fa-solid fa-file-lines"></i> <span data-key="navDocs">Manage Documents</span></a>
                     </li>
                     <li data-page="manage-announcements">
@@ -51,7 +53,7 @@
                 <button class="menu-toggle" id="menu-toggle">
                     <i class="fa-solid fa-bars"></i>
                 </button>
-                <h2 data-key="dashboardOverview">Dashboard Overview</h2>
+                <h2 data-key="titleManageDocs">Manage Documents</h2>
                 
                 <div class="lang-toggle-container-admin">
                     <button id="lang-en" class="lang-button active">ENG</button>
@@ -61,41 +63,48 @@
             </header>
             
             <div class="content-wrapper">
-                <h1 class="desktop-title" data-key="dashboardOverview">Dashboard Overview</h1>
-
-                <section class="stat-grid">
-                    <div class="stat-card">
-                        <div class="card-content">
-                            <div class="card-value">12</div>
-                            <div class="card-label" data-key="pendingComplaints">Pending Complaints</div>
-                        </div>
-                        <div class="card-icon">
-                            <i class="fa-solid fa-comments"></i>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="card-content">
-                            <div class="card-value">8</div>
-                            <div class="card-label" data-key="pendingDocs">Pending Documents</div>
-                        </div>
-                        <div class="card-icon">
-                            <i class="fa-solid fa-file-lines"></i>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="card-content">
-                            <div class="card-value">4</div>
-                            <div class="card-label" data-key="newSignups">New User Signups</div>
-                        </div>
-                        <div class="card-icon">
-                            <i class="fa-solid fa-user-plus"></i>
-                        </div>
-                    </div>
-                </section>
+                <h1 class="desktop-title" data-key="titleManageDocs">Manage Documents</h1>
 
                 <section class="content-section">
-                    <h2 data-key="recentActivity">Recent Activity</h2>
-                    <p data-key="activityPlaceholder">A table of recent activity would go here.</p>
+                    <div class="table-header">
+                        <h2 data-key="allDocs">All Document Requests</h2>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th data-key="requester">Requester</th>
+                                    <th data-key="docType">Document Type</th>
+                                    <th data-key="date">Date</th>
+                                    <th data-key="status">Status</th>
+                                    <th data-key="actions">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td data-label="Requester">Jose Rizal</td>
+                                    <td data-label="Document Type">Barangay Clearance</td>
+                                    <td data-label="Date">Nov 10, 2025</td>
+                                    <td data-label="Status"><span class="role-badge pending" data-key="pending">Pending</span></td>
+                                    <td data-label="Actions">
+                                        <button class="action-button edit" data-key="markAs">Mark as Ready</button>
+                                        <button class="action-button delete delete-btn" data-key="delete">Delete</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td data-label="Requester">Andres Bonifacio</td>
+                                    <td data-label="Document Type">Business Permit</td>
+                                    <td data-label="Date">Nov 01, 2025</td>
+                                    <td data-label="Status"><span class="role-badge ready" data-key="readyForPickup">Ready for Pickup</span></td>
+                                    <td data-label="Actions">
+                                        <button class="action-button edit" data-key="markAs">Mark as Resolved</button>
+                                        <button class="action-button delete delete-btn" data-key="delete">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </section>
             </div>
         </main>

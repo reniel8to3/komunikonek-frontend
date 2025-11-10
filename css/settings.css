@@ -45,7 +45,7 @@
     flex: 1; /* Each group takes 50% */
 }
 
-/* --- Material Text Fields --- */
+/* --- Material Text Fields (Copied from login.css) --- */
 .form-group {
     position: relative;
     text-align: left;
@@ -55,7 +55,7 @@
 .form-label {
     position: absolute;
     top: 14px;
-    left: 40px;
+    left: 40px; /* Default for icon fields */
     font-size: 1em;
     color: #6c757d;
     pointer-events: none;
@@ -82,7 +82,7 @@
     box-sizing: border-box;
 }
 
-/* Fields with no icon */
+/* Fields with NO icon */
 .form-group input[type="text"]:not(:placeholder-shown) + .form-label,
 .form-group input[type="text"]:focus + .form-label,
 .form-group select:not([value=""]) + .form-label,
@@ -93,11 +93,16 @@
     color: #0038A8;
 }
 .form-group input[type="text"],
-.form-group select {
-    padding-left: 15px;
+.form-group select.form-input {
+    padding-left: 15px; /* No icon padding */
+}
+.form-group input[type="text"] + .form-label,
+.form-group select.form-input + .form-label {
+    left: 12px; /* No icon padding */
 }
 
-/* Fields with icon */
+
+/* Fields WITH icon */
 .form-group input[type="email"] + .form-label,
 .form-group input[type="tel"] + .form-label,
 .form-group input[type="password"] + .form-label {
@@ -134,6 +139,8 @@ select.form-input {
     font-size: 0.85em;
     color: #6c757d;
     margin-top: 5px;
+    text-align: left;
+    display: block;
 }
 
 /* --- Button Group --- */

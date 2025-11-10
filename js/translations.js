@@ -98,9 +98,6 @@ const langStrings = {
         "settingsTitle": "Settings",
         "account": "Account",
         "fullName": "Full Name",
-        "billing": "Billing",
-        "plan": "Plan",
-        "billingInterval": "Billing Interval",
         "city": "City",
         "province": "Province",
         "zipCode": "ZIP/Postal Code",
@@ -122,6 +119,13 @@ const langStrings = {
         "noFileChosen": "No file chosen",
         "submitComplaint": "SUBMIT COMPLAINT",
 
+        // --- Document Request Page ---
+        "titleRequestDoc": "Request a Document",
+        "docType": "Document Type",
+        "purpose": "Purpose of Request",
+        "uploadReqs": "Upload Requirements",
+        "submitRequest": "SUBMIT REQUEST",
+
         // --- My Activity Page ---
         "titleActivity": "My Activity",
         "myComplaints": "My Complaints",
@@ -133,12 +137,34 @@ const langStrings = {
         "readyForPickup": "Ready for Pickup",
         "submittedOn": "Submitted on",
 
-        // --- NEW: Document Request Page ---
-        "titleRequestDoc": "Request a Document",
-        "docType": "Document Type",
-        "purpose": "Purpose of Request",
-        "uploadReqs": "Upload Requirements",
-        "submitRequest": "SUBMIT REQUEST",
+        // --- Manage Users Page ---
+        "titleManageUsers": "Manage Users",
+        "allUsers": "All Users",
+        "addNewUser": "Add New User",
+        "name": "Name",
+        "role": "Role",
+        "actions": "Actions",
+        "edit": "Edit",
+        "delete": "Delete",
+
+        // --- NEW: Manage Complaints ---
+        "titleManageComplaints": "Manage Complaints",
+        "allComplaints": "All Complaints",
+        "complainant": "Complainant",
+        "date": "Date",
+        "markAs": "Mark as",
+        
+        // --- NEW: Manage Documents ---
+        "titleManageDocs": "Manage Documents",
+        "allDocs": "All Document Requests",
+        "requester": "Requester",
+        
+        // --- NEW: Manage Announcements ---
+        "titleManageAnnouncements": "Manage Announcements",
+        "allAnnouncements": "All Announcements",
+        "title": "Title",
+        "author": "Author",
+        "addNew": "Add New",
 
         // --- Errors ---
         "errRequired": "This field is required",
@@ -245,9 +271,6 @@ const langStrings = {
         "settingsTitle": "Mga Setting",
         "account": "Account",
         "fullName": "Buong Pangalan",
-        "billing": "Pagsingil",
-        "plan": "Plano",
-        "billingInterval": "Pagitan ng Pagsingil",
         "city": "Lungsod",
         "province": "Lalawigan",
         "zipCode": "ZIP/Postal Code",
@@ -269,6 +292,13 @@ const langStrings = {
         "noFileChosen": "Walang napiling file",
         "submitComplaint": "ISUMITE ANG REKLAMO",
 
+        // --- Document Request Page ---
+        "titleRequestDoc": "Humiling ng Dokumento",
+        "docType": "Uri ng Dokumento",
+        "purpose": "Layunin ng Paghiling",
+        "uploadReqs": "Mag-upload ng mga Kinakailangan",
+        "submitRequest": "ISUMITE ANG HILING",
+
         // --- My Activity Page ---
         "titleActivity": "Aking Aktibidad",
         "myComplaints": "Aking Mga Reklamo",
@@ -280,12 +310,34 @@ const langStrings = {
         "readyForPickup": "Handa nang Kunin",
         "submittedOn": "Ipinasa noong",
 
-        // --- NEW: Document Request Page ---
-        "titleRequestDoc": "Humiling ng Dokumento",
-        "docType": "Uri ng Dokumento",
-        "purpose": "Layunin ng Paghiling",
-        "uploadReqs": "Mag-upload ng mga Kinakailangan",
-        "submitRequest": "ISUMITE ANG HILING",
+        // --- Manage Users Page ---
+        "titleManageUsers": "Pamahalaan ang Users",
+        "allUsers": "Lahat ng Users",
+        "addNewUser": "Magdagdag ng Bagong User",
+        "name": "Pangalan",
+        "role": "Tungkulin",
+        "actions": "Mga Aksyon",
+        "edit": "Baguhin",
+        "delete": "Burahin",
+
+        // --- NEW: Manage Complaints ---
+        "titleManageComplaints": "Pamahalaan ang Reklamo",
+        "allComplaints": "Lahat ng Reklamo",
+        "complainant": "Nagsusumbong",
+        "date": "Petsa",
+        "markAs": "Markahan bilang",
+        
+        // --- NEW: Manage Documents ---
+        "titleManageDocs": "Pamahalaan ang Dokumento",
+        "allDocs": "Lahat ng Hiling sa Dokumento",
+        "requester": "Humihiling",
+        
+        // --- NEW: Manage Announcements ---
+        "titleManageAnnouncements": "Pamahalaan ang Anunsyo",
+        "allAnnouncements": "Lahat ng Anunsyo",
+        "title": "Pamagat",
+        "author": "May-akda",
+        "addNew": "Magdagdag ng Bago",
 
         // --- Errors ---
         "errRequired": "Kinakailangan ang field na ito",

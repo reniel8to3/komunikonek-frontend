@@ -138,7 +138,7 @@ body {
     font-size: 0.9em;
     font-weight: 500;
     transition: background-color 0.3s;
-    text-align: center; /* Ensures text is centered */
+    text-align: center;
 }
 a.action-card .card-button {
     display: inline-block;

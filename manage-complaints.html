@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-key="titleManageComplaints">Admin | Manage Complaints</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/admin-tables.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <div class="admin-layout">
+        
+        <aside class="sidebar" id="admin-sidebar">
+            <div class="sidebar-header">
+                <h3 data-key="adminHeader">KomuniKonek Admin</h3>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li data-page="admin">
+                        <a href="admin.html"><i class="fa-solid fa-tachograph-digital"></i> <span data-key="navDashboard">Dashboard</span></a>
+                    </li>
+                    <li data-page="manage-users">
+                        <a href="manage-users.html"><i class="fa-solid fa-users"></i> <span data-key="navUsers">Manage Users</span></a>
+                    </li>
+                    <li data-page="manage-complaints" class="active">
+                        <a href="manage-complaints.html"><i class="fa-solid fa-comments"></i> <span data-key="navComplaints">Manage Complaints</span></a>
+                    </li>
+                    <li data-page="manage-documents">
+                        <a href="manage-documents.html"><i class="fa-solid fa-file-lines"></i> <span data-key="navDocs">Manage Documents</span></a>
+                    </li>
+                    <li data-page="manage-announcements">
+                        <a href="manage-announcements.html"><i class="fa-solid fa-bullhorn"></i> <span data-key="navAnnouncements">Manage Announcements</span></a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="login.html" class="logout-link">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> <span data-key="logout">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="admin-header">
+                <button class="menu-toggle" id="menu-toggle">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <h2 data-key="titleManageComplaints">Manage Complaints</h2>
+                
+                <div class="lang-toggle-container-admin">
+                    <button id="lang-en" class="lang-button active">ENG</button>
+                    <span class="lang-separator">|</span>
+                    <button id="lang-fil" class="lang-button">FIL</button>
+                </div>
+            </header>
+            
+            <div class="content-wrapper">
+                <h1 class="desktop-title" data-key="titleManageComplaints">Manage Complaints</h1>
+
+                <section class="content-section">
+                    <div class="table-header">
+                        <h2 data-key="allComplaints">All Complaints</h2>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th data-key="complainant">Complainant</th>
+                                    <th data-key="complaintSubject">Subject</th>
+                                    <th data-key="date">Date</th>
+                                    <th data-key="status">Status</th>
+                                    <th data-key="actions">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td data-label="Complainant">Juan Dela Cruz</td>
+                                    <td data-label="Subject">Loud Neighbor (Unit 3B)</td>
+                                    <td data-label="Date">Nov 09, 2025</td>
+                                    <td data-label="Status"><span class="role-badge pending" data-key="pending">Pending</span></td>
+                                    <td data-label="Actions">
+                                        <button class="action-button edit" data-key="markAs">Mark as Resolved</button>
+                                        <button class="action-button delete delete-btn" data-key="delete">Delete</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td data-label="Complainant">Maria Clara</td>
+                                    <td data-label="Subject">Garbage not collected</td>
+                                    <td data-label="Date">Nov 05, 2025</td>
+                                    <td data-label="Status"><span class="role-badge in-progress" data-key="inProgress">In Progress</span></td>
+                                    <td data-label="Actions">
+                                        <button class="action-button edit" data-key="markAs">Mark as Resolved</button>
+                                        <button class="action-button delete delete-btn" data-key="delete">Delete</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td data-label="Complainant">Juan Dela Cruz</td>
+                                    <td data-label="Subject">Broken Streetlight</td>
+                                    <td data-label="Date">Oct 28, 2025</td>
+                                    <td data-label="Status"><span class="role-badge resolved" data-key="resolved">Resolved</span></td>
+                                    <td data-label="Actions">
+                                        <button class="action-button delete delete-btn" data-key="delete">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+        
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    </div>
+
+    <script src="js/translations.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
