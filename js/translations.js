@@ -4,7 +4,7 @@ const langStrings = {
         "titleLogin": "Login",
         "welcome": "Welcome to KomuniKonek",
         "signInPrompt": "Sign in to your account to continue",
-        "tagline": "Connecting Communities, Strengthening Support.", // NEW
+        "tagline": "Connecting Communities, Strengthening Support.",
         "loginAs": "Login as",
         "emailLabel": "Email",
         "passwordLabel": "Password",
@@ -49,9 +49,18 @@ const langStrings = {
         "day": "Day",
         "year": "Year",
         "createAccountBtn": "Create Account",
+        "user": "User",
+        "admin": "Admin",
+        "email": "Email",
+        "phone": "Phone Number",
         
         // --- Homepage ---
         "titleDashboard": "Dashboard",
+        "welcomeBack": "Welcome back!",
+        "dashboardSubtitle": "Here's what's happening in your community.",
+        "quickActions": "Quick Actions",
+        "myActivity": "My Activity",
+        "announcements": "Announcements",
         "myProfile": "My Profile",
         "trackComplaints": "Track Complaints",
         "trackDocs": "Track Document Requests",
@@ -59,10 +68,10 @@ const langStrings = {
         "logout": "Logout",
         "card1Title": "Submit a Complaint",
         "card1Desc": "Report an issue or concern in your community.",
+        "card1Btn": "Submit",
         "card2Title": "Request a Document",
         "card2Desc": "Get barangay clearances, permits, and more.",
-        "card3Title": "View Announcements",
-        "card3Desc": "Stay updated with the latest news and events.",
+        "card2Btn": "Request",
         
         // --- Admin Page ---
         "adminTitle": "Admin Dashboard",
@@ -79,7 +88,32 @@ const langStrings = {
         "recentActivity": "Recent Activity",
         "activityPlaceholder": "A table of recent activity would go here.",
 
-        // Errors
+        // --- Forgot Password ---
+        "titleForgotPass": "Forgot Password",
+        "forgotPassTitle": "Forgot Your Password?",
+        "forgotPassPrompt": "No problem! Enter your email below and we'll send you a link to reset it.",
+        "sendResetLink": "Send Reset Link",
+        "backToLogin": "Back to Sign in",
+
+        // --- NEW: Settings Page ---
+        "settingsTitle": "Settings",
+        "account": "Account",
+        "fullName": "Full Name",
+        "billing": "Billing",
+        "plan": "Plan",
+        "billingInterval": "Billing Interval",
+        "city": "City",
+        "province": "Province",
+        "zipCode": "ZIP/Postal Code",
+        "country": "Country",
+        "changePass": "Change Password",
+        "newPass": "New Password",
+        "confirmPass": "Confirm Password",
+        "passHelper": "Password must be at least 8 characters.",
+        "cancel": "CANCEL",
+        "update": "UPDATE",
+
+        // --- Errors ---
         "errRequired": "This field is required",
         "errEmail": "Provide a valid email address (e.g., user@domain.com)",
         "errPassLength": "Password must be at least 8 characters long",
@@ -90,7 +124,7 @@ const langStrings = {
         "titleLogin": "Mag-login",
         "welcome": "Maligayang Pagdating sa KomuniKonek",
         "signInPrompt": "Mag-sign in sa iyong account upang magpatuloy",
-        "tagline": "Pag-uugnay ng Komunidad, Pagpapalakas ng Suporta.", // NEW
+        "tagline": "Pag-uugnay ng Komunidad, Pagpapalakas ng Suporta.",
         "loginAs": "Mag-login bilang",
         "emailLabel": "Email",
         "passwordLabel": "Password",
@@ -135,9 +169,18 @@ const langStrings = {
         "day": "Araw",
         "year": "Taon",
         "createAccountBtn": "Gumawa ng Account",
+        "user": "User",
+        "admin": "Admin",
+        "email": "Email",
+        "phone": "Numero ng Telepono",
 
         // --- Homepage ---
         "titleDashboard": "Dashboard",
+        "welcomeBack": "Maligayang pagbabalik!",
+        "dashboardSubtitle": "Ito ang mga nangyayari sa iyong komunidad.",
+        "quickActions": "Mabilisang Aksyon",
+        "myActivity": "Aking Aktibidad",
+        "announcements": "Mga Anunsyo",
         "myProfile": "Aking Profile",
         "trackComplaints": "Subaybayan ang Reklamo",
         "trackDocs": "Subaybayan ang Hiling sa Dokumento",
@@ -145,10 +188,10 @@ const langStrings = {
         "logout": "Mag-logout",
         "card1Title": "Magsumite ng Reklamo",
         "card1Desc": "I-report ang isyu o alalahanin sa iyong komunidad.",
+        "card1Btn": "Magsumite",
         "card2Title": "Humiling ng Dokumento",
         "card2Desc": "Kumuha ng barangay clearance, permit, at iba pa.",
-        "card3Title": "Tingnan ang mga Anunsyo",
-        "card3Desc": "Manatiling updated sa mga pinakabagong balita at kaganapan.",
+        "card2Btn": "Humiling",
 
         // --- Admin Page ---
         "adminTitle": "Admin Dashboard",
@@ -165,7 +208,32 @@ const langStrings = {
         "recentActivity": "Kamakailang Aktibidad",
         "activityPlaceholder": "Dito ilalagay ang talaan ng mga kamakailang aktibidad.",
         
-        // Errors
+        // --- Forgot Password ---
+        "titleForgotPass": "Nakalimutan ang Password",
+        "forgotPassTitle": "Nakalimutan ang Iyong Password?",
+        "forgotPassPrompt": "Walang problema! Ilagay ang iyong email sa ibaba at padadalhan ka namin ng link para i-reset ito.",
+        "sendResetLink": "Ipadala ang Reset Link",
+        "backToLogin": "Bumalik sa Sign in",
+
+        // --- NEW: Settings Page ---
+        "settingsTitle": "Mga Setting",
+        "account": "Account",
+        "fullName": "Buong Pangalan",
+        "billing": "Pagsingil",
+        "plan": "Plano",
+        "billingInterval": "Pagitan ng Pagsingil",
+        "city": "Lungsod",
+        "province": "Lalawigan",
+        "zipCode": "ZIP/Postal Code",
+        "country": "Bansa",
+        "changePass": "Baguhin ang Password",
+        "newPass": "Bagong Password",
+        "confirmPass": "Kumpirmahin ang Password",
+        "passHelper": "Ang password ay dapat na hindi bababa sa 8 character.",
+        "cancel": "KANSELAHIN",
+        "update": "I-UPDATE",
+
+        // --- Errors ---
         "errRequired": "Kinakailangan ang field na ito",
         "errEmail": "Magbigay ng wastong email address (hal., user@domain.com)",
         "errPassLength": "Ang password ay dapat na hindi bababa sa 8 character",

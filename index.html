@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-key="titleDashboard">KomuniKonek | Dashboard</title>
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -35,7 +39,7 @@
                         <a href="#" class="dropdown-link">
                             <i class="fa-solid fa-folder-open"></i> <span data-key="trackDocs">Track Document Requests</span>
                         </a>
-                        <a href="#" class="dropdown-link separator-top">
+                        <a href="settings.html" class="dropdown-link separator-top">
                             <i class="fa-solid fa-gear"></i> <span data-key="settings">Settings</span>
                         </a>
                         <a href="login.html" class="dropdown-link logout">
@@ -47,29 +51,75 @@
         </div>
     </header>
 
-    <main class="main-container">
-        <section class="dashboard-grid">
+    <div class="main-container">
+        
+        <div class="welcome-banner">
+            <h1 data-key="welcomeBack">Welcome back!</h1>
+            <p data-key="dashboardSubtitle">Here's what's happening in your community.</p>
+        </div>
+        
+        <div class="dashboard-layout">
             
-            <a href="#" class="dashboard-card">
-                <i class="fa-solid fa-comments card-icon"></i>
-                <h2 data-key="card1Title">Submit a Complaint</h2>
-                <p data-key="card1Desc">Report an issue or concern in your community.</p>
-            </a>
-            
-            <a href="#" class="dashboard-card">
-                <i class="fa-solid fa-file-lines card-icon"></i>
-                <h2 data-key="card2Title">Request a Document</h2>
-                <p data-key="card2Desc">Get barangay clearances, permits, and more.</p>
-            </a>
-            
-            <a href="#" class="dashboard-card">
-                <i class="fa-solid fa-bullhorn card-icon"></i>
-                <h2 data-key="card3Title">View Announcements</h2>
-                <p data-key="card3Desc">Stay updated with the latest news and events.</p>
-            </a>
+            <main class="main-content">
 
-        </section>
-    </main>
+                <section class="dashboard-section">
+                    <h2 class="section-title" data-key="quickActions">Quick Actions</h2>
+                    <div class="card-grid">
+                        <div class="action-card">
+                            <i class="fa-solid fa-comments card-icon"></i>
+                            <h3 data-key="card1Title">Submit a Complaint</h3>
+                            <p data-key="card1Desc">Report an issue or concern in your community.</p>
+                            <button class="card-button" data-key="card1Btn">Submit</button>
+                        </div>
+                        <div class="action-card">
+                            <i class="fa-solid fa-file-lines card-icon"></i>
+                            <h3 data-key="card2Title">Request a Document</h3>
+                            <p data-key="card2Desc">Get barangay clearances, permits, and more.</p>
+                            <button class="card-button" data-key="card2Btn">Request</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="dashboard-section">
+                    <h2 class="section-title" data-key="myActivity">My Activity</h2>
+                    <div class="activity-card">
+                        <a href="#" class="activity-link">
+                            <i class="fa-solid fa-clipboard-list"></i>
+                            <span data-key="trackComplaints">Track Complaints</span>
+                            <span class="activity-arrow">&rarr;</span>
+                        </a>
+                        <a href="#" class="activity-link">
+                            <i class="fa-solid fa-folder-open"></i>
+                            <span data-key="trackDocs">Track Document Requests</span>
+                            <span class="activity-arrow">&rarr;</span>
+                        </a>
+                    </div>
+                </section>
+
+            </main>
+
+            <aside class="sidebar-feed">
+                <div class="announcements-card">
+                    <h2 class="section-title" data-key="announcements">Announcements</h2>
+                    <ul class="announcement-list">
+                        <li class="announcement-item">
+                            <p class="date">Nov 10, 2025</p>
+                            <p class="title">Bayanihan: Community Clean-Up Drive</p>
+                        </li>
+                        <li class="announcement-item">
+                            <p class="date">Nov 8, 2025</p>
+                            <p class="title">Free Vaccination Schedule for Week 2</p>
+                        </li>
+                        <li class="announcement-item">
+                            <p class="date">Nov 5, 2025</p>
+                            <p class="title">Barangay Assembly Day Postponed</p>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+
+        </div>
+    </div>
 
     <script src="js/translations.js"></script>
     <script src="js/main.js"></script>
