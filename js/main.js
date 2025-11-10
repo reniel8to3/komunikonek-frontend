@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // --- PROFILE DROPDOWN LOGIC (MOVED TO TOP) ---
     // --- =============================== ---
     
+    // This code runs first, so it will always work.
     const profileButton = document.getElementById("profile-button");
     const profileDropdown = document.getElementById("profile-dropdown");
 
@@ -14,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    // This handles clicking *off* the dropdown to close it
     window.addEventListener("click", function(e) {
         if (profileDropdown && profileDropdown.classList.contains("active")) {
             if (!profileDropdown.contains(e.target) && e.target !== profileButton) {
@@ -26,6 +28,9 @@ document.addEventListener("DOMContentLoaded", function() {
     // --- I18N (TRANSLATION) LOGIC ---
     // --- =============================== ---
     
+    // We wrap this in a try...catch block.
+    // If translations.js is missing, it will log an error
+    // but WILL NOT stop the profile dropdown from working.
     try {
         const langEnBtn = document.getElementById('lang-en');
         const langFilBtn = document.getElementById('lang-fil');

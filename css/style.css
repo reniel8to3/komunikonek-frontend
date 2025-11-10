@@ -104,31 +104,29 @@ body {
     border-radius: 12px;
     padding: 25px;
     transition: box-shadow 0.3s;
+    text-decoration: none;
+    color: #212529;
 }
 .action-card:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
-
 .card-icon {
     font-size: 2em;
     color: #0038A8;
     margin-bottom: 15px;
 }
-
 .action-card h3 {
     font-size: 1.2em;
     font-weight: 600;
     margin-top: 0;
     margin-bottom: 10px;
 }
-
 .action-card p {
     font-size: 0.95em;
     color: #444746;
     line-height: 1.5;
     margin-bottom: 20px;
 }
-
 .card-button {
     width: 100%;
     padding: 10px;
@@ -140,8 +138,14 @@ body {
     font-size: 0.9em;
     font-weight: 500;
     transition: background-color 0.3s;
+    text-align: center; /* Ensures text is centered */
 }
-.card-button:hover {
+a.action-card .card-button {
+    display: inline-block;
+    width: auto;
+    padding: 10px 30px;
+}
+.action-card:hover .card-button {
     background-color: #002a7e;
 }
 
@@ -152,7 +156,6 @@ body {
     border-radius: 12px;
     padding: 15px 25px;
 }
-
 .activity-link {
     display: flex;
     align-items: center;
@@ -183,13 +186,11 @@ body {
     border-radius: 12px;
     padding: 25px;
 }
-
 .announcement-list {
     list-style: none;
     padding: 0;
     margin: 0;
 }
-
 .announcement-item {
     border-bottom: 1px solid #f0f0f0;
     padding: 15px 0;

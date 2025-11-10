@@ -41,7 +41,6 @@ const langStrings = {
         "lastName": "Last Name",
         "middleName": "Middle Name",
         "address": "Address",
-        "region": "Region",
         "houseNum": "House Number",
         "street": "Street",
         "birthDate": "Birth Date",
@@ -95,7 +94,7 @@ const langStrings = {
         "sendResetLink": "Send Reset Link",
         "backToLogin": "Back to Sign in",
 
-        // --- NEW: Settings Page ---
+        // --- Settings Page ---
         "settingsTitle": "Settings",
         "account": "Account",
         "fullName": "Full Name",
@@ -112,6 +111,34 @@ const langStrings = {
         "passHelper": "Password must be at least 8 characters.",
         "cancel": "CANCEL",
         "update": "UPDATE",
+        
+        // --- Complaint Page ---
+        "titleComplaint": "Submit Complaint",
+        "complaintType": "Type of Complaint",
+        "complaintSubject": "Subject",
+        "dateOfIncident": "Date of Incident",
+        "description": "Description",
+        "uploadEvidence": "Upload Evidence",
+        "noFileChosen": "No file chosen",
+        "submitComplaint": "SUBMIT COMPLAINT",
+
+        // --- My Activity Page ---
+        "titleActivity": "My Activity",
+        "myComplaints": "My Complaints",
+        "myDocuments": "My Document Requests",
+        "status": "Status",
+        "pending": "Pending",
+        "inProgress": "In Progress",
+        "resolved": "Resolved",
+        "readyForPickup": "Ready for Pickup",
+        "submittedOn": "Submitted on",
+
+        // --- NEW: Document Request Page ---
+        "titleRequestDoc": "Request a Document",
+        "docType": "Document Type",
+        "purpose": "Purpose of Request",
+        "uploadReqs": "Upload Requirements",
+        "submitRequest": "SUBMIT REQUEST",
 
         // --- Errors ---
         "errRequired": "This field is required",
@@ -161,7 +188,6 @@ const langStrings = {
         "lastName": "Apelyido",
         "middleName": "Gitnang Pangalan",
         "address": "Tirahan",
-        "region": "Rehiyon",
         "houseNum": "Numero ng Bahay",
         "street": "Kalye",
         "birthDate": "Araw ng Kapanganakan",
@@ -214,8 +240,8 @@ const langStrings = {
         "forgotPassPrompt": "Walang problema! Ilagay ang iyong email sa ibaba at padadalhan ka namin ng link para i-reset ito.",
         "sendResetLink": "Ipadala ang Reset Link",
         "backToLogin": "Bumalik sa Sign in",
-
-        // --- NEW: Settings Page ---
+        
+        // --- Settings Page ---
         "settingsTitle": "Mga Setting",
         "account": "Account",
         "fullName": "Buong Pangalan",
@@ -232,6 +258,34 @@ const langStrings = {
         "passHelper": "Ang password ay dapat na hindi bababa sa 8 character.",
         "cancel": "KANSELAHIN",
         "update": "I-UPDATE",
+        
+        // --- Complaint Page ---
+        "titleComplaint": "Magsumite ng Reklamo",
+        "complaintType": "Uri ng Reklamo",
+        "complaintSubject": "Paksa",
+        "dateOfIncident": "Petsa ng Insidente",
+        "description": "Deskripsyon",
+        "uploadEvidence": "Mag-upload ng Ebidensya",
+        "noFileChosen": "Walang napiling file",
+        "submitComplaint": "ISUMITE ANG REKLAMO",
+
+        // --- My Activity Page ---
+        "titleActivity": "Aking Aktibidad",
+        "myComplaints": "Aking Mga Reklamo",
+        "myDocuments": "Aking Mga Hiling sa Dokumento",
+        "status": "Katayuan",
+        "pending": "Nakabinbin",
+        "inProgress": "Ginagawa",
+        "resolved": "Nalutas",
+        "readyForPickup": "Handa nang Kunin",
+        "submittedOn": "Ipinasa noong",
+
+        // --- NEW: Document Request Page ---
+        "titleRequestDoc": "Humiling ng Dokumento",
+        "docType": "Uri ng Dokumento",
+        "purpose": "Layunin ng Paghiling",
+        "uploadReqs": "Mag-upload ng mga Kinakailangan",
+        "submitRequest": "ISUMITE ANG HILING",
 
         // --- Errors ---
         "errRequired": "Kinakailangan ang field na ito",

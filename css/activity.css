@@ -1,0 +1,119 @@
+/* --- Shared Form/Card Styles (from complaint.css) --- */
+.form-container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 0 30px;
+}
+
+.form-container h1 {
+    font-size: 2.2em;
+    font-weight: 600;
+    color: #212529;
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+
+.form-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 40px;
+}
+
+/* --- ================== --- */
+/* --- ACTIVITY STYLES (FIXED) --- */
+/* --- ================== --- */
+
+/* --- Tab Navigation --- */
+.activity-tabs {
+    display: flex;
+    border-bottom: 2px solid #e0e0e0;
+    margin-bottom: 30px;
+}
+
+.tab-button {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 15px;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    color: #6c757d;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px; /* Aligns border with parent */
+    transition: all 0.3s ease;
+    text-decoration: none; /* For <a> tag version */
+    text-align: center;
+}
+.tab-button i {
+    margin-right: 8px;
+}
+.tab-button:hover {
+    background-color: #f8f9fa;
+}
+.tab-button.active {
+    color: #0038A8;
+    border-bottom-color: #0038A8;
+}
+
+/* --- Tab Content --- */
+.tab-content {
+    display: none; /* Hide all by default */
+}
+.tab-content.active {
+    display: block; /* Show active tab */
+}
+
+/* --- Activity List --- */
+.activity-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.activity-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+.item-details .item-title {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #212529;
+    margin: 0 0 5px 0;
+}
+.item-details .item-date {
+    font-size: 0.9em;
+    color: #6c757d;
+    margin: 0;
+}
+
+/* --- Status Badges --- */
+.status-badge {
+    font-size: 0.9em;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 100px;
+}
+.status-badge.pending {
+    color: #b95000;
+    background-color: #fff4e6;
+}
+.status-badge.in-progress {
+    color: #0056b3;
+    background-color: #e6f0ff;
+}
+.status-badge.resolved {
+    color: #1e7d34;
+    background-color: #e9f9ec;
+}
+.status-badge.ready {
+    color: #1e7d34;
+    background-color: #e9f9ec;
+}

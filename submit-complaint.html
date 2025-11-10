@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-key="titleComplaint">KomuniKonek | Submit Complaint</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/style.css"> 
+    <link rel="stylesheet" href="css/complaint.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-logo">KomuniKonek</a>
+            <nav class="navbar-menu">
+                <div class="lang-toggle-container-nav">
+                    <button id="lang-en" class="lang-button active">ENG</button>
+                    <span class="lang-separator">|</span>
+                    <button id="lang-fil" class="lang-button">FIL</button>
+                </div>
+                <div class="profile-dropdown-container">
+                    <button class="profile-button" id="profile-button">
+                        <i class="fa-solid fa-user"></i>
+                    </button>
+                    <div class="profile-dropdown" id="profile-dropdown">
+                        <a href="#" class="dropdown-link">
+                            <i class="fa-solid fa-user-circle"></i> <span data-key="myProfile">My Profile</span>
+                        </a>
+                        <a href="my-activity.html" class="dropdown-link">
+                            <i class="fa-solid fa-clipboard-list"></i> <span data-key="trackComplaints">Track Complaints</span>
+                        </a>
+                        <a href="my-activity.html#documents" class="dropdown-link">
+                            <i class="fa-solid fa-folder-open"></i> <span data-key="trackDocs">Track Document Requests</span>
+                        </a>
+                        <a href="settings.html" class="dropdown-link separator-top">
+                            <i class="fa-solid fa-gear"></i> <span data-key="settings">Settings</span>
+                        </a>
+                        <a href="login.html" class="dropdown-link logout">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i> <span data-key="logout">Logout</span>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="form-container">
+        <h1 data-key="titleComplaint">Submit a Complaint</h1>
+
+        <div class="form-card">
+            <form id="complaint-form" novalidate>
+                
+                <div class="form-group">
+                    <select id="complaint-type" class="form-input" required value="">
+                        <option value="" disabled selected></option>
+                        <option value="noise">Noise Complaint</option>
+                        <option value="waste">Waste Management</option>
+                        <option value="safety">Safety Hazard</option>
+                        <option value="other">Other</option> </select>
+                    <label for="complaint-type" class="form-label"><span data-key="complaintType">Type of Complaint</span> <span class="required">*</span></label>
+                </div>
+
+                <div class="form-group" id="other-complaint-group" style="display: none;">
+                    <input type="text" id="other-complaint-type" class="form-input" placeholder=" ">
+                    <label for="other-complaint-type" class="form-label">Please specify</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="subject" class="form-input" placeholder=" " required>
+                    <label for="subject" class="form-label"><span data-key="complaintSubject">Subject</span> <span class="required">*</span></label>
+                </div>
+                
+                <div class="form-group">
+                    <input type="date" id="incident-date" class="form-input" placeholder=" " required>
+                    <label for="incident-date" class="form-label"><span data-key="dateOfIncident">Date of Incident</span> <span class="required">*</span></label>
+                </div>
+
+                <div class="form-group">
+                    <textarea id="description" class="form-input" placeholder=" " rows="5"></textarea>
+                    <label for="description" class="form-label"><span data-key="description">Description</span></label>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label-static" data-key="uploadEvidence">Upload Evidence</label>
+                    <div class="file-upload-wrapper">
+                        <input type="file" id="file-upload" class="file-upload-input" multiple>
+                        <label for="file-upload" class="file-upload-button">
+                            <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                            Choose file(s)...
+                        </label>
+                        <span id="file-name" class="file-name" data-key="noFileChosen">No file chosen</span>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="form-button-outlined" data-key="cancel">CANCEL</button>
+                    <button type="submit" class="form-button-filled" data-key="submitComplaint">SUBMIT COMPLAINT</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/translations.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/complaint.js"></script>
+</body>
+</html>
