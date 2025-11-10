@@ -5,75 +5,127 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-key="titleSignup">KomuniKonek | Create Account</title>
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="css/signup.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="signup-container">
-
         <div class="split-container">
-
+            <!-- Left Welcome Panel -->
             <div class="welcome-panel">
-                <div class="welcome-content">
-                    <h2 data-key="createAccount">Create Your Account</h2>
-                    <p class="tagline" data-key="tagline">Connecting Communities, Strengthening Support.</p>
+                <div class="welcome-panel-inner">
+                    <div class="panel-icon-container">
+                        <i class="fa-solid fa-user-plus panel-icon"></i>
+                    </div>
+
+                    <div class="welcome-content">
+                        <h2 data-key="createAccount">Create Your Account</h2>
+                        <p class="tagline" data-key="tagline">Connecting Communities, Strengthening Support.</p>
+                    </div>
+                    
+                    <!-- Slideshow -->
+                    <div class="slideshow-container">
+                        <div class="slide fade active">
+                            <div class="slide-icon">
+                                <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M49.9999 70.8333C49.9999 65.0411 54.7078 60.3333 60.5 60.3333H139.5C145.292 60.3333 150 65.0411 150 70.8333V108.333C150 114.125 145.292 118.833 139.5 118.833H102.417C101.401 118.833 100.421 119.336 99.7828 120.198L87.2828 135.698C86.136 137.135 83.8639 137.135 82.7171 135.698L70.2171 120.198C69.5791 119.336 68.5989 118.833 67.5833 118.833H60.5C54.7078 118.833 49.9999 114.125 49.9999 108.333V70.8333Z" fill="#0038A8" fill-opacity="0.1" stroke="#0038A8" stroke-width="6"></path><path d="M75 87.8333H125" stroke="#0038A8" stroke-width="6" stroke-linecap="round"></path><path d="M75 100.333H108" stroke="#0038A8" stroke-width="6" stroke-linecap="round"></path></svg>
+                            </div>
+                            <h3 data-key="card1Title">Submit a Complaint</h3>
+                            <p data-key="card1Desc">Report an issue or concern in your community.</p>
+                        </div>
+                        <div class="slide fade">
+                            <div class="slide-icon">
+                                <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M62 55.3333H138V144.667C138 147.606 135.606 150 132.667 150H67.3333C64.3944 150 62 147.606 62 144.667V55.3333Z" fill="#0038A8" fill-opacity="0.1" stroke="#0038A8" stroke-width="6"></path><path d="M87 84H113" stroke="#0038A8" stroke-width="6" stroke-linecap="round"></path><path d="M87 99H113" stroke="#0038A8" stroke-width="6" stroke-linecap="round"></path><path d="M87 114H113" stroke="#0038A8" stroke-width="6" stroke-linecap="round"></path><path d="M138 55.3333H62V67.8333H138V55.3333Z" fill="#0038A8" fill-opacity="0.1" stroke="#0038A8" stroke-width="6"></path><path d="M90 50V60.6667" stroke="#0038A8" stroke-width="6" stroke-linecap="round"></path><path d="M110 50V60.6667" stroke="#0038A8" stroke-width="6" stroke-linecap="round"></path></svg>
+                            </div>
+                            <h3 data-key="card2Title">Request a Document</h3>
+                            <p data-key="card2Desc">Get barangay clearances, permits, and more.</p>
+                        </div>
+                        <div class="slide fade">
+                            <div class="slide-icon">
+                                <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M78.63 60.3413L68 71V129H78.63C84.18 129 88.73 124.45 88.73 118.9V71.4413C88.73 65.8913 84.18 60.3413 78.63 60.3413Z" fill="#0038A8" fill-opacity="0.1" stroke="#0038A8" stroke-width="6"></path><path d="M88.73 71.4413V118.9C88.73 124.45 93.28 129 98.83 129H106.17C111.72 129 116.27 124.45 116.27 118.9V71.4413C116.27 65.8913 111.72 60.3413 106.17 60.3413H98.83C93.28 60.3413 88.73 65.8913 88.73 71.4413Z" fill="#0038A8" stroke="#0038A8" stroke-width="6"></path><path d="M116.27 76.5V113.5C116.27 119.05 120.82 123.6 126.37 123.6H132V66.4H126.37C120.82 66.4 116.27 70.95 116.27 76.5Z" fill="#0038A8" fill-opacity="0.1" stroke="#0038A8" stroke-width="6"></path><path d="M68 82H50" stroke="#0038A8" stroke-width="6" stroke-linecap="round"></path><path d="M68 100H50" stroke="#0038A8" stroke-width="6" stroke-linecap="round"></path><path d="M68 118H50" stroke="#0038A8" stroke-width="6" stroke-linecap="round"></path></svg>
+                            </div>
+                            <h3 data-key="card3Title">View Announcements</h3>
+                            <p data-key="card3Desc">Stay updated with the latest news and events.</p>
+                        </div>
+                        <button class="slide-nav prev" id="slide-prev" aria-label="Previous slide">&#10094;</button>
+                        <button class="slide-nav next" id="slide-next" aria-label="Next slide">&#10095;</button>
+                    </div>
+                    <div class="slide-dots" role="tablist" aria-label="Slide navigation">
+                        <button class="dot active" data-slide="0" role="tab" aria-label="Slide 1" aria-selected="true"></button>
+                        <button class="dot" data-slide="1" role="tab" aria-label="Slide 2" aria-selected="false"></button>
+                        <button class="dot" data-slide="2" role="tab" aria-label="Slide 3" aria-selected="false"></button>
+                    </div>
                 </div>
             </div>
 
+            <!-- Right Signup Panel -->
             <div class="signup-panel">
-                
+                <!-- Language Toggle -->
                 <div class="lang-toggle-container">
-                    <button id="lang-en" class="lang-button active">ENG</button>
-                    <span class="lang-separator">|</span>
-                    <button id="lang-fil" class="lang-button">FIL</button>
+                    <button id="lang-en" class="lang-button active" aria-label="Switch to English">ENG</button>
+                    <span class="lang-separator" aria-hidden="true">|</span>
+                    <button id="lang-fil" class="lang-button" aria-label="Switch to Filipino">FIL</button>
                 </div>
 
+                <!-- Step 1: Account Setup -->
                 <section id="step-1-account">
                     <p class="step-indicator" data-key="step1">Step 1 of 2</p>
                     
                     <p class="section-title" data-key="signUpAs">Sign up as</p>
-                    <div class="role-selector" id="signup-as-selector">
-                        <span class="glider"></span>
-                        <button class="role-button active">User</button>
-                        <button class="role-button">Admin</button>
+                    <div class="role-selector" id="signup-as-selector" role="radiogroup" aria-label="Account type">
+                        <span class="glider" aria-hidden="true"></span>
+                        <button type="button" class="role-button active" role="radio" aria-checked="true" data-role="user">
+                            <span data-key="user">User</span>
+                        </button>
+                        <button type="button" class="role-button" role="radio" aria-checked="false" data-role="admin">
+                            <span data-key="admin">Admin</span>
+                        </button>
                     </div>
 
                     <p class="section-title" data-key="registerWith">Register with</p>
-                    <div id="register-with-selector" class="role-selector">
-                        <span class="glider"></span>
-                        <button id="register-email-btn" class="role-button active"><i class="fa-solid fa-envelope"></i> Email</button>
-                        <button id="register-phone-btn" class="role-button"><i class="fa-solid fa-phone"></i> Phone Number</button>
+                    <div id="register-with-selector" class="role-selector" role="radiogroup" aria-label="Registration method">
+                        <span class="glider" aria-hidden="true"></span>
+                        <button type="button" id="register-email-btn" class="role-button active" role="radio" aria-checked="true">
+                            <i class="fa-solid fa-envelope" aria-hidden="true"></i> <span data-key="email">Email</span>
+                        </button>
+                        <button type="button" id="register-phone-btn" class="role-button" role="radio" aria-checked="false">
+                            <i class="fa-solid fa-phone" aria-hidden="true"></i> <span data-key="phone">Phone Number</span>
+                        </button>
                     </div>
 
                     <form id="signup-form-step1" novalidate>
+                        <!-- Email Input -->
                         <div id="email-form-group" class="form-group">
-                            <label for="email"><span data-key="emailLabel">Email</span> <span class="required">*</span></label>
-                            <div class="input-with-icon">
-                                <i class="fa-solid fa-envelope"></i>
-                                <input type="email" id="email" name="email" placeholder="Enter your email">
-                            </div>
-                            <small class="error-message"></small>
+                            <i class="form-icon fa-solid fa-envelope" aria-hidden="true"></i>
+                            <input type="email" id="email" class="form-input" placeholder=" " required autocomplete="email" aria-describedby="email-error">
+                            <label for="email" class="form-label"><span data-key="emailLabel">Email</span> <span class="required">*</span></label>
+                            <small class="error-message" id="email-error" role="alert"></small>
                         </div>
 
-                        <div id="phone-form-group" class="form-group" style="display: none;">
-                            <label for="phone"><span data-key="phoneNumLabel">Phone Number</span> <span class="required">*</span></label>
-                            <div class="input-with-icon">
-                                <i class="fa-solid fa-phone"></i>
-                                <span class="phone-prefix">+63</span>
-                                <input type="tel" id="phone" name="phone" placeholder="912 345 6789" maxlength="10">
-                            </div>
-                            <small class="error-message"></small>
+                        <!-- Phone Input -->
+                        <div id="phone-form-group" class="form-group hidden">
+                            <i class="form-icon fa-solid fa-phone" aria-hidden="true"></i>
+                            <span class="phone-prefix" aria-hidden="true">+63</span>
+                            <input type="tel" id="phone" class="form-input" placeholder=" " maxlength="10" inputmode="numeric" autocomplete="tel" aria-describedby="phone-error">
+                            <label for="phone" class="form-label"><span data-key="phoneNumLabel">Phone Number</span> <span class="required">*</span></label>
+                            <small class="error-message" id="phone-error" role="alert"></small>
                         </div>
 
+                        <!-- Password Input -->
                         <div class="form-group">
-                            <label for="password"><span data-key="passwordLabel">Password</span> <span class="required">*</span></label>
-                            <div class="input-with-icon">
-                                <i class="fa-solid fa-lock"></i>
-                                <input type="password" id="password" name="password" placeholder="Enter your password">
-                                <i class="fa-solid fa-eye password-toggle"></i>
-                            </div>
-                            <small class="error-message"></small>
-                            <div id="password-checklist" style="display: none;">
+                            <i class="form-icon fa-solid fa-lock" aria-hidden="true"></i>
+                            <input type="password" id="password" class="form-input" placeholder=" " required autocomplete="new-password" aria-describedby="password-error password-checklist">
+                            <label for="password" class="form-label"><span data-key="passwordLabel">Password</span> <span class="required">*</span></label>
+                            <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                            <small class="error-message" id="password-error" role="alert"></small>
+                            
+                            <!-- Password Strength Checklist -->
+                            <div id="password-checklist" class="hidden" aria-live="polite">
                                 <ul>
                                     <li id="pass-length">At least 8 characters</li>
                                     <li id="pass-capital">At least one capital letter</li>
@@ -83,83 +135,104 @@
                             </div>
                         </div>
 
-                        <button type="button" id="send-otp-button" class="sign-in-button" data-key="sendOtp">Send OTP</button>
+                        <button type="button" id="send-otp-button" class="sign-in-button" data-key="sendOtp">
+                            <span class="button-text">Send OTP</span>
+                            <span class="button-loader hidden" aria-hidden="true">
+                                <i class="fa-solid fa-spinner fa-spin"></i>
+                            </span>
+                        </button>
 
-                        <div id="otp-section" style="display: none;">
-                            <p class="otp-success-text" data-key="otpSent">OTP sent successfully!</p>
-                            <label><span data-key="otpLabel">Enter the OTP code</span> <span class="required">*</span></label>
-                            
+                        <!-- OTP Verification Section -->
+                        <div id="otp-section" class="hidden">
+                            <p class="otp-success-text" data-key="otpSent" role="status">OTP sent successfully!</p>
+                            <label for="otp-input-1"><span data-key="otpLabel">Enter the OTP code</span> <span class="required">*</span></label>
                             <div class="otp-inputs">
-                                <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
-                                <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
-                                <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
-                                <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
-                                <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
-                                <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
+                                <input type="text" inputmode="numeric" maxlength="1" class="otp-input" id="otp-input-1" autocomplete="one-time-code" aria-label="OTP digit 1" />
+                                <input type="text" inputmode="numeric" maxlength="1" class="otp-input" id="otp-input-2" aria-label="OTP digit 2" />
+                                <input type="text" inputmode="numeric" maxlength="1" class="otp-input" id="otp-input-3" aria-label="OTP digit 3" />
+                                <input type="text" inputmode="numeric" maxlength="1" class="otp-input" id="otp-input-4" aria-label="OTP digit 4" />
+                                <input type="text" inputmode="numeric" maxlength="1" class="otp-input" id="otp-input-5" aria-label="OTP digit 5" />
+                                <input type="text" inputmode="numeric" maxlength="1" class="otp-input" id="otp-input-6" aria-label="OTP digit 6" />
                             </div>
-                            <button type="button" id="verify-otp-button" class="sign-in-button" data-key="verifyOtp">Verify OTP</button>
+                            <p class="otp-timer" id="otp-timer">Resend OTP in <span id="otp-countdown">60</span>s</p>
+                            <button type="button" id="resend-otp-button" class="text-button hidden" data-key="resendOtp">Resend OTP</button>
+                            <button type="button" id="verify-otp-button" class="sign-in-button" data-key="verifyOtp">
+                                <span class="button-text">Verify OTP</span>
+                                <span class="button-loader hidden" aria-hidden="true">
+                                    <i class="fa-solid fa-spinner fa-spin"></i>
+                                </span>
+                            </button>
                         </div>
 
-                        <p class="signup-prompt">
-                            <span data-key="haveAccount">Already have an account?</span> <a href="login.html" class="signup-link" data-key="signInLink">Sign in</a>
+                        <p class="signup-prompt" id="signup-prompt-link">
+                            <span data-key="haveAccount">Already have an account?</span> 
+                            <a href="login.html" class="signup-link" data-key="signInLink">Sign in</a>
                         </p>
                     </form>
                 </section>
                 
-                <section id="step-2-personal" style="display: none;">
+                <!-- Step 2: Personal Information -->
+                <section id="step-2-personal" class="hidden">
                     <div class="step-header">
-                        <button id="back-button" class="back-button"><span data-key="back">&larr; Back</span></button>
+                        <button type="button" id="back-button" class="back-button" aria-label="Go back to step 1">
+                            <span data-key="back">&larr; Back</span>
+                        </button>
                         <p class="step-indicator" data-key="step2">Step 2 of 2</p>
                     </div>
-                    <h2 class="welcome-header" data-key="createAccount">Create Your Account</h2>
-                    <p class="section-title" data-key="personalInfo">Personal Information</p>
-                    <button type="button" class="scan-id-button">
-                        <i class="fa-solid fa-camera"></i> <span data-key="scanId">Scan ID</span>
+                    
+                    <h2 class="welcome-header" data-key="personalInfo">Personal Information</h2>
+                    
+                    <button type="button" class="scan-id-button" aria-label="Scan ID to auto-fill information">
+                        <i class="fa-solid fa-camera" aria-hidden="true"></i> <span data-key="scanId">Scan ID</span>
                     </button>
+                    
                     <div class="separator">
                         <span data-key="fillManually">Or fill the form manually</span>
                     </div>
+
                     <form id="signup-form-step2" novalidate>
+                        <!-- Name Fields -->
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="first-name"><span data-key="firstName">First Name</span> <span class="required">*</span></label>
-                                <div class="input-with-icon">
-                                    <i class="fa-solid fa-user"></i>
-                                    <input type="text" id="first-name" name="first-name" placeholder="Enter your first name" required>
-                                </div>
+                                <i class="form-icon fa-solid fa-user" aria-hidden="true"></i>
+                                <input type="text" id="first-name" name="first-name" class="form-input" placeholder=" " required autocomplete="given-name" aria-describedby="first-name-error">
+                                <label for="first-name" class="form-label"><span data-key="firstName">First Name</span> <span class="required">*</span></label>
+                                <small class="error-message" id="first-name-error" role="alert"></small>
                             </div>
                             <div class="form-group">
-                                <label for="last-name"><span data-key="lastName">Last Name</span> <span class="required">*</span></label>
-                                <div class="input-with-icon">
-                                    <i class="fa-solid fa-user"></i>
-                                    <input type="text" id="last-name" name="last-name" placeholder="Enter your last name" required>
-                                </div>
+                                <i class="form-icon fa-solid fa-user" aria-hidden="true"></i>
+                                <input type="text" id="last-name" name="last-name" class="form-input" placeholder=" " required autocomplete="family-name" aria-describedby="last-name-error">
+                                <label for="last-name" class="form-label"><span data-key="lastName">Last Name</span> <span class="required">*</span></label>
+                                <small class="error-message" id="last-name-error" role="alert"></small>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="middle-name" data-key="middleName">Middle Name</label>
-                            <div class="input-with-icon">
-                                <i class="fa-solid fa-user"></i>
-                                <input type="text" id="middle-name" name="middle-name" placeholder="Enter your middle name">
-                            </div>
+                            <i class="form-icon fa-solid fa-user" aria-hidden="true"></i>
+                            <input type="text" id="middle-name" name="middle-name" class="form-input" placeholder=" " autocomplete="additional-name">
+                            <label for="middle-name" class="form-label" data-key="middleName">Middle Name</label>
                         </div>
+
+                        <!-- Address Fields -->
                         <label class="section-title" data-key="address">Address</label>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="house-number"><span data-key="houseNum">House Number</span> <span class="required">*</span></label>
-                                <input type="text" id="house-number" name="house-number" placeholder="Enter house number">
+                                <input type="text" id="house-number" name="house-number" class="form-input" placeholder=" " required aria-describedby="house-number-error">
+                                <label for="house-number" class="form-label"><span data-key="houseNum">House Number</span> <span class="required">*</span></label>
+                                <small class="error-message" id="house-number-error" role="alert"></small>
                             </div>
                             <div class="form-group">
-                                <label for="street"><span data-key="street">Street</span> <span class="required">*</span></label>
-                                <input type="text" id="street" name="street" placeholder="Enter street name">
+                                <input type="text" id="street" name="street" class="form-input" placeholder=" " required autocomplete="street-address" aria-describedby="street-error">
+                                <label for="street" class="form-label"><span data-key="street">Street</span> <span class="required">*</span></label>
+                                <small class="error-message" id="street-error" role="alert"></small>
                             </div>
                         </div>
+
+                        <!-- Birth Date Fields -->
                         <label class="section-title" data-key="birthDate">Birth Date</label>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="month"><span data-key="month">Month</span> <span class="required">*</span></label>
-                                <select id="month" name="month" required>
-                                    <option value="" disabled selected>Select month</option>
+                                <select id="month" name="month" class="form-input" required aria-describedby="month-error">
+                                    <option value="" disabled selected hidden></option>
                                     <option value="1">January</option>
                                     <option value="2">February</option>
                                     <option value="3">March</option>
@@ -173,26 +246,39 @@
                                     <option value="11">November</option>
                                     <option value="12">December</option>
                                 </select>
+                                <label for="month" class="form-label"><span data-key="month">Month</span> <span class="required">*</span></label>
+                                <small class="error-message" id="month-error" role="alert"></small>
                             </div>
                             <div class="form-group">
-                                <label for="day"><span data-key="day">Day</span> <span class="required">*</span></label>
-                                <select id="day" name="day" required>
-                                    <option value="" disabled selected>Select day</option>
+                                <select id="day" name="day" class="form-input" required aria-describedby="day-error">
+                                    <option value="" disabled selected hidden></option>
                                 </select>
+                                <label for="day" class="form-label"><span data-key="day">Day</span> <span class="required">*</span></label>
+                                <small class="error-message" id="day-error" role="alert"></small>
                             </div>
                             <div class="form-group">
-                                <label for="year"><span data-key="year">Year</span> <span class="required">*</span></label>
-                                <select id="year" name="year" required>
-                                    <option value="" disabled selected>Select year</option>
+                                <select id="year" name="year" class="form-input" required aria-describedby="year-error">
+                                    <option value="" disabled selected hidden></option>
                                 </select>
+                                <label for="year" class="form-label"><span data-key="year">Year</span> <span class="required">*</span></label>
+                                <small class="error-message" id="year-error" role="alert"></small>
                             </div>
                         </div>
-                        <button type="submit" class="sign-in-button" data-key="createAccountBtn">Create Account</button>
+
+                        <button type="submit" class="sign-in-button" data-key="createAccountBtn">
+                            <span class="button-text">Create Account</span>
+                            <span class="button-loader hidden" aria-hidden="true">
+                                <i class="fa-solid fa-spinner fa-spin"></i>
+                            </span>
+                        </button>
                     </form>
                 </section>
             </div>
         </div>
     </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden" role="alert" aria-live="polite" aria-atomic="true"></div>
 
     <script src="js/translations.js"></script>
     <script src="js/signup.js"></script>

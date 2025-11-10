@@ -1,17 +1,17 @@
 /* --- Global Styles --- */
 body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    /* NEW: Noto Sans Font */
+    font-family: "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
     
-    background: linear-gradient(135deg, #FFD700, #CE1126, #0038A8);
-    background-size: cover;
+    background-color: #e0e7ed; /* Clean background */
     min-height: 100vh;
 }
 
 /* --- Navigation Bar --- */
 .navbar {
-    background-color: #0038A8; /* Flag Blue */
+    background-color: #0038A8;
     color: #FFFFFF;
     padding: 15px 30px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -28,14 +28,14 @@ body {
 .navbar-logo {
     font-size: 1.5em;
     font-weight: 700;
-    color: #FFD700; /* NEW: Changed to Yellow */
+    color: #FFD700;
     text-decoration: none;
 }
 
 .navbar-menu {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 28px;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -45,9 +45,8 @@ body {
 .main-container {
     max-width: 1200px;
     margin: 30px auto;
-    padding: 30px; /* Increased padding */
+    padding: 30px;
     
-    /* NEW: This creates the rounded border/card effect */
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
@@ -63,7 +62,7 @@ body {
 /* --- Dashboard Card Styling --- */
 .dashboard-card {
     background-color: #FFFFFF;
-    border: 1px solid #f0f0f0; /* Added subtle border */
+    border: 1px solid #f0f0f0;
     border-radius: 12px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     padding: 25px;
@@ -80,7 +79,7 @@ body {
 
 .card-icon {
     font-size: 3em;
-    color: #0038A8; /* Flag Blue */
+    color: #0038A8;
     margin-bottom: 15px;
 }
 
@@ -159,7 +158,7 @@ body {
 }
 
 .dropdown-link.logout {
-    color: #CE1126; /* Flag Red */
+    color: #CE1126;
 }
 .dropdown-link.logout i {
     color: #CE1126;

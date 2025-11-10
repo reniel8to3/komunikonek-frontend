@@ -1,373 +1,758 @@
-document.addEventListener("DOMContentLoaded", function() {
+// ============================================
+// SIGNUP.JS - Improved & Production Ready
+// ============================================
 
-    // --- =============================== ---
-    // --- I18N (TRANSLATION) LOGIC ---
-    // --- =============================== ---
+document.addEventListener("DOMContentLoaded", function() {
     
-    const langEnBtn = document.getElementById('lang-en');
-    const langFilBtn = document.getElementById('lang-fil');
-    const translatableElements = document.querySelectorAll('[data-key]');
-    let currentLang = 'en';
+    // ============================================
+    // STATE MANAGEMENT
+    // ============================================
     
-    const setLanguage = (lang) => {
+    const AppState = {
+        currentLang: 'en',
+        currentStep: 1,
+        registrationType: 'email', // 'email' or 'phone'
+        accountType: 'user', // 'user' or 'admin'
+        otpSent: false,
+        otpVerified: false,
+        otpTimer: null,
+        otpCountdown: 60
+    };
+
+    // ============================================
+    // DOM ELEMENTS
+    // ============================================
+    
+    const Elements = {
+        // Language
+        langEnBtn: document.getElementById('lang-en'),
+        langFilBtn: document.getElementById('lang-fil'),
+        
+        // Steps
+        step1: document.getElementById('step-1-account'),
+        step2: document.getElementById('step-2-personal'),
+        backButton: document.getElementById('back-button'),
+        
+        // Account Type Toggle
+        signupAsSelector: document.getElementById('signup-as-selector'),
+        signupAsButtons: document.querySelectorAll('#signup-as-selector .role-button'),
+        
+        // Registration Type Toggle
+        registerWithSelector: document.getElementById('register-with-selector'),
+        registerEmailBtn: document.getElementById('register-email-btn'),
+        registerPhoneBtn: document.getElementById('register-phone-btn'),
+        
+        // Form Inputs
+        emailFormGroup: document.getElementById('email-form-group'),
+        phoneFormGroup: document.getElementById('phone-form-group'),
+        emailInput: document.getElementById('email'),
+        phoneInput: document.getElementById('phone'),
+        passwordInput: document.getElementById('password'),
+        passwordToggle: document.querySelector('.password-toggle'),
+        
+        // Password Checklist
+        passChecklist: document.getElementById('password-checklist'),
+        passLength: document.getElementById('pass-length'),
+        passCapital: document.getElementById('pass-capital'),
+        passNumber: document.getElementById('pass-number'),
+        passSymbol: document.getElementById('pass-symbol'),
+        
+        // OTP
+        sendOtpButton: document.getElementById('send-otp-button'),
+        otpSection: document.getElementById('otp-section'),
+        otpInputs: document.querySelectorAll('.otp-input'),
+        verifyOtpButton: document.getElementById('verify-otp-button'),
+        resendOtpButton: document.getElementById('resend-otp-button'),
+        otpCountdownSpan: document.getElementById('otp-countdown'),
+        otpTimer: document.getElementById('otp-timer'),
+        
+        // Step 2 Inputs
+        firstNameInput: document.getElementById('first-name'),
+        lastNameInput: document.getElementById('last-name'),
+        middleNameInput: document.getElementById('middle-name'),
+        houseNumberInput: document.getElementById('house-number'),
+        streetInput: document.getElementById('street'),
+        monthSelect: document.getElementById('month'),
+        daySelect: document.getElementById('day'),
+        yearSelect: document.getElementById('year'),
+        
+        // Forms
+        signupFormStep1: document.getElementById('signup-form-step1'),
+        signupFormStep2: document.getElementById('signup-form-step2'),
+        
+        // Slideshow
+        slides: document.querySelectorAll('.slide'),
+        dots: document.querySelectorAll('.dot'),
+        slidePrevBtn: document.getElementById('slide-prev'),
+        slideNextBtn: document.getElementById('slide-next'),
+        
+        // Toast
+        toast: document.getElementById('toast')
+    };
+
+    // ============================================
+    // TRANSLATION / I18N
+    // ============================================
+    
+    function setLanguage(lang) {
         if (typeof langStrings === 'undefined' || !langStrings[lang]) {
             console.error(`Translation for language "${lang}" not found.`);
             return;
         }
 
-        currentLang = lang;
+        AppState.currentLang = lang;
         document.documentElement.lang = lang;
         
-        translatableElements.forEach(el => {
+        document.querySelectorAll('[data-key]').forEach(el => {
             const key = el.getAttribute('data-key');
             if (!key) return;
             
             const translation = langStrings[lang][key];
+            if (!translation) return;
             
-            if (translation) {
-                if (el.tagName === 'TITLE') {
-                    document.title = "KomuniKonek | " + translation;
-                } else {
-                    el.textContent = translation;
-                }
+            if (el.tagName === 'TITLE') {
+                document.title = "KomuniKonek | " + translation;
+            } else {
+                el.textContent = translation;
             }
         });
         
-        if (lang === 'fil') {
-            if(langFilBtn) langFilBtn.classList.add('active');
-            if(langEnBtn) langEnBtn.classList.remove('active');
-        } else {
-            if(langEnBtn) langEnBtn.classList.add('active');
-            if(langFilBtn) langFilBtn.classList.remove('active');
-        }
-    };
-
-    if (langEnBtn && langFilBtn) {
-        langEnBtn.addEventListener('click', () => setLanguage('en'));
-        langFilBtn.addEventListener('click', () => setLanguage('fil'));
+        // Update active language button
+        Elements.langEnBtn?.classList.toggle('active', lang === 'en');
+        Elements.langFilBtn?.classList.toggle('active', lang === 'fil');
     }
+
+    // Initialize language buttons
+    Elements.langEnBtn?.addEventListener('click', () => setLanguage('en'));
+    Elements.langFilBtn?.addEventListener('click', () => setLanguage('fil'));
     
     if (typeof langStrings !== 'undefined') {
         setLanguage('en');
-    } else {
-        console.error("translations.js not found. Page will not be translated.");
     }
 
-
-    // --- =============================== ---
-    // --- SIGNUP PAGE LOGIC ---
-    // --- =============================== ---
-
-    // --- 1. Get ALL Elements ---
-    const step1Account = document.getElementById('step-1-account');
-    const step2Personal = document.getElementById('step-2-personal');
-    const sendOtpButton = document.getElementById('send-otp-button');
-    const otpSection = document.getElementById('otp-section');
-    const verifyOtpButton = document.getElementById('verify-otp-button');
-    const backButton = document.getElementById('back-button');
-    const signupEmailInput = document.getElementById('email');
-    const signupPasswordInput = document.getElementById('password');
-    const signupPhoneInput = document.getElementById('phone');
-    const togglePassword = document.querySelector('.password-toggle');
-    const registerEmailBtn = document.getElementById('register-email-btn');
-    const registerPhoneBtn = document.getElementById('register-phone-btn');
-    const emailFormGroup = document.getElementById('email-form-group');
-    const phoneFormGroup = document.getElementById('phone-form-group');
-    const signupOtpInputs = document.querySelectorAll('#otp-section .otp-input');
+    // ============================================
+    // UTILITY FUNCTIONS
+    // ============================================
     
-    // Get Toggles
-    const signUpAsToggle = document.getElementById('signup-as-selector');
-    const registerWithToggle = document.getElementById('register-with-selector');
-    const signUpAsButtons = signUpAsToggle ? signUpAsToggle.querySelectorAll('.role-button') : [];
-
-    // Birthday Dropdowns
-    const dayDropdown = document.getElementById('day');
-    const yearDropdown = document.getElementById('year');
-    
-    // Password Checklist
-    const passChecklist = document.getElementById('password-checklist');
-    const passLength = document.getElementById('pass-length');
-    const passCapital = document.getElementById('pass-capital');
-    const passNumber = document.getElementById('pass-number');
-    const passSymbol = document.getElementById('pass-symbol');
-
-    // --- 2. "Send OTP" Button Click (UPDATED) ---
-    if (sendOtpButton) {
-        sendOtpButton.addEventListener('click', function() {
-            if (validateStep1()) {
-                if(otpSection) otpSection.style.display = 'block';
-                this.textContent = (langStrings[currentLang] && langStrings[currentLang]['sendOtp']) ? langStrings[currentLang]['sendOtp'] : 'Send OTP';
-                console.log('OTP Sent (simulation)');
-
-                // --- NEW: Disable all inputs ---
-                if(signupEmailInput) signupEmailInput.disabled = true;
-                if(signupPhoneInput) signupPhoneInput.disabled = true;
-                if(signupPasswordInput) signupPasswordInput.disabled = true;
-                if(registerEmailBtn) registerEmailBtn.disabled = true;
-                if(registerPhoneBtn) registerPhoneBtn.disabled = true;
-                signUpAsButtons.forEach(btn => btn.disabled = true);
-                sendOtpButton.disabled = true;
-                
-                // Add disabled class for styling
-                if(signUpAsToggle) signUpAsToggle.classList.add('disabled');
-                if(registerWithToggle) registerWithToggle.classList.add('disabled');
-                // --- End of new code ---
-
-            } else {
-                console.log('Step 1 Validation Failed');
-            }
-        });
-    }
-
-    // --- 3. "Verify OTP" Button Click ---
-    if (verifyOtpButton) {
-        verifyOtpButton.addEventListener('click', function() {
-            // Here you would validate the OTP
-            console.log('OTP Verified (simulation)');
-            if(step1Account) step1Account.style.display = 'none';
-            if(step2Personal) step2Personal.style.display = 'block';
-        });
-    }
-
-    // --- 4. "Back" Button Click (UPDATED) ---
-    if (backButton) {
-        backButton.addEventListener('click', function() {
-            if(step2Personal) step2Personal.style.display = 'none';
-            if(step1Account) step1Account.style.display = 'block';
-
-            // --- NEW: Re-enable all inputs ---
-            if(signupEmailInput) signupEmailInput.disabled = false;
-            if(signupPhoneInput) signupPhoneInput.disabled = false;
-            if(signupPasswordInput) signupPasswordInput.disabled = false;
-            if(registerEmailBtn) registerEmailBtn.disabled = false;
-            if(registerPhoneBtn) registerPhoneBtn.disabled = false;
-            signUpAsButtons.forEach(btn => btn.disabled = false);
-            if(sendOtpButton) sendOtpButton.disabled = false;
-            
-            // Remove disabled class
-            if(signUpAsToggle) signUpAsToggle.classList.remove('disabled');
-            if(registerWithToggle) registerWithToggle.classList.remove('disabled');
-
-            // Hide OTP section
-            if(otpSection) otpSection.style.display = 'none';
-            // --- End of new code ---
-        });
-    }
-
-    // --- 5. Password Toggle ---
-    if (togglePassword && signupPasswordInput) {
-        togglePassword.addEventListener('click', function() {
-            const type = signupPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            signupPasswordInput.setAttribute('type', type);
-            this.classList.toggle('fa-eye');
-            this.classList.toggle('fa-eye-slash');
-        });
-    }
-
-    // --- 5b. PASSWORD CHECKLIST LOGIC ---
-    if (signupPasswordInput && passChecklist) {
-        signupPasswordInput.addEventListener('focus', () => {
-            passChecklist.style.display = 'block';
-        });
-        
-        signupPasswordInput.addEventListener('keyup', () => {
-            const pass = signupPasswordInput.value;
-            validateCheck(passLength, pass.length >= 8);
-            validateCheck(passCapital, /[A-Z]/.test(pass));
-            validateCheck(passNumber, /[0-9]/.test(pass));
-            validateCheck(passSymbol, /[^A-Za-z0-9]/.test(pass));
-        });
+    function showElement(element) {
+        element?.classList.remove('hidden');
     }
     
-    function validateCheck(element, is_valid) {
-        if (!element) return;
-        if (is_valid) {
-            element.classList.add('valid');
+    function hideElement(element) {
+        element?.classList.add('hidden');
+    }
+    
+    function toggleElement(element, show) {
+        if (show) {
+            showElement(element);
         } else {
-            element.classList.remove('valid');
+            hideElement(element);
         }
     }
+    
+    function setButtonLoading(button, isLoading) {
+        if (!button) return;
+        
+        const textSpan = button.querySelector('.button-text');
+        const loaderSpan = button.querySelector('.button-loader');
+        
+        button.disabled = isLoading;
+        
+        if (textSpan && loaderSpan) {
+            toggleElement(loaderSpan, isLoading);
+        }
+    }
+    
+    function showToast(message, type = 'info') {
+        if (!Elements.toast) return;
+        
+        Elements.toast.textContent = message;
+        Elements.toast.className = `toast ${type}`;
+        showElement(Elements.toast);
+        
+        setTimeout(() => {
+            hideElement(Elements.toast);
+        }, 3000);
+    }
+    
+    // ============================================
+    // VALIDATION FUNCTIONS
+    // ============================================
+    
+    function isValidEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(String(email).toLowerCase());
+    }
+    
+    function isValidPhone(phone) {
+        return /^[0-9]{10}$/.test(phone);
+    }
+    
+    function isValidPassword(password) {
+        return password.length >= 8 &&
+               /[A-Z]/.test(password) &&
+               /[0-9]/.test(password) &&
+               /[^A-Za-z0-9]/.test(password);
+    }
+    
+    function setError(input, messageKey) {
+        if (!input) return;
+        
+        let message = messageKey;
+        if (typeof langStrings !== 'undefined' && 
+            langStrings[AppState.currentLang]?.[messageKey]) {
+            message = langStrings[AppState.currentLang][messageKey];
+        }
 
-    // --- 6. Sliding Toggle Logic ---
+        const formGroup = input.closest('.form-group');
+        if (!formGroup) return;
+        
+        const errorDisplay = formGroup.querySelector('.error-message');
+        if (errorDisplay) {
+            errorDisplay.textContent = message;
+        }
+        
+        formGroup.classList.add('error');
+        input.setAttribute('aria-invalid', 'true');
+    }
+
+    function setSuccess(input) {
+        if (!input) return;
+        
+        const formGroup = input.closest('.form-group');
+        if (!formGroup) return;
+        
+        const errorDisplay = formGroup.querySelector('.error-message');
+        if (errorDisplay) {
+            errorDisplay.textContent = '';
+        }
+        
+        formGroup.classList.remove('error');
+        input.setAttribute('aria-invalid', 'false');
+    }
+    
+    function validateStep1() {
+        let isValid = true;
+        
+        // Validate email or phone
+        if (AppState.registrationType === 'email') {
+            const emailValue = Elements.emailInput?.value.trim();
+            
+            if (!emailValue) {
+                setError(Elements.emailInput, 'errRequired');
+                isValid = false;
+            } else if (!isValidEmail(emailValue)) {
+                setError(Elements.emailInput, 'errEmail');
+                isValid = false;
+            } else {
+                setSuccess(Elements.emailInput);
+            }
+        } else {
+            const phoneValue = Elements.phoneInput?.value.trim();
+            
+            if (!phoneValue) {
+                setError(Elements.phoneInput, 'errRequired');
+                isValid = false;
+            } else if (!isValidPhone(phoneValue)) {
+                setError(Elements.phoneInput, 'errPhoneLength');
+                isValid = false;
+            } else {
+                setSuccess(Elements.phoneInput);
+            }
+        }
+        
+        // Validate password
+        const passwordValue = Elements.passwordInput?.value.trim();
+        
+        if (!passwordValue) {
+            setError(Elements.passwordInput, 'errRequired');
+            isValid = false;
+        } else if (!isValidPassword(passwordValue)) {
+            setError(Elements.passwordInput, 'errPassRequirements');
+            isValid = false;
+        } else {
+            setSuccess(Elements.passwordInput);
+        }
+        
+        return isValid;
+    }
+    
+    function validateStep2() {
+        let isValid = true;
+        const requiredFields = [
+            { input: Elements.firstNameInput, key: 'errRequired' },
+            { input: Elements.lastNameInput, key: 'errRequired' },
+            { input: Elements.houseNumberInput, key: 'errRequired' },
+            { input: Elements.streetInput, key: 'errRequired' },
+            { input: Elements.monthSelect, key: 'errRequired' },
+            { input: Elements.daySelect, key: 'errRequired' },
+            { input: Elements.yearSelect, key: 'errRequired' }
+        ];
+        
+        requiredFields.forEach(field => {
+            if (!field.input?.value.trim()) {
+                setError(field.input, field.key);
+                isValid = false;
+            } else {
+                setSuccess(field.input);
+            }
+        });
+        
+        return isValid;
+    }
+
+    // ============================================
+    // PASSWORD HANDLING
+    // ============================================
+    
+    function updatePasswordChecklist(password) {
+        if (!Elements.passChecklist) return;
+        
+        const checks = [
+            { element: Elements.passLength, valid: password.length >= 8 },
+            { element: Elements.passCapital, valid: /[A-Z]/.test(password) },
+            { element: Elements.passNumber, valid: /[0-9]/.test(password) },
+            { element: Elements.passSymbol, valid: /[^A-Za-z0-9]/.test(password) }
+        ];
+        
+        checks.forEach(check => {
+            check.element?.classList.toggle('valid', check.valid);
+        });
+    }
+    
+    Elements.passwordInput?.addEventListener('focus', () => {
+        showElement(Elements.passChecklist);
+    });
+    
+    Elements.passwordInput?.addEventListener('blur', () => {
+        // Keep checklist visible if there are errors
+        if (!isValidPassword(Elements.passwordInput.value)) {
+            return;
+        }
+        hideElement(Elements.passChecklist);
+    });
+    
+    Elements.passwordInput?.addEventListener('input', (e) => {
+        updatePasswordChecklist(e.target.value);
+    });
+    
+    Elements.passwordToggle?.addEventListener('click', function() {
+        if (!Elements.passwordInput) return;
+        
+        const type = Elements.passwordInput.type === 'password' ? 'text' : 'password';
+        Elements.passwordInput.type = type;
+        
+        const icon = this.querySelector('i');
+        icon?.classList.toggle('fa-eye');
+        icon?.classList.toggle('fa-eye-slash');
+        
+        this.setAttribute('aria-label', 
+            type === 'password' ? 'Show password' : 'Hide password'
+        );
+    });
+
+    // ============================================
+    // TOGGLE HANDLERS
+    // ============================================
+    
     function setupSlidingToggle(selectorElement) {
         if (!selectorElement) return;
+        
         const glider = selectorElement.querySelector('.glider');
         const buttons = selectorElement.querySelectorAll('.role-button');
         
         if (!glider || buttons.length === 0) return;
 
+        const updateGlider = (button) => {
+            glider.style.width = `${button.offsetWidth}px`;
+            glider.style.transform = `translateX(${button.offsetLeft}px)`;
+        };
+
         const activeButton = selectorElement.querySelector('.role-button.active');
         if (activeButton) {
-            glider.style.width = `${activeButton.offsetWidth}px`;
-            glider.style.transform = `translateX(${activeButton.offsetLeft - 3}px)`;
+            updateGlider(activeButton);
         }
 
         buttons.forEach(button => {
             button.addEventListener('click', function() {
-                if (this.disabled) return; // Do nothing if disabled
-                buttons.forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
+                if (this.disabled) return;
                 
-                glider.style.width = `${this.offsetWidth}px`;
-                glider.style.transform = `translateX(${this.offsetLeft - 3}px)`;
+                buttons.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-checked', 'false');
+                });
+                
+                this.classList.add('active');
+                this.setAttribute('aria-checked', 'true');
+                updateGlider(this);
             });
         });
     }
     
-    setupSlidingToggle(signUpAsToggle);
-    setupSlidingToggle(registerWithToggle);
-
-
-    // --- 7. Continuous OTP Input Logic ---
-    setupOtpInput(signupOtpInputs);
-
-
-    // --- 8. Email/Phone Toggle Logic ---
-    if (registerEmailBtn && registerPhoneBtn && emailFormGroup && phoneFormGroup) {
-        registerEmailBtn.addEventListener('click', function() {
-            if (this.disabled) return; // Do nothing if disabled
-            emailFormGroup.style.display = 'block';
-            phoneFormGroup.style.display = 'none';
+    setupSlidingToggle(Elements.signupAsSelector);
+    setupSlidingToggle(Elements.registerWithSelector);
+    
+    // Account type selection
+    Elements.signupAsButtons?.forEach(button => {
+        button.addEventListener('click', function() {
+            AppState.accountType = this.dataset.role || 'user';
         });
-        registerPhoneBtn.addEventListener('click', function() {
-            if (this.disabled) return; // Do nothing if disabled
-            emailFormGroup.style.display = 'none';
-            phoneFormGroup.style.display = 'block';
-        });
-    }
-
-    // --- 9. Phone Input Validation (Numbers Only) ---
-    if (signupPhoneInput) {
-        signupPhoneInput.addEventListener('input', function() {
-            this.value = this.value.replace(/[^0-9]/g, '');
-        });
-    }
-
-    // --- 10. Validation Helper Functions ---
-    function setError(input, messageKey) {
-        let message = messageKey;
-        if (typeof langStrings !== 'undefined' && langStrings[currentLang] && langStrings[currentLang][messageKey]) {
-            message = langStrings[currentLang][messageKey];
+    });
+    
+    // Registration type toggle
+    Elements.registerEmailBtn?.addEventListener('click', function() {
+        if (this.disabled) return;
+        
+        AppState.registrationType = 'email';
+        showElement(Elements.emailFormGroup);
+        hideElement(Elements.phoneFormGroup);
+        
+        // Clear phone validation
+        if (Elements.phoneInput) {
+            setSuccess(Elements.phoneInput);
+            Elements.phoneInput.value = '';
         }
-
-        const formGroup = input.closest('.form-group');
-        if (!formGroup) return;
-        const errorDisplay = formGroup.querySelector('.error-message');
-        if (errorDisplay) {
-            errorDisplay.innerText = message;
+    });
+    
+    Elements.registerPhoneBtn?.addEventListener('click', function() {
+        if (this.disabled) return;
+        
+        AppState.registrationType = 'phone';
+        hideElement(Elements.emailFormGroup);
+        showElement(Elements.phoneFormGroup);
+        
+        // Clear email validation
+        if (Elements.emailInput) {
+            setSuccess(Elements.emailInput);
+            Elements.emailInput.value = '';
         }
-        formGroup.classList.add('error');
-    }
+    });
 
-    function setSuccess(input) {
-        const formGroup = input.closest('.form-group');
-        if (!formGroup) return;
-        const errorDisplay = formGroup.querySelector('.error-message');
-        if(errorDisplay) {
-            errorDisplay.innerText = '';
-        }
-        formGroup.classList.remove('error');
-    }
-
-    function isValidEmail(email) {
-        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(String(email).toLowerCase());
-    }
-
-    // --- 11. Step 1 Validation Function ---
-    function validateStep1() {
-        let isValid = true;
-        const passwordValue = signupPasswordInput.value.trim();
-        const isEmailActive = registerEmailBtn.classList.contains('active');
-
-        if (isEmailActive) {
-            const emailValue = signupEmailInput.value.trim();
-            if (emailValue === '') {
-                setError(signupEmailInput, 'errRequired');
-                isValid = false;
-            } else if (!isValidEmail(emailValue)) {
-                setError(signupEmailInput, 'errEmail');
-                isValid = false;
-            } else {
-                setSuccess(signupEmailInput);
-            }
-        } else {
-            const phoneValue = signupPhoneInput.value.trim();
-            if (phoneValue === '') {
-                setError(signupPhoneInput, 'errRequired');
-                isValid = false;
-            } else if (phoneValue.length < 10) {
-                setError(signupPhoneInput, 'errPhoneLength');
-                isValid = false;
-            } else {
-                setSuccess(signupPhoneInput);
-            }
-        }
-
-        // Validate Password (common to both)
-        if (passwordValue === '') {
-            setError(signupPasswordInput, 'errRequired');
-            isValid = false;
-        } else if (passwordValue.length < 8) {
-            setError(signupPasswordInput, 'errPassLength');
-            isValid = false;
-        } else {
-            setSuccess(signupPasswordInput);
-        }
-
-        return isValid;
-    }
-
-    // --- 12. Central OTP setup function ---
-    function setupOtpInput(otpInputs) {
-        otpInputs.forEach((input, index) => {
+    // ============================================
+    // OTP HANDLING
+    // ============================================
+    
+    function setupOtpInputs() {
+        Elements.otpInputs.forEach((input, index) => {
+            // Auto-focus next input
             input.addEventListener('input', function() {
                 this.value = this.value.replace(/[^0-9]/g, '');
-                if (this.value && index < otpInputs.length - 1) {
-                    otpInputs[index + 1].focus();
+                
+                if (this.value && index < Elements.otpInputs.length - 1) {
+                    Elements.otpInputs[index + 1].focus();
                 }
             });
+            
+            // Handle backspace
             input.addEventListener('keydown', (e) => {
                 if (e.key === 'Backspace' && !input.value && index > 0) {
                     e.preventDefault();
-                    otpInputs[index - 1].focus();
+                    Elements.otpInputs[index - 1].focus();
                 }
+                
+                // Arrow key navigation
                 if (e.key === 'ArrowLeft' && index > 0) {
-                    otpInputs[index - 1].focus();
+                    Elements.otpInputs[index - 1].focus();
                 }
-                if (e.key === 'ArrowRight' && index < otpInputs.length - 1) {
-                    otpInputs[index + 1].focus();
+                if (e.key === 'ArrowRight' && index < Elements.otpInputs.length - 1) {
+                    Elements.otpInputs[index + 1].focus();
                 }
             });
+            
+            // Handle paste
             input.addEventListener('paste', function(e) {
                 e.preventDefault();
                 const pastedData = e.clipboardData.getData('text').replace(/[^0-9]/g, '');
-                for (let i = 0; i < pastedData.length; i++) {
-                    if (index + i < otpInputs.length) {
-                        otpInputs[index + i].value = pastedData[i];
-                    }
+                
+                for (let i = 0; i < pastedData.length && index + i < Elements.otpInputs.length; i++) {
+                    Elements.otpInputs[index + i].value = pastedData[i];
                 }
-                const lastFilledIndex = Math.min(index + pastedData.length - 1, otpInputs.length - 1);
-                if (lastFilledIndex >= 0) {
-                    otpInputs[lastFilledIndex].focus();
-                }
+                
+                const lastIndex = Math.min(index + pastedData.length - 1, Elements.otpInputs.length - 1);
+                Elements.otpInputs[lastIndex].focus();
             });
         });
     }
+    
+    setupOtpInputs();
+    
+    function startOtpTimer() {
+        AppState.otpCountdown = 60;
+        
+        if (Elements.resendOtpButton) {
+            hideElement(Elements.resendOtpButton);
+        }
+        if (Elements.otpTimer) {
+            showElement(Elements.otpTimer);
+        }
+        
+        AppState.otpTimer = setInterval(() => {
+            AppState.otpCountdown--;
+            
+            if (Elements.otpCountdownSpan) {
+                Elements.otpCountdownSpan.textContent = AppState.otpCountdown;
+            }
+            
+            if (AppState.otpCountdown <= 0) {
+                clearInterval(AppState.otpTimer);
+                hideElement(Elements.otpTimer);
+                showElement(Elements.resendOtpButton);
+            }
+        }, 1000);
+    }
+    
+    function getOtpCode() {
+        return Array.from(Elements.otpInputs)
+            .map(input => input.value)
+            .join('');
+    }
+    
+    function clearOtpInputs() {
+        Elements.otpInputs.forEach(input => {
+            input.value = '';
+        });
+        Elements.otpInputs[0]?.focus();
+    }
+    
+    // Send OTP
+    Elements.sendOtpButton?.addEventListener('click', async function() {
+        if (!validateStep1()) {
+            showToast('Please fix the errors before continuing', 'error');
+            return;
+        }
+        
+        setButtonLoading(this, true);
+        
+        try {
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            // TODO: Replace with actual API call
+            // const response = await fetch('/api/send-otp', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({
+            //         type: AppState.registrationType,
+            //         value: AppState.registrationType === 'email' 
+            //             ? Elements.emailInput.value 
+            //             : Elements.phoneInput.value
+            //     })
+            // });
+            
+            AppState.otpSent = true;
+            showElement(Elements.otpSection);
+            startOtpTimer();
+            
+            // Disable and hide send OTP button
+            hideElement(Elements.sendOtpButton);
+            
+            // Disable form inputs
+            [Elements.emailInput, Elements.phoneInput, Elements.passwordInput].forEach(input => {
+                if (input) input.disabled = true;
+            });
+            
+            Elements.signupAsSelector?.classList.add('disabled');
+            Elements.registerWithSelector?.classList.add('disabled');
+            
+            showToast('OTP sent successfully!', 'success');
+            
+            // Focus first OTP input
+            Elements.otpInputs[0]?.focus();
+            
+        } catch (error) {
+            console.error('Error sending OTP:', error);
+            showToast('Failed to send OTP. Please try again.', 'error');
+        } finally {
+            setButtonLoading(this, false);
+        }
+    });
+    
+    // Resend OTP
+    Elements.resendOtpButton?.addEventListener('click', async function() {
+        setButtonLoading(Elements.sendOtpButton, true);
+        clearOtpInputs();
+        
+        try {
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            // TODO: Replace with actual API call
+            
+            startOtpTimer();
+            showToast('OTP resent successfully!', 'success');
+            
+        } catch (error) {
+            console.error('Error resending OTP:', error);
+            showToast('Failed to resend OTP. Please try again.', 'error');
+        } finally {
+            setButtonLoading(Elements.sendOtpButton, false);
+        }
+    });
+    
+    // Verify OTP
+    Elements.verifyOtpButton?.addEventListener('click', async function() {
+        const otpCode = getOtpCode();
+        
+        if (otpCode.length !== 6) {
+            showToast('Please enter the complete OTP code', 'error');
+            return;
+        }
+        
+        setButtonLoading(this, true);
+        
+        try {
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            // TODO: Replace with actual API call
+            // const response = await fetch('/api/verify-otp', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({ otp: otpCode })
+            // });
+            
+            // Simulate success
+            AppState.otpVerified = true;
+            clearInterval(AppState.otpTimer);
+            
+            // Move to step 2
+            hideElement(Elements.step1);
+            showElement(Elements.step2);
+            AppState.currentStep = 2;
+            
+            showToast('OTP verified successfully!', 'success');
+            
+            // Focus first input in step 2
+            Elements.firstNameInput?.focus();
+            
+        } catch (error) {
+            console.error('Error verifying OTP:', error);
+            showToast('Invalid OTP. Please try again.', 'error');
+            clearOtpInputs();
+        } finally {
+            setButtonLoading(this, false);
+        }
+    });
 
-    // --- 13. Populate Birthday Dropdowns ---
+    // ============================================
+    // STEP NAVIGATION
+    // ============================================
+    
+    Elements.backButton?.addEventListener('click', function() {
+        hideElement(Elements.step2);
+        showElement(Elements.step1);
+        AppState.currentStep = 1;
+        
+        // Reset OTP section if going back
+        if (AppState.otpSent) {
+            // Keep OTP section visible but allow re-edit
+            showElement(Elements.sendOtpButton);
+            hideElement(Elements.otpSection);
+            clearInterval(AppState.otpTimer);
+            AppState.otpSent = false;
+            AppState.otpVerified = false;
+            clearOtpInputs();
+        }
+        
+        // Re-enable inputs
+        [Elements.emailInput, Elements.phoneInput, Elements.passwordInput].forEach(input => {
+            if (input) input.disabled = false;
+        });
+        
+        Elements.signupAsSelector?.classList.remove('disabled');
+        Elements.registerWithSelector?.classList.remove('disabled');
+    });
+
+    // ============================================
+    // FORM SUBMISSIONS
+    // ============================================
+    
+    Elements.signupFormStep2?.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        if (!validateStep2()) {
+            showToast('Please fill in all required fields', 'error');
+            return;
+        }
+        
+        const submitButton = this.querySelector('button[type="submit"]');
+        setButtonLoading(submitButton, true);
+        
+        try {
+            // Gather form data
+            const formData = {
+                accountType: AppState.accountType,
+                [AppState.registrationType]: AppState.registrationType === 'email' 
+                    ? Elements.emailInput?.value 
+                    : '+63' + Elements.phoneInput?.value,
+                password: Elements.passwordInput?.value,
+                firstName: Elements.firstNameInput?.value,
+                lastName: Elements.lastNameInput?.value,
+                middleName: Elements.middleNameInput?.value,
+                address: {
+                    houseNumber: Elements.houseNumberInput?.value,
+                    street: Elements.streetInput?.value
+                },
+                birthDate: {
+                    month: Elements.monthSelect?.value,
+                    day: Elements.daySelect?.value,
+                    year: Elements.yearSelect?.value
+                }
+            };
+            
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            // TODO: Replace with actual API call
+            // const response = await fetch('/api/signup', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify(formData)
+            // });
+            
+            console.log('Signup data:', formData);
+            
+            showToast('Account created successfully!', 'success');
+            
+            // Redirect after success
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 2000);
+            
+        } catch (error) {
+            console.error('Error creating account:', error);
+            showToast('Failed to create account. Please try again.', 'error');
+        } finally {
+            setButtonLoading(submitButton, false);
+        }
+    });
+
+    // ============================================
+    // PHONE INPUT FORMATTING
+    // ============================================
+    
+    Elements.phoneInput?.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
+    // ============================================
+    // BIRTHDAY DROPDOWNS
+    // ============================================
+    
     function populateDays() {
-        if (!dayDropdown) return;
+        if (!Elements.daySelect) return;
+        
         for (let i = 1; i <= 31; i++) {
             const option = document.createElement('option');
             option.value = i;
-            option.text = i;
-            dayDropdown.appendChild(option);
+            option.textContent = i;
+            Elements.daySelect.appendChild(option);
         }
     }
 
     function populateYears() {
-        if (!yearDropdown) return;
+        if (!Elements.yearSelect) return;
+        
         const currentYear = new Date().getFullYear();
         const maxYear = currentYear - 18; // Must be 18+
         const minYear = currentYear - 100; // Max 100 years old
@@ -375,12 +760,88 @@ document.addEventListener("DOMContentLoaded", function() {
         for (let i = maxYear; i >= minYear; i--) {
             const option = document.createElement('option');
             option.value = i;
-            option.text = i;
-            yearDropdown.appendChild(option);
+            option.textContent = i;
+            Elements.yearSelect.appendChild(option);
         }
     }
 
     populateDays();
     populateYears();
+
+    // ============================================
+    // SLIDESHOW
+    // ============================================
+    
+    let slideIndex = 0;
+    let slideInterval;
+
+    function showSlide(n) {
+        if (Elements.slides.length === 0) return;
+        
+        slideIndex = (n + Elements.slides.length) % Elements.slides.length;
+        
+        Elements.slides.forEach((slide, index) => {
+            slide.classList.toggle('active', index === slideIndex);
+        });
+        
+        Elements.dots.forEach((dot, index) => {
+            const isActive = index === slideIndex;
+            dot.classList.toggle('active', isActive);
+            dot.setAttribute('aria-selected', isActive);
+        });
+    }
+
+    function nextSlide() {
+        showSlide(++slideIndex);
+    }
+
+    function prevSlide() {
+        showSlide(--slideIndex);
+    }
+
+    function resetSlideTimer() {
+        clearInterval(slideInterval);
+        slideInterval = setInterval(nextSlide, 4000);
+    }
+
+    Elements.dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            showSlide(index);
+            resetSlideTimer();
+        });
+    });
+
+    Elements.slidePrevBtn?.addEventListener('click', () => {
+        prevSlide();
+        resetSlideTimer();
+    });
+
+    Elements.slideNextBtn?.addEventListener('click', () => {
+        nextSlide();
+        resetSlideTimer();
+    });
+
+    // Initialize slideshow
+    showSlide(slideIndex);
+    resetSlideTimer();
+
+    // Pause slideshow on hover
+    const slideshowContainer = document.querySelector('.slideshow-container');
+    slideshowContainer?.addEventListener('mouseenter', () => {
+        clearInterval(slideInterval);
+    });
+    
+    slideshowContainer?.addEventListener('mouseleave', () => {
+        resetSlideTimer();
+    });
+
+    // ============================================
+    // CLEANUP
+    // ============================================
+    
+    window.addEventListener('beforeunload', () => {
+        clearInterval(slideInterval);
+        clearInterval(AppState.otpTimer);
+    });
 
 });

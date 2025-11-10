@@ -1,6 +1,6 @@
 /* --- Global Styles and Background --- */
 body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
     display: flex;
@@ -8,8 +8,8 @@ body {
     align-items: center;
     min-height: 100vh;
     
-    background: linear-gradient(135deg, #FFD700, #CE1126, #0038A8);
-    background-size: cover;
+    /* Reverted to clean background */
+    background-color: #f7f9fc;
 }
 
 .login-container {
@@ -24,66 +24,68 @@ body {
 .split-container {
     display: flex;
     background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+    border-radius: 16px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     width: 100%;
     max-width: 900px;
     overflow: hidden; 
 }
 
 /* --- ======================== --- */
-/* ---  LEFT WELCOME PANEL  --- */
+/* ---  LEFT WELCOME PANEL (UPDATED) --- */
 /* --- ======================== --- */
 .welcome-panel {
     flex: 1;
-    background-color: #f0f2f5;
+    /* NEW: Bright gradient background */
+    background: linear-gradient(135deg, #FFD700, #CE1126, #0038A8);
+    
     padding: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* This centers the inner wrapper */
+    justify-content: center;
     text-align: center;
     position: relative;
     overflow: hidden;
     z-index: 1;
 }
-
 .welcome-panel-inner {
     width: 100%;
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
-
 .welcome-panel::before {
-    content: '';
-    position: absolute;
-    top: -100px;
-    left: -150px;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(0, 56, 168, 0.05), transparent 70%);
-    z-index: -1;
+    display: none;
 }
-
 .welcome-content {
     text-align: center;
     width: 100%;
     box-sizing: border-box;
     margin-bottom: 60px;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
+/* NEW: Text on gradient is white */
 .welcome-content h2 {
     margin-top: 0;
-    color: #212529;
+    color: #ffffff;
     font-size: 2.2em;
     font-weight: 600;
     line-height: 1.2;
 }
 .welcome-content p {
-    color: #6c757d;
+    color: rgba(255, 255, 255, 0.9);
     font-size: 1.1em;
     margin-bottom: 0;
 }
 .tagline {
     font-size: 1em;
-    color: #0038A8;
+    color: #ffffff;
     font-weight: 500;
     margin-top: 5px;
 }
@@ -91,41 +93,44 @@ body {
 /* Slideshow Container */
 .slideshow-container {
     position: relative;
-    min-height: 220px;
     width: 100%;
 }
-
 .slide {
     display: none;
     width: 100%;
-    background-color: #ffffff;
-    border: 1px solid #dee2e6;
+    /* NEW: Transparent background */
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 12px;
     padding: 30px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.05);
     box-sizing: border-box;
+    height: 360px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 .slide.active {
-    display: block;
+    display: flex;
 }
-
 .slide-icon {
     height: 120px;
     margin-bottom: 15px;
+    flex-shrink: 0;
 }
 .slide-icon svg {
     height: 100%;
     width: auto;
 }
-
 .slide h3 {
     margin-top: 0;
-    color: #212529;
+    color: #ffffff; /* NEW: White text */
     font-size: 1.8em;
     font-weight: 600;
 }
 .slide p {
-    color: #6c757d;
+    color: rgba(255, 255, 255, 0.9); /* NEW: White text */
     font-size: 1.1em;
     margin-bottom: 0;
 }
@@ -139,13 +144,11 @@ body {
   to {opacity: 1}
 }
 
-/* --- THIS IS THE FIX (Part 1) --- */
 .slide-nav {
     cursor: pointer;
     position: absolute;
     top: 50%;
-    transform: translateY(-50%); /* This correctly centers the button */
-    /* margin-top: -22px; <-- REMOVED this incorrect line */
+    transform: translateY(-50%);
     padding: 12px;
     color: white;
     font-weight: bold;
@@ -157,17 +160,12 @@ body {
     border: none;
     background-color: rgba(0, 0, 0, 0.3);
     z-index: 10;
-    
-    opacity: 0; /* Hidden by default */
+    opacity: 0;
     transition: opacity 0.3s ease;
 }
-
-/* --- THIS IS THE FIX (Part 2) --- */
-/* Show nav buttons on slideshow hover */
 .slideshow-container:hover .slide-nav {
     opacity: 1;
 }
-
 .slide-nav:hover {
     background-color: rgba(0, 0, 0, 0.5);
 }
@@ -187,18 +185,18 @@ body {
     height: 10px;
     width: 10px;
     margin: 0 5px;
-    background-color: #dee2e6;
+    background-color: rgba(255, 255, 255, 0.4); /* NEW: Light dots */
     border-radius: 50%;
     display: inline-block;
     transition: background-color 0.6s ease;
 }
 .dot.active, .dot:hover {
-    background-color: #0038A8;
+    background-color: #FFFFFF; /* NEW: White active dot */
 }
 /* --- END OF WELCOME STYLES --- */
 
 
-/* --- Right Login Panel --- */
+/* --- Right Login Panel (Back to white) --- */
 .login-panel {
     flex: 1;
     padding: 40px;
@@ -208,25 +206,23 @@ body {
     text-align: center;
     align-items: center;
     position: relative;
+    background-color: #ffffff; /* Reverted to white */
 }
 
 /* --- Role Selector --- */
-.role-selector-wrapper { margin-bottom: 20px; }
-.login-as-text { color: #6c757d; font-size: 0.9em; }
-
+.login-as-text { color: #444746; font-size: 0.9em; }
 .sign-in-text {
-    color: #6c757d;
+    color: #444746;
     font-size: 1em;
     margin-bottom: 25px;
 }
-
 .role-selector {
     display: flex;
     position: relative;
-    background-color: #f0f0f0;
-    border-radius: 20px;
-    border: 1px solid #dee2e6;
-    padding: 3px;
+    background-color: transparent;
+    border-radius: 100px;
+    border: 1px solid #e0e0e0;
+    padding: 0;
     width: 100%;
     max-width: 250px;
 }
@@ -236,10 +232,10 @@ body {
     border: none;
     padding: 8px 10px;
     cursor: pointer;
-    color: #6c757d;
+    color: #444746;
     transition: color 0.3s ease;
     font-weight: 500;
-    border-radius: 17px;
+    border-radius: 100px;
     position: relative;
     z-index: 2;
 }
@@ -249,84 +245,89 @@ body {
 }
 .glider {
     position: absolute;
-    top: 3px;
-    height: calc(100% - 6px);
+    top: 0;
+    height: 100%;
     width: 50%;
-    background-color: #ffffff;
-    border-radius: 17px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    background-color: #e8eaf6;
+    border-radius: 100px;
+    box-shadow: none;
     transition: transform 0.3s ease-in-out;
     z-index: 1;
 }
 
-/* --- Form Groups and Inputs --- */
+/* --- Material Text Fields --- */
 .form-group {
+    position: relative;
     text-align: left;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     width: 100%;
 }
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: #212529;
-    font-size: 0.9em;
-    font-weight: 500;
+.form-label {
+    position: absolute;
+    top: 14px;
+    left: 40px;
+    font-size: 1em;
+    color: #6c757d;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+    padding: 0 5px;
 }
-.required { color: #CE1126; }
-
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="tel"] {
+.form-icon {
+    position: absolute;
+    top: 15px;
+    left: 12px;
+    color: #6c757d;
+}
+.form-input {
     width: 100%;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    padding: 12px 15px;
-    background-color: #fdfdfd;
+    border: 1px solid #8e9190;
+    border-radius: 4px;
+    padding: 14px 15px 14px 40px;
+    background-color: #ffffff;
     transition: border-color 0.3s;
     font-family: inherit;
     font-size: 1em;
     color: #212529;
     box-sizing: border-box;
 }
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus,
-input[type="tel"]:focus {
-    outline: none;
-    border-color: #0038A8;
-    box-shadow: 0 0 0 3px rgba(0, 56, 168, 0.1);
-}
-
-.input-with-icon {
-    display: flex;
-    align-items: center;
-    border: 1px solid #dee2e6; 
-    border-radius: 8px;
-    padding: 0 15px;
-    background-color: #fdfdfd;
-    transition: border-color 0.3s;
-}
-.input-with-icon:focus-within {
-    border-color: #0038A8;
-    box-shadow: 0 0 0 3px rgba(0, 56, 168, 0.1);
-}
-.input-with-icon i {
-    color: #6c757d;
-    margin-right: 10px;
-}
-.input-with-icon input {
-    flex-grow: 1;
-    border: none;
-    outline: none;
-    padding: 12px 0;
-    background: none;
+.form-group .phone-prefix {
+    position: absolute;
+    top: 15px;
+    left: 40px;
     color: #212529;
 }
+.form-group #login-phone {
+    padding-left: 75px;
+}
+.form-group #login-phone + .form-label {
+    left: 70px; 
+}
+.form-input:focus + .form-label,
+.form-input:not(:placeholder-shown) + .form-label {
+    top: -8px;
+    left: 38px;
+    font-size: 0.8em;
+    color: #0038A8;
+}
+.form-input:focus {
+    outline: none;
+    border-color: #0038A8;
+    box-shadow: 0 0 0 1px #0038A8;
+}
+.form-input:focus + .form-label {
+    color: #0038A8;
+}
+.form-group #login-phone:focus + .form-label,
+.form-group #login-phone:not(:placeholder-shown) + .form-label {
+    left: 68px;
+}
 .password-toggle {
+    position: absolute;
+    top: 15px;
+    right: 15px;
     cursor: pointer;
-    color: #6c757d !important;
-    margin-left: 10px;
+    color: #6c757d;
 }
 
 /* --- Form Options --- */
@@ -336,14 +337,16 @@ input[type="tel"]:focus {
     align-items: center;
     font-size: 0.9em;
     margin-bottom: 20px;
+    width: 100%;
+    gap: 20px;
 }
 .checkbox-label {
     cursor: pointer;
-    color: #6c757d;
+    color: #444746;
     display: flex;
     align-items: center;
 }
-.checkbox-label input { margin-right: 5px; }
+.checkbox-label input { margin-right: 8px; }
 .forgot-password,
 .signup-link {
     color: #CE1126;
@@ -352,17 +355,17 @@ input[type="tel"]:focus {
 }
 .forgot-password:hover, .signup-link:hover { text-decoration: underline; }
 
-/* --- Main Buttons --- */
+/* --- Main Buttons (Pill shaped) --- */
 .sign-in-button {
     width: 100%;
     padding: 12px;
     background-color: #0038A8;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 100px;
     cursor: pointer;
-    font-size: 1.1em;
-    font-weight: bold;
+    font-size: 1em;
+    font-weight: 500;
     transition: background-color 0.3s, opacity 0.3s;
     margin-bottom: 20px;
 }
@@ -385,14 +388,14 @@ input[type="tel"]:focus {
 .separator:not(:empty)::before { margin-right: .5em; }
 .separator:not(:empty)::after { margin-left: .5em; }
 
-/* --- Phone Sign In Button (Ghost Button) --- */
+/* --- Phone Sign In Button (Outlined Button) --- */
 .phone-sign-in-button {
     width: 100%;
     padding: 12px;
-    background-color: white;
-    color: #212529;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
+    background-color: transparent;
+    color: #0038A8;
+    border: 1px solid #e0e0e0;
+    border-radius: 100px;
     cursor: pointer;
     font-size: 1em;
     transition: all 0.3s;
@@ -401,24 +404,17 @@ input[type="tel"]:focus {
 }
 .phone-sign-in-button i { margin-right: 8px; }
 .phone-sign-in-button:hover {
-    background-color: #f8f9fa;
-    border-color: #6c757d;
+    background-color: #f0f5ff;
+    border-color: #0038A8;
 }
 
 /* --- Sign Up Prompt --- */
 .signup-prompt {
     font-size: 0.9em;
-    color: #6c757d;
+    color: #444746;
 }
 
 /* --- Phone/OTP Styles --- */
-.phone-prefix {
-    font-weight: 500;
-    color: #212529;
-    padding-right: 10px;
-    margin-right: 10px;
-    border-right: 1px solid #dee2e6;
-}
 .otp-success-text {
     color: #28a745;
     font-weight: 500;
@@ -436,6 +432,12 @@ input[type="tel"]:focus {
     text-align: center;
     font-size: 1.2em;
     padding: 0;
+    border: 1px solid #8e9190;
+    border-radius: 4px;
+}
+.otp-input:focus {
+    border-color: #0038A8;
+    box-shadow: 0 0 0 1px #0038A8;
 }
 
 /* --- VALIDATION STYLES --- */
@@ -446,9 +448,15 @@ input[type="tel"]:focus {
     display: none;
     margin-top: 5px;
 }
-.form-group.error .input-with-icon {
+.form-group.error .form-input {
     border-color: #CE1126;
-    background-color: #fff6f6;
+}
+.form-group.error .form-label {
+    color: #CE1126;
+}
+.form-group.error .form-input:focus {
+    border-color: #CE1126;
+    box-shadow: 0 0 0 1px #CE1126;
 }
 .form-group.error .error-message {
     display: block;
@@ -459,14 +467,12 @@ input[type="tel"]:focus {
     position: absolute;
     top: 20px;
     right: 40px;
-    
     display: flex;
     align-items: center;
     gap: 5px;
     background-color: #f0f0f0;
     padding: 5px 10px;
     border-radius: 20px;
-    
     margin-bottom: 0; 
     box-shadow: none;
 }
@@ -506,8 +512,8 @@ input[type="tel"]:focus {
     .lang-toggle-container {
         position: static;
         margin-bottom: 15px;
-        background-color: #fff;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        background-color: #f0f0f0;
+        box-shadow: none;
     }
 }
 
@@ -516,10 +522,20 @@ input[type="tel"]:focus {
     opacity: 0.6;
     pointer-events: none;
 }
-.input-with-icon input:disabled {
-    background-color: #f9f9f9;
+.form-input:disabled {
+    background-color: #f9f9ff;
+    color: #999;
     cursor: not-allowed;
 }
+.form-group.error .form-input:disabled,
+.form-input:disabled {
+    background-color: #f9f9f9;
+}
+.form-input:disabled + .form-label,
+.form-input:disabled ~ .form-icon {
+    color: #999;
+}
+
 .sign-in-button:disabled {
     opacity: 0.6;
     cursor: not-allowed;

@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     // --- 1. Get ALL Elements ---
     const loginForm = document.getElementById('login-form');
-    const roleSelector = document.querySelector('.role-selector'); // <-- ADDED THIS
+    const roleSelector = document.querySelector('.role-selector');
     const roleButtons = document.querySelectorAll('.role-button');
     const glider = document.querySelector('.glider');
     const passwordInput = document.getElementById('password');
@@ -21,7 +21,10 @@ document.addEventListener("DOMContentLoaded", function() {
     const translatableElements = document.querySelectorAll('[data-key]');
     let currentLang = 'en';
     const loginVerifyOtpBtn = document.getElementById('login-verify-otp-btn');
-
+    const slides = document.querySelectorAll(".slide");
+    const dots = document.querySelectorAll(".dot");
+    const slidePrevBtn = document.getElementById('slide-prev');
+    const slideNextBtn = document.getElementById('slide-next');
 
     // --- =============================== ---
     // --- CORE LOGIC (Resilient) ---
@@ -32,14 +35,14 @@ document.addEventListener("DOMContentLoaded", function() {
         const activeButton = document.querySelector('.role-button.active');
         if (activeButton) {
             glider.style.width = `${activeButton.offsetWidth}px`;
-            glider.style.transform = `translateX(${activeButton.offsetLeft - 3}px)`;
+            glider.style.transform = `translateX(${activeButton.offsetLeft}px)`;
         }
         roleButtons.forEach(button => {
             button.addEventListener('click', function() {
                 roleButtons.forEach(btn => btn.classList.remove('active'));
                 this.classList.add('active');
                 glider.style.width = `${this.offsetWidth}px`;
-                glider.style.transform = `translateX(${this.offsetLeft - 3}px)`;
+                glider.style.transform = `translateX(${this.offsetLeft}px)`;
             });
         });
     }
@@ -54,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // --- 4. Phone Login Toggle Logic (UPDATED) ---
+    // --- 4. Phone Login Toggle Logic ---
     if (showPhoneLoginBtn && showEmailLoginLink && emailLoginSection && phoneLoginSection) {
         showPhoneLoginBtn.addEventListener('click', function() {
             emailLoginSection.style.display = 'none';
@@ -65,17 +68,15 @@ document.addEventListener("DOMContentLoaded", function() {
             emailLoginSection.style.display = 'block';
             phoneLoginSection.style.display = 'none';
             
-            // --- NEW: Re-enable fields ---
             if(loginPhoneInput) loginPhoneInput.disabled = false;
             if(loginSendOtpBtn) loginSendOtpBtn.disabled = false;
             if(roleSelector) roleSelector.classList.remove('disabled');
             roleButtons.forEach(btn => btn.disabled = false);
             if(loginOtpSection) loginOtpSection.style.display = 'none';
-            // --- End of new code ---
         });
     }
 
-    // --- 5. "Send OTP" (Login) Button Logic (UPDATED) ---
+    // --- 5. "Send OTP" (Login) Button Logic ---
     if (loginSendOtpBtn) {
         loginSendOtpBtn.addEventListener('click', function() {
             if (validatePhoneInput()) {
@@ -84,12 +85,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 this.textContent = (langStrings[currentLang] && langStrings[currentLang]['sendOtp']) ? langStrings[currentLang]['sendOtp'] : 'Send OTP';
                 console.log('Login OTP Sent (simulation)');
 
-                // --- NEW: Disable fields ---
                 if(loginPhoneInput) loginPhoneInput.disabled = true;
                 if(loginSendOtpBtn) loginSendOtpBtn.disabled = true;
                 if(roleSelector) roleSelector.classList.add('disabled');
                 roleButtons.forEach(btn => btn.disabled = true);
-                // --- End of new code ---
             }
         });
     }
@@ -123,6 +122,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (typeof langStrings !== 'undefined' && langStrings[currentLang] && langStrings[currentLang][messageKey]) {
             message = langStrings[currentLang][messageKey];
         }
+        
         const formGroup = input.closest('.form-group');
         if (!formGroup) return;
         const errorDisplay = formGroup.querySelector('.error-message');
@@ -271,54 +271,54 @@ document.addEventListener("DOMContentLoaded", function() {
         console.error("translations.js not found. Page will not be translated.");
     }
     
-    // --- =============================== ---
     // --- 12. SLIDESHOW LOGIC ---
-    // --- =============================== ---
     
     let slideIndex = 0;
-    const slides = document.querySelectorAll(".slide");
-    const dots = document.querySelectorAll(".dot");
     let slideInterval; 
 
     function showSlide(n) {
         if (slides.length === 0) return;
-        if (n >= slides.length) { slideIndex = 0; }
-        if (n < 0) { slideIndex = slides.length - 1; }
+        slideIndex = (n + slides.length) % slides.length;
         slides.forEach(slide => slide.style.display = "none");
         dots.forEach(dot => dot.classList.remove("active"));
-        slides[slideIndex].style.display = "block";
-        dots[slideIndex].classList.add("active");
+        if (slides[slideIndex] && dots[slideIndex]) {
+            slides[slideIndex].style.display = "block";
+            dots[slideIndex].classList.add("active");
+        }
     }
 
-    function plusSlides(n) {
-        slideIndex += n;
-        showSlide(slideIndex);
-        resetSlideTimer();
+    function nextSlide() {
+        showSlide(++slideIndex);
     }
 
+    function prevSlide() {
+        showSlide(--slideIndex);
+    }
+    
     function resetSlideTimer() {
         clearInterval(slideInterval);
-        slideInterval = setInterval(() => {
-            slideIndex++;
-            showSlide(slideIndex);
-        }, 4000);
+        slideInterval = setInterval(nextSlide, 4000);
     }
 
-    dots.forEach(dot => {
+    dots.forEach((dot, index) => {
         dot.addEventListener("click", function() {
-            const slideNumber = parseInt(this.getAttribute("data-slide"));
-            slideIndex = slideNumber;
-            showSlide(slideIndex);
+            showSlide(index);
             resetSlideTimer();
         });
     });
 
     if (slidePrevBtn && slideNextBtn) {
-        slidePrevBtn.addEventListener('click', () => plusSlides(-1));
-        slideNextBtn.addEventListener('click', () => plusSlides(1));
+        slidePrevBtn.addEventListener('click', () => {
+            prevSlide();
+            resetSlideTimer();
+        });
+        slideNextBtn.addEventListener('click', () => {
+            nextSlide();
+            resetSlideTimer();
+        });
     }
 
-    resetSlideTimer();
     showSlide(slideIndex);
+    resetSlideTimer();
 
 });
