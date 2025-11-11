@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // This handles clicking *off* the dropdown to close it
     window.addEventListener("click", function(e) {
         if (profileDropdown && profileDropdown.classList.contains("active")) {
-            if (!profileDropdown.contains(e.target) && !profileButton.contains(e.target)) {
+            if (!profileDropdown.contains(e.target) && e.target !== profileButton) {
                 profileDropdown.classList.remove("active");
             }
         }

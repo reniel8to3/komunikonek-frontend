@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (currentPage) {
             let pageKey = currentPage.replace(".html", "");
             
+            // Special case for the main dashboard
             if (pageKey === "admin" || pageKey === "") {
                  const dashboardLink = document.querySelector(`.sidebar-nav li[data-page="admin"]`);
                  if(dashboardLink) dashboardLink.classList.add("active");
@@ -46,12 +47,12 @@ document.addEventListener("DOMContentLoaded", function() {
     } catch (e) {
         console.error("Active sidebar link logic failed:", e);
     }
-    
+
     // --- =============================== ---
     // --- I18N (TRANSLATION) LOGIC ---
     // --- =============================== ---
     
-    let currentLang = 'en'; 
+    let currentLang = 'en'; // Make currentLang globally accessible in this script
     
     try {
         const langEnBtn = document.getElementById('lang-en');
@@ -64,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 return;
             }
 
-            currentLang = lang;
+            currentLang = lang; // Update global lang
             document.documentElement.lang = lang;
             
             translatableElements.forEach(el => {
@@ -112,21 +113,16 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     // --- =============================== ---
-    // --- ADMIN TABLE ACTION LOGIC (FIXED) ---
+    // --- ADMIN TABLE ACTION LOGIC ---
     // --- =============================== ---
 
-    // This logic is now safe and will only run if the buttons exist on the page.
-    
     // 1. Delete Button Logic
     const deleteButtons = document.querySelectorAll(".delete-btn");
     deleteButtons.forEach(button => {
         button.addEventListener("click", function() {
-            
-            // Check if translations are loaded before using them
-            let confirmText = 'Are you sure you want to delete this?';
-            if (typeof langStrings !== 'undefined' && langStrings[currentLang]) {
-                confirmText = langStrings[currentLang]["delete"] + "?";
-            }
+            const confirmText = currentLang === 'fil' 
+                ? 'Sigurado ka bang gusto mong burahin ito?' 
+                : 'Are you sure you want to delete this?';
 
             if (confirm(confirmText)) {
                 this.closest("tr").remove();
@@ -134,32 +130,36 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // 2. Edit/Status Button Logic
+    // 2. Edit/Status Button Logic (A simple example)
     const editButtons = document.querySelectorAll(".action-button.edit");
     editButtons.forEach(button => {
         button.addEventListener("click", function() {
-            // This is a placeholder for your "Edit" or "Mark as" logic
-            
-            // Check if translations are loaded
-            if (typeof langStrings !== 'undefined' && langStrings[currentLang]) {
-                const row = this.closest("tr");
-                if (!row) return;
-                const statusBadge = row.querySelector(".role-badge");
-                if (!statusBadge) return;
+            const row = this.closest("tr");
+            const statusBadge = row.querySelector(".role-badge");
 
-                // Example logic:
-                if (statusBadge.classList.contains("pending")) {
-                    alert("This would mark the item as 'In Progress'");
-                } else if (statusBadge.classList.contains("in-progress")) {
-                    alert("This would mark the item as 'Resolved'");
-                } else if (statusBadge.classList.contains("ready")) {
-                    alert("This would mark the item as 'Resolved'");
-                } else {
-                    alert("This item is already resolved or has no status.");
-                }
-            } else {
-                // Fallback if translations fail
-                alert("Edit/Mark as button clicked!");
+            if (!statusBadge) return; // Not a row with a status
+
+            // This is a simple toggle logic for demonstration
+            if (statusBadge.classList.contains("pending")) {
+                statusBadge.classList.remove("pending");
+                statusBadge.classList.add("in-progress");
+                statusBadge.setAttribute("data-key", "inProgress");
+                statusBadge.textContent = langStrings[currentLang]["inProgress"];
+                this.textContent = langStrings[currentLang]["markAs"] + " " + langStrings[currentLang]["resolved"];
+                
+            } else if (statusBadge.classList.contains("in-progress")) {
+                statusBadge.classList.remove("in-progress");
+                statusBadge.classList.add("resolved");
+                statusBadge.setAttribute("data-key", "resolved");
+                statusBadge.textContent = langStrings[currentLang]["resolved"];
+                this.remove(); // Remove the button once resolved
+            
+            } else if (statusBadge.classList.contains("ready")) {
+                statusBadge.classList.remove("ready");
+                statusBadge.classList.add("resolved");
+                statusBadge.setAttribute("data-key", "resolved");
+                statusBadge.textContent = langStrings[currentLang]["resolved"];
+                this.remove(); // Remove the button once resolved
             }
         });
     });
