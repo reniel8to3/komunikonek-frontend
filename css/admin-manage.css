@@ -15,6 +15,20 @@
     margin-bottom: 30px;
 }
 
+/* --- Page Header (for Add New button) --- */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.page-header h1 {
+    margin: 0;
+}
+.page-header p {
+    margin: 5px 0 0 0;
+}
+
 .table-container {
     padding: 0; /* Let the table handle padding */
     overflow-x: auto; /* Allow horizontal scrolling on small screens */
@@ -62,7 +76,11 @@
     padding: 40px;
 }
 
-/* Action Button */
+/* --- Action Buttons --- */
+.action-btn-group {
+    display: flex;
+    gap: 10px;
+}
 .action-btn {
     background-color: #0038A8;
     color: #ffffff;
@@ -77,8 +95,27 @@
 .action-btn:hover {
     background-color: #002a7e;
 }
+.action-btn.edit {
+    background-color: #0038A8;
+}
+.action-btn.edit:hover {
+    background-color: #002a7e;
+}
+.action-btn.delete {
+    background-color: #CE1126;
+}
+.action-btn.delete:hover {
+    background-color: #a00d1e;
+}
+.form-button-filled.delete {
+    background-color: #CE1126;
+}
+.form-button-filled.delete:hover {
+    background-color: #a00d1e;
+}
 
-/* Status Colors */
+
+/* --- Status Badges --- */
 .status-badge {
     font-size: 0.9rem;
     font-weight: 600;
@@ -89,10 +126,11 @@
 .status-badge.pending { background-color: #fff8e1; color: #f57f17; }
 .status-badge.in-progress { background-color: #e3f2fd; color: #0d6efd; }
 .status-badge.resolved { background-color: #e8f5e9; color: #198754; }
-.status-badge.ready-for-pickup {
-    background-color: #e6f7ff;
-    color: #0056b3;
-}
+.status-badge.ready-for-pickup { background-color: #e6f7ff; color: #0056b3; }
+.status-badge.draft { background-color: #f4f4f4; color: #555; }
+.status-badge.published { background-color: #e8f5e9; color: #198754; }
+.status-badge.admin { background-color: #e0e9ff; color: #0038A8; }
+.status-badge.user { background-color: #f0f0f0; color: #333; }
 
 
 /* --- Modal Styles --- */
@@ -115,7 +153,6 @@
     opacity: 1;
     visibility: visible;
 }
-
 .modal-content {
     background: #ffffff;
     border-radius: 12px;
@@ -129,12 +166,10 @@
 .modal-overlay.is-open .modal-content {
     transform: translateY(0);
 }
-
 .modal-content h2 {
     margin-top: 0;
     font-size: 1.6rem;
 }
-
 .modal-content .form-group {
     margin-bottom: 20px;
     position: relative;
@@ -166,7 +201,6 @@
     border-color: #0038A8;
     box-shadow: 0 0 0 1px #0038A8;
 }
-
 .modal-content .button-group {
     display: flex;
     justify-content: flex-end;

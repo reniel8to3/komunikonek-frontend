@@ -1,4 +1,4 @@
-// js/manage-documents.js
+// js/manage-complaints.js
 import { protectPage, setupLogoutButton } from './auth-guard.js';
 import { db, collection, query, getDocs, doc, getDoc, updateDoc, orderBy } from './firebase.js';
 
@@ -13,71 +13,79 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalCancelBtn = document.getElementById('modal-cancel-btn');
     const updateForm = document.getElementById('update-form');
     
-    let activeDocId = null;
-    let activeDocType = 'document_requests'; // Set the collection name
+    let activeDocId = null; // Store the doc ID for the modal
+    let activeDocType = 'complaints'; // Set the collection name
 
     document.addEventListener('user-loaded', (e) => {
+        // Populate the admin's name
         const adminNameEl = document.getElementById('admin-name');
         if (adminNameEl) {
             adminNameEl.textContent = e.detail.userData.firstName || 'Admin';
         }
-        loadDocuments();
+        
+        loadComplaints();
     });
 
-    // --- 2. LOAD ALL DOCUMENT REQUESTS ---
-    async function loadDocuments() {
+    // --- 2. LOAD ALL COMPLAINTS ---
+    async function loadComplaints() {
         if (!tableBody) return;
-        tableBody.innerHTML = '<tr><td colspan="5" class="placeholder-cell">Loading requests...</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="5" class="placeholder-cell">Loading complaints...</td></tr>';
         
         try {
-            const requestsRef = collection(db, activeDocType);
-            const q = query(requestsRef, orderBy("createdAt", "desc"));
+            const complaintsRef = collection(db, "complaints");
+            // Order by most recent first
+            const q = query(complaintsRef, orderBy("createdAt", "desc"));
             const querySnapshot = await getDocs(q);
 
             if (querySnapshot.empty) {
-                tableBody.innerHTML = '<tr><td colspan="5" class="placeholder-cell">No document requests found.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="5" class="placeholder-cell">No complaints found.</td></tr>';
                 return;
             }
 
-            tableBody.innerHTML = '';
+            tableBody.innerHTML = ''; // Clear loading
             
+            // Use Promise.all to fetch all user names in parallel for efficiency
             const userFetchPromises = [];
-            const requestData = [];
+            const complaintData = [];
 
             querySnapshot.forEach(docSnap => {
-                const request = docSnap.data();
-                requestData.push({ id: docSnap.id, ...request });
-                if (request.userId) {
-                    userFetchPromises.push(getDoc(doc(db, "users", request.userId)));
+                const complaint = docSnap.data();
+                complaintData.push({ id: docSnap.id, ...complaint });
+                
+                // Add a promise to fetch the user's name
+                if (complaint.userId) {
+                    userFetchPromises.push(getDoc(doc(db, "users", complaint.userId)));
                 } else {
-                    userFetchPromises.push(null);
+                    userFetchPromises.push(null); // Add a null placeholder
                 }
             });
 
             const userDocs = await Promise.all(userFetchPromises);
-
-            requestData.forEach((request, index) => {
-                let requesterName = "Unknown User";
+            
+            // Now render the table
+            complaintData.forEach((complaint, index) => {
+                let complainantName = "Unknown User";
                 const userDoc = userDocs[index];
                 if (userDoc && userDoc.exists()) {
-                    requesterName = userDoc.data().firstName + ' ' + userDoc.data().lastName;
+                    complainantName = userDoc.data().firstName + ' ' + userDoc.data().lastName;
                 }
                 
                 const tr = document.createElement('tr');
-                const statusClass = request.status.toLowerCase().replace(/\s+/g, '-');
+                const statusClass = complaint.status.toLowerCase().replace(/\s+/g, '-');
                 
                 tr.innerHTML = `
-                    <td>${request.createdAt.toDate().toLocaleDateString()}</td>
-                    <td>${request.documentType}</td>
-                    <td class="complainant-name">${requesterName}</td>
-                    <td><span class="status-badge ${statusClass}">${request.status}</span></td>
+                    <td>${complaint.createdAt.toDate().toLocaleDateString()}</td>
+                    <td>${complaint.subject}</td>
+                    <td class="complainant-name">${complainantName}</td>
+                    <td><span class="status-badge ${statusClass}">${complaint.status}</span></td>
                     <td>
-                        <button class="action-btn update-btn" data-id="${request.id}">Update</button>
+                        <button class="action-btn update-btn" data-id="${complaint.id}">Update</button>
                     </td>
                 `;
                 tableBody.appendChild(tr);
             });
             
+            // Add event listeners to the new buttons
             document.querySelectorAll('.update-btn').forEach(button => {
                 button.addEventListener('click', (e) => {
                     activeDocId = e.target.dataset.id;
@@ -86,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
         } catch (error) {
-            console.error("Error loading documents: ", error);
+            console.error("Error loading complaints: ", error);
             tableBody.innerHTML = '<tr><td colspan="5" class="placeholder-cell">Error loading data.</td></tr>';
         }
     }
@@ -96,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function openUpdateModal(docId) {
         if (!docId) return;
         
+        // Fetch the current item's data to pre-fill the modal
         const docRef = doc(db, activeDocType, docId);
         const docSnap = await getDoc(docRef);
         if (!docSnap.exists()) {
@@ -105,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const item = docSnap.data();
         document.getElementById('modal-status').value = item.status;
-        document.getElementById('modal-notes').value = '';
+        document.getElementById('modal-notes').value = ''; // Clear notes
         
         modalOverlay.classList.add('is-open');
     }
@@ -140,6 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 timestamp: new Date()
             };
 
+            // Update the document
             await updateDoc(docRef, {
                 status: newStatus,
                 progress: [...currentProgress, newProgressStep]
@@ -147,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             showToast("Status updated successfully!", "success");
             closeModal();
-            loadDocuments(); // Refresh the table
+            loadComplaints(); // Refresh the table
             
         } catch (error) {
             console.error("Error updating status:", error);

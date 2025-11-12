@@ -3,108 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-key="adminTitle">Admin | Dashboard</title>
+    <title>KomuniKonek | Admin Dashboard</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/dashboard.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        .sidebar-header .admin-badge {
+            font-size: 0.8rem;
+            background-color: #e3f2fd;
+            color: #0038A8;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+            margin-left: 5px;
+        }
+        .profile-dropdown-header {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            color: #6c757d;
+            border-bottom: 1px solid #f0f0f0;
+        }
+    </style>
 </head>
 <body>
+    
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-    <div class="admin-layout">
-        
-        <aside class="sidebar" id="admin-sidebar">
+    <div class="dashboard-container">
+        <!-- Admin Sidebar -->
+        <nav class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <h3 data-key="adminHeader">KomuniKonek Admin</h3>
+                <h3>KomuniKonek <span class="admin-badge">Admin</span></h3>
             </div>
-            <nav class="sidebar-nav">
-                <ul>
-                    <li data-page="admin">
-                        <a href="admin.html"><i class="fa-solid fa-tachograph-digital"></i> <span data-key="navDashboard">Dashboard</span></a>
-                    </li>
-                    <li data-page="manage-users">
-                        <a href="manage-users.html"><i class="fa-solid fa-users"></i> <span data-key="navUsers">Manage Users</span></a>
-                    </li>
-                    <li data-page="manage-complaints">
-                        <a href="manage-complaints.html"><i class="fa-solid fa-comments"></i> <span data-key="navComplaints">Manage Complaints</span></a>
-                    </li>
-                    <li data-page="manage-documents">
-                        <a href="manage-documents.html"><i class="fa-solid fa-file-lines"></i> <span data-key="navDocs">Manage Documents</span></a>
-                    </li>
-                    <li data-page="manage-announcements">
-                        <a href="manage-announcements.html"><i class="fa-solid fa-bullhorn"></i> <span data-key="navAnnouncements">Manage Announcements</span></a>
-                    </li>
-                </ul>
-            </nav>
+            <ul class="sidebar-nav">
+                <li class="nav-item active"> 
+                    <a href="admin.html">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span data-key="navDashboard">Dashboard</span>
+                    </a>
+                </li>
+                <!-- === ICON FIXES === -->
+                <li class="nav-item">
+                    <a href="manage-complaints.html">
+                        <i class="fa-solid fa-comment-dots"></i> <!-- Changed from fa-bullhorn -->
+                        <span data-key="navComplaints">Manage Complaints</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="manage-documents.html">
+                        <i class="fa-solid fa-file-lines"></i> <!-- This was correct -->
+                        <span data-key="navDocs">Manage Documents</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="manage-announcements.html">
+                        <i class="fa-solid fa-bullhorn"></i> <!-- Changed from fa-newspaper -->
+                        <span data-key="navAnnouncements">Manage Announcements</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="manage-users.html">
+                        <i class="fa-solid fa-users"></i> <!-- This was correct -->
+                        <span data-key="navUsers">Manage Users</span>
+                    </a>
+                </li>
+                <!-- === END ICON FIXES === -->
+            </ul>
             <div class="sidebar-footer">
-                <a href="login.html" class="logout-link">
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i> <span data-key="logout">Logout</span>
-                </a>
+                <button id="logout-button" class="logout-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span data-key="logout">Logout</span>
+                </button>
             </div>
-        </aside>
+        </nav>
 
+        <!-- Main Content Area -->
         <main class="main-content">
-            <header class="admin-header">
-                <button class="menu-toggle" id="menu-toggle">
+            
+            <header class="main-header is-dashboard"> 
+                <button class="mobile-menu-button" id="mobile-menu-button">
                     <i class="fa-solid fa-bars"></i>
                 </button>
-                <h2 data-key="dashboardOverview">Dashboard Overview</h2>
                 
-                <div class="lang-toggle-container-admin">
-                    <button id="lang-en" class="lang-button active">ENG</button>
-                    <span class="lang-separator">|</span>
-                    <button id="lang-fil" class="lang-button">FIL</button>
+                <div class="header-content">
+                    <h1 data-key="adminTitle">Admin Dashboard</h1>
+                    <p data-key="dashboardOverview">Dashboard Overview</p>
+                </div>
+
+                <div class="header-icons">
+                    <div class="profile-dropdown-container">
+                        <button class="profile-button" id="profile-button">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </button>
+                        <div class="profile-dropdown" id="profile-dropdown">
+                            <div class="profile-dropdown-header">
+                                Signed in as: <strong id="admin-name">Admin...</strong>
+                            </div>
+                            <a href="index.html" class="dropdown-link">
+                                <i class="fa-solid fa-user"></i> <span>View User Dashboard</span>
+                            </a>
+                            <a href="#" id="logout-button-alt" class="dropdown-link logout separator-top">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </header>
             
-            <div class="content-wrapper">
-                <h1 class="desktop-title" data-key="dashboardOverview">Dashboard Overview</h1>
-
-                <section class="stat-grid">
-                    <div class="stat-card">
-                        <div class="card-content">
-                            <div class="card-value">12</div>
-                            <div class="card-label" data-key="pendingComplaints">Pending Complaints</div>
-                        </div>
-                        <div class="card-icon">
-                            <i class="fa-solid fa-comments"></i>
-                        </div>
+            <!-- Admin Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="stat-icon fa-solid fa-comment-dots" style="color: #ffc107;"></i>
+                    <div class="stat-info">
+                        <span class="stat-number" id="stats-pending-complaints">...</span>
+                        <span class="stat-label" data-key="pendingComplaints">Pending Complaints</span>
                     </div>
-                    <div class="stat-card">
-                        <div class="card-content">
-                            <div class="card-value">8</div>
-                            <div class="card-label" data-key="pendingDocs">Pending Documents</div>
-                        </div>
-                        <div class="card-icon">
-                            <i class="fa-solid fa-file-lines"></i>
-                        </div>
+                </div>
+                <div class="stat-card">
+                    <i class="stat-icon fa-solid fa-file-lines" style="color: #0d6efd;"></i>
+                    <div class="stat-info">
+                        <span class="stat-number" id="stats-pending-requests">...</span>
+                        <span class="stat-label" data-key="pendingDocs">Pending Documents</span>
                     </div>
-                    <div class="stat-card">
-                        <div class="card-content">
-                            <div class="card-value">4</div>
-                            <div class="card-label" data-key="newSignups">New User Signups</div>
-                        </div>
-                        <div class="card-icon">
-                            <i class="fa-solid fa-user-plus"></i>
-                        </div>
+                </div>
+                <div class="stat-card">
+                    <i class="stat-icon fa-solid fa-users" style="color: #198754;"></i>
+                    <div class="stat-info">
+                        <span class="stat-number" id="stats-total-users">...</span>
+                        <span class="stat-label" data-key="newSignups">Total Users</span>
                     </div>
-                </section>
-
-                <section class="content-section">
-                    <h2 data-key="recentActivity">Recent Activity</h2>
-                    <p data-key="activityPlaceholder">A table of recent activity would go here.</p>
-                </section>
+                </div>
             </div>
+
+            <!-- Recent Activity -->
+            <div class="dashboard-card activity-container" style="margin-top: 25px;">
+                <div class="activity-header">
+                    <h3 data-key="recentActivity">Recent Activity</h3>
+                    <a href="manage-complaints.html" class="view-all-link" data-key="viewAll">View All</a>
+                </div>
+                <ul class="activity-list" id="activity-list">
+                    <li class="activity-item-placeholder" data-key="activityLoading">Loading recent activity...</li>
+                </ul>
+            </div>
+            
         </main>
-        
-        <div class="sidebar-overlay" id="sidebar-overlay"></div>
-
     </div>
+    
+    <div id="toast" class="toast hidden"></div>
 
-    <script src="js/translations.js"></script>
-    <script src="js/admin.js"></script>
+    <script type="module" src="js/admin.js"></script>
+    <script type="module" src="js/main-ui.js"></script>
 </body>
 </html>

@@ -3,130 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-key="titleManageUsers">Admin | Manage Users</title>
+    <title>KomuniKonek | Manage Users</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="css/admin.css">
-    <link rel="stylesheet" href="css/admin-tables.css">
-    
+    <link rel="stylesheet" href="css/dashboard.css"> 
+    <link rel="stylesheet" href="css/admin-manage.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-    <div class="admin-layout">
-        
-        <aside class="sidebar" id="admin-sidebar">
+    <div class="dashboard-container">
+        <nav class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <h3 data-key="adminHeader">KomuniKonek Admin</h3>
+                <h3>KomuniKonek <span class="admin-badge">Admin</span></h3>
             </div>
-            <nav class="sidebar-nav">
-                <ul>
-                    <li data-page="admin">
-                        <a href="admin.html"><i class="fa-solid fa-tachograph-digital"></i> <span data-key="navDashboard">Dashboard</span></a>
-                    </li>
-                    <li data-page="manage-users">
-                        <a href="manage-users.html"><i class="fa-solid fa-users"></i> <span data-key="navUsers">Manage Users</span></a>
-                    </li>
-                    <li data-page="manage-complaints">
-                        <a href="manage-complaints.html"><i class="fa-solid fa-comments"></i> <span data-key="navComplaints">Manage Complaints</span></a>
-                    </li>
-                    <li data-page="manage-documents">
-                        <a href="manage-documents.html"><i class="fa-solid fa-file-lines"></i> <span data-key="navDocs">Manage Documents</span></a>
-                    </li>
-                    <li data-page="manage-announcements">
-                        <a href="manage-announcements.html"><i class="fa-solid fa-bullhorn"></i> <span data-key="navAnnouncements">Manage Announcements</span></a>
-                    </li>
-                </ul>
-            </nav>
+            <ul class="sidebar-nav">
+                <li class="nav-item">
+                    <a href="admin.html">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item"> 
+                    <a href="manage-complaints.html">
+                        <i class="fa-solid fa-comment-dots"></i>
+                        <span>Manage Complaints</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="manage-documents.html">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span>Manage Documents</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="manage-announcements.html">
+                        <i class="fa-solid fa-bullhorn"></i>
+                        <span>Manage Announcements</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="manage-users.html">
+                        <i class="fa-solid fa-users"></i>
+                        <span>Manage Users</span>
+                    </a>
+                </li>
+            </ul>
             <div class="sidebar-footer">
-                <a href="login.html" class="logout-link">
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i> <span data-key="logout">Logout</span>
-                </a>
+                <button id="logout-button" class="logout-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </button>
             </div>
-        </aside>
+        </nav>
 
         <main class="main-content">
-            <header class="admin-header">
-                <button class="menu-toggle" id="menu-toggle">
+            
+            <header class="main-header is-dashboard">
+                <button class="mobile-menu-button" id="mobile-menu-button">
                     <i class="fa-solid fa-bars"></i>
                 </button>
-                <h2 data-key="titleManageUsers">Manage Users</h2>
-                
-                <div class="lang-toggle-container-admin">
-                    <button id="lang-en" class="lang-button active">ENG</button>
-                    <span class="lang-separator">|</span>
-                    <button id="lang-fil" class="lang-button">FIL</button>
+                <div class="header-content">
+                    <h1>Manage Users</h1>
+                </div>
+                <div class="header-icons">
+                    <div class="profile-dropdown-container">
+                        <button class="profile-button" id="profile-button">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </button>
+                        <div class="profile-dropdown" id="profile-dropdown">
+                            <div class="profile-dropdown-header">
+                                Signed in as: <strong id="admin-name">Admin...</strong>
+                            </div>
+                            <a href="index.html" class="dropdown-link">
+                                <i class="fa-solid fa-user"></i> <span>View User Dashboard</span>
+                            </a>
+                            <a href="#" id="logout-button-alt" class="dropdown-link logout separator-top">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </header>
             
-            <div class="content-wrapper">
-                <h1 class="desktop-title" data-key="titleManageUsers">Manage Users</h1>
-
-                <section class="content-section">
-                    <div class="table-header">
-                        <h2 data-key="allUsers">All Users</h2>
-                        <button class="form-button-filled">
-                            <i class="fa-solid fa-plus"></i> <span data-key="addNewUser">Add New User</span>
-                        </button>
-                    </div>
-
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th data-key="name">Name</th>
-                                    <th data-key="email">Email</th>
-                                    <th data-key="phone">Phone</th>
-                                    <th data-key="role">Role</th>
-                                    <th data-key="actions">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td data-label="Name">Juan Dela Cruz</td>
-                                    <td data-label="Email">juan.cruz@example.com</td>
-                                    <td data-label="Phone">+63 917 123 4567</td>
-                                    <td data-label="Role"><span class="role-badge user" data-key="user">User</span></td>
-                                    <td data-label="Actions">
-                                        <button class="action-button edit" data-key="edit">Edit</button>
-                                        <button class="action-button delete delete-btn" data-key="delete">Delete</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td data-label="Name">Maria Clara</td>
-                                    <td data-label="Email">maria.clara@example.com</td>
-                                    <td data-label="Phone">+63 928 987 6543</td>
-                                    <td data-label="Role"><span class="role-badge user" data-key="user">User</span></td>
-                                    <td data-label="Actions">
-                                        <button class="action-button edit" data-key="edit">Edit</button>
-                                        <button class="action-button delete delete-btn" data-key="delete">Delete</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td data-label="Name">Admin KomuniKonek</td>
-                                    <td data-label="Email">admin@komunikonek.ph</td>
-                                    <td data-label="Phone">+63 900 111 2222</td>
-                                    <td data-label="Role"><span class="role-badge admin" data-key="admin">Admin</span></td>
-                                    <td data-label="Actions">
-                                        <button class="action-button edit" data-key="edit">Edit</button>
-                                        <button class="action-button delete delete-btn" data-key="delete">Delete</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
+            <div class="main-container">
+                <p>View all registered users and manage their roles.</p>
+                
+                <div class="table-container dashboard-card">
+                    <table class="data-table" id="users-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Contact</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            <tr>
+                                <td colspan="4" class="placeholder-cell">Loading users...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </main>
-        
-        <div class="sidebar-overlay" id="sidebar-overlay"></div>
-
+    </div>
+    
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-content">
+            <h2 id="modal-title">Update User Role</h2>
+            <p>Change the account type for <strong id="modal-user-name">...</strong></p>
+            <form id="update-form">
+                <div class="form-group">
+                    <label for="modal-status">Account Type</label>
+                    <select id="modal-status" class="form-input">
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="form-button-outlined" id="modal-cancel-btn">CANCEL</button>
+                    <button type="submit" class="form-button-filled" id="modal-save-btn">SAVE ROLE</button>
+                </div>
+            </form>
+        </div>
     </div>
 
-    <script src="js/translations.js"></script>
-    <script src="js/admin.js"></script>
+    <div id="toast" class="toast hidden"></div>
+
+    <script type="module" src="js/manage-users.js"></script>
+    <script type="module" src="js/main-ui.js"></script>
 </body>
 </html>

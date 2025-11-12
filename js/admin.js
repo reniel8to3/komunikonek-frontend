@@ -1,167 +1,120 @@
-document.addEventListener("DOMContentLoaded", function() {
+// js/admin.js
+import { protectPage, setupLogoutButton } from './auth-guard.js';
+// Note: We are not sorting by time here to avoid the Index error.
+import { db, collection, query, where, getDocs, limit } from './firebase.js';
 
-    // --- =============================== ---
-    // --- ADMIN SIDEBAR LOGIC (MOVED TO TOP) ---
-    // --- =============================== ---
+// --- 1. SET UP THE PAGE ---
+// CRITICAL: We set the expectedRole to 'admin'
+protectPage({ expectedRole: 'admin' });
+setupLogoutButton();
 
-    const menuToggle = document.getElementById("menu-toggle");
-    const sidebar = document.getElementById("admin-sidebar");
-    const overlay = document.getElementById("sidebar-overlay");
-
-    if (menuToggle && sidebar && overlay) {
-        
-        // Open sidebar
-        menuToggle.addEventListener("click", function() {
-            sidebar.classList.add("active");
-            overlay.classList.add("active");
-        });
-
-        // Close sidebar by clicking overlay
-        overlay.addEventListener("click", function() {
-            sidebar.classList.remove("active");
-            overlay.classList.remove("active");
-        });
+// Listen for the 'user-loaded' event
+document.addEventListener('user-loaded', (e) => {
+    const userData = e.detail.userData;
+    
+    // Populate the admin's name in the dropdown
+    const adminNameEl = document.getElementById('admin-name');
+    if (adminNameEl) {
+        adminNameEl.textContent = userData.firstName || 'Admin';
     }
     
-    // --- =============================== ---
-    // --- Active Sidebar Link Logic ---
-    // --- =============================== ---
-
-    try {
-        const currentPage = window.location.pathname.split("/").pop();
-        if (currentPage) {
-            let pageKey = currentPage.replace(".html", "");
-            
-            // Special case for the main dashboard
-            if (pageKey === "admin" || pageKey === "") {
-                 const dashboardLink = document.querySelector(`.sidebar-nav li[data-page="admin"]`);
-                 if(dashboardLink) dashboardLink.classList.add("active");
-            } else {
-                const activeLink = document.querySelector(`.sidebar-nav li[data-page="${pageKey}"]`);
-                if (activeLink) {
-                    document.querySelectorAll(".sidebar-nav li").forEach(li => li.classList.remove("active"));
-                    activeLink.classList.add("active");
-                }
-            }
-        }
-    } catch (e) {
-        console.error("Active sidebar link logic failed:", e);
-    }
-
-    // --- =============================== ---
-    // --- I18N (TRANSLATION) LOGIC ---
-    // --- =============================== ---
-    
-    let currentLang = 'en'; // Make currentLang globally accessible in this script
-    
-    try {
-        const langEnBtn = document.getElementById('lang-en');
-        const langFilBtn = document.getElementById('lang-fil');
-        const translatableElements = document.querySelectorAll('[data-key]');
-        
-        const setLanguage = (lang) => {
-            if (typeof langStrings === 'undefined' || !langStrings[lang]) {
-                console.error(`Translation for language "${lang}" not found.`);
-                return;
-            }
-
-            currentLang = lang; // Update global lang
-            document.documentElement.lang = lang;
-            
-            translatableElements.forEach(el => {
-                const key = el.getAttribute('data-key');
-                if (!key) return;
-                
-                const translation = langStrings[lang][key];
-                
-                if (translation) {
-                    if (el.tagName === 'TITLE') {
-                        document.title = "KomuniKonek | " + translation;
-                    } else {
-                        // This handles text nodes, including those inside other elements
-                        const directText = Array.from(el.childNodes).find(node => node.nodeType === 3 && node.textContent.trim() !== '');
-                        if (directText) {
-                            directText.textContent = translation;
-                        } else {
-                            el.textContent = translation;
-                        }
-                    }
-                }
-            });
-            
-            if (lang === 'fil') {
-                if(langFilBtn) langFilBtn.classList.add('active');
-                if(langEnBtn) langEnBtn.classList.remove('active');
-            } else {
-                if(langEnBtn) langEnBtn.classList.add('active');
-                if(langFilBtn) langFilBtn.classList.remove('active');
-            }
-        };
-
-        if (langEnBtn && langFilBtn) {
-            langEnBtn.addEventListener('click', () => setLanguage('en'));
-            langFilBtn.addEventListener('click', () => setLanguage('fil'));
-        }
-        
-        if (typeof langStrings !== 'undefined') {
-            setLanguage('en');
-        } else {
-            console.error("translations.js not found. Page will not be translated.");
-        }
-    } catch (e) {
-        console.error("Translation script failed:", e);
-    }
-    
-    // --- =============================== ---
-    // --- ADMIN TABLE ACTION LOGIC ---
-    // --- =============================== ---
-
-    // 1. Delete Button Logic
-    const deleteButtons = document.querySelectorAll(".delete-btn");
-    deleteButtons.forEach(button => {
-        button.addEventListener("click", function() {
-            const confirmText = currentLang === 'fil' 
-                ? 'Sigurado ka bang gusto mong burahin ito?' 
-                : 'Are you sure you want to delete this?';
-
-            if (confirm(confirmText)) {
-                this.closest("tr").remove();
-            }
-        });
-    });
-
-    // 2. Edit/Status Button Logic (A simple example)
-    const editButtons = document.querySelectorAll(".action-button.edit");
-    editButtons.forEach(button => {
-        button.addEventListener("click", function() {
-            const row = this.closest("tr");
-            const statusBadge = row.querySelector(".role-badge");
-
-            if (!statusBadge) return; // Not a row with a status
-
-            // This is a simple toggle logic for demonstration
-            if (statusBadge.classList.contains("pending")) {
-                statusBadge.classList.remove("pending");
-                statusBadge.classList.add("in-progress");
-                statusBadge.setAttribute("data-key", "inProgress");
-                statusBadge.textContent = langStrings[currentLang]["inProgress"];
-                this.textContent = langStrings[currentLang]["markAs"] + " " + langStrings[currentLang]["resolved"];
-                
-            } else if (statusBadge.classList.contains("in-progress")) {
-                statusBadge.classList.remove("in-progress");
-                statusBadge.classList.add("resolved");
-                statusBadge.setAttribute("data-key", "resolved");
-                statusBadge.textContent = langStrings[currentLang]["resolved"];
-                this.remove(); // Remove the button once resolved
-            
-            } else if (statusBadge.classList.contains("ready")) {
-                statusBadge.classList.remove("ready");
-                statusBadge.classList.add("resolved");
-                statusBadge.setAttribute("data-key", "resolved");
-                statusBadge.textContent = langStrings[currentLang]["resolved"];
-                this.remove(); // Remove the button once resolved
-            }
-        });
-    });
-
+    // Now that admin is verified, load the data
+    loadAdminDashboard();
 });
+
+// --- 2. MAIN DATA FETCHING ---
+async function loadAdminDashboard() {
+    // Run all data fetches in parallel
+    await Promise.all([
+        fetchAdminStats(),
+        fetchRecentActivity()
+    ]);
+}
+
+// --- 3. FETCH STATS ---
+async function fetchAdminStats() {
+    try {
+        // Define references
+        const complaintsRef = collection(db, "complaints");
+        const requestsRef = collection(db, "document_requests");
+        const usersRef = collection(db, "users");
+
+        // Create queries
+        const pendingComplaintsQuery = query(complaintsRef, where("status", "==", "Pending"));
+        const pendingRequestsQuery = query(requestsRef, where("status", "==", "Pending"));
+        const allUsersQuery = query(usersRef, where("accountType", "==", "user"));
+
+        // Get snapshots
+        const [
+            pendingComplaintsSnap, 
+            pendingRequestsSnap, 
+            allUsersSnap
+        ] = await Promise.all([
+            getDocs(pendingComplaintsQuery),
+            getDocs(pendingRequestsQuery),
+            getDocs(allUsersQuery)
+        ]);
+
+        // Update HTML
+        document.getElementById('stats-pending-complaints').textContent = pendingComplaintsSnap.size;
+        document.getElementById('stats-pending-requests').textContent = pendingRequestsSnap.size;
+        document.getElementById('stats-total-users').textContent = allUsersSnap.size;
+
+    } catch (error) {
+        console.error("Error fetching admin stats:", error);
+    }
+}
+
+// --- 4. FETCH RECENT ACTIVITY ---
+async function fetchRecentActivity() {
+    const activityList = document.getElementById('activity-list');
+    if (!activityList) return;
+
+    try {
+        // Get last 5 complaints from ALL users
+        const complaintsRef = collection(db, "complaints");
+        // We will sort by date in JS to avoid needing an index
+        const complaintsQuery = query(complaintsRef, limit(20)); // Get latest 20
+        
+        const complaintsSnap = await getDocs(complaintsQuery);
+
+        activityList.innerHTML = ''; // Clear loading
+        
+        if (complaintsSnap.empty) {
+            activityList.innerHTML = '<li class="activity-item-placeholder">No recent complaints found.</li>';
+            return;
+        }
+
+        // Sort in JavaScript
+        let complaints = [];
+        complaintsSnap.forEach(doc => complaints.push(doc.data()));
+        complaints.sort((a, b) => b.createdAt.toDate() - a.createdAt.toDate());
+        
+        // Take just the first 5
+        const recentComplaints = complaints.slice(0, 5);
+
+        // Render to HTML
+        recentComplaints.forEach(item => {
+            const li = document.createElement('li');
+            li.className = 'activity-item';
+            
+            const statusClass = item.status ? item.status.toLowerCase() : 'pending';
+
+            li.innerHTML = `
+                <div class="activity-info">
+                    <i class="activity-icon fa-solid fa-bullhorn"></i>
+                    <div class="activity-details">
+                        <p>${item.subject || 'Complaint'}</p>
+                        <span class="date">Submitted on: ${item.createdAt.toDate().toLocaleDateString()}</span>
+                    </div>
+                </div>
+                <span class="activity-status ${statusClass}">${item.status}</span>
+            `;
+            activityList.appendChild(li);
+        });
+
+    } catch (error) {
+        console.error("Error fetching recent activity:", error);
+        activityList.innerHTML = '<li class="activity-item-placeholder">Could not load activity.</li>';
+    }
+}
