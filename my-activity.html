@@ -9,13 +9,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="css/dashboard.css"> <link rel="stylesheet" href="css/activity.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard.css"> 
+    <link rel="stylesheet" href="css/activity.css"> 
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
     <div class="dashboard-container">
+        
+        <!-- Sidebar -->
         <nav class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <h3>KomuniKonek</h3>
@@ -39,7 +44,8 @@
                         <span>Request a Document</span>
                     </a>
                 </li>
-                <li class="nav-item active"> <a href="my-activity.html">
+                <li class="nav-item active"> <!-- This page is active -->
+                    <a href="my-activity.html">
                         <i class="fa-solid fa-list-check"></i>
                         <span>My Activity</span>
                     </a>
@@ -59,40 +65,48 @@
             </div>
         </nav>
 
+        <!-- Main Content Area -->
         <main class="main-content">
             
-            <header class="main-header">
+            <!-- Header with Gradient and Title -->
+            <header class="main-header is-dashboard"> 
                 <button class="mobile-menu-button" id="mobile-menu-button">
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 
-                <div class="profile-dropdown-container">
-                    <button class="profile-button" id="profile-button">
-                        <i class="fa-solid fa-user"></i>
-                    </button>
-                    <div class="profile-dropdown" id="profile-dropdown">
-                        <a href="index.html" class="dropdown-link">
-                            <i class="fa-solid fa-house"></i> <span>Dashboard</span>
-                        </a>
-                        <a href="my-activity.html" class="dropdown-link">
-                            <i class="fa-solid fa-clipboard-list"></i> <span>Track Complaints</span>
-                        </a>
-                        <a href="my-activity.html#documents" class="dropdown-link">
-                            <i class="fa-solid fa-folder-open"></i> <span>Track Document Requests</span>
-                        </a>
-                        <a href="settings.html" class="dropdown-link separator-top">
-                            <i class="fa-solid fa-gear"></i> <span>Settings</span>
-                        </a>
-                        <a href="#" id="logout-button-alt" class="dropdown-link logout">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
-                        </a>
+                <div class="header-content">
+                    <h1>My Activity</h1>
+                    <p>Track the status of your submissions.</p>
+                </div>
+
+                <div class.header-icons">
+                    <div class="profile-dropdown-container">
+                        <button class="profile-button" id="profile-button">
+                            <i class="fa-solid fa-user"></i>
+                        </button>
+                        <div class="profile-dropdown" id="profile-dropdown">
+                            <a href="index.html" class="dropdown-link">
+                                <i class="fa-solid fa-house"></i> <span>Dashboard</span>
+                            </a>
+                            <a href="my-activity.html" class="dropdown-link">
+                                <i class="fa-solid fa-clipboard-list"></i> <span>Track Complaints</span>
+                            </a>
+                            <a href="my-activity.html#documents" class="dropdown-link">
+                                <i class="fa-solid fa-folder-open"></i> <span>Track Document Requests</span>
+                            </a>
+                            <a href="settings.html" class="dropdown-link separator-top">
+                                <i class="fa-solid fa-gear"></i> <span>Settings</span>
+                            </a>
+                            <a href="#" id="logout-button-alt" class="dropdown-link logout">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </header>
             
-            <div class="main-container"> <h1>My Activity</h1>
-                <p>Track the status of your submissions.</p>
-
+            <div class="main-container"> 
+                <!-- Tab Navigation -->
                 <div class="tabs-container">
                     <a href="#complaints" class="tab-button active" data-tab="complaints">
                         <i class="fa-solid fa-bullhorn"></i>
@@ -104,6 +118,7 @@
                     </a>
                 </div>
 
+                <!-- Tab Content -->
                 <div class="content-container">
                     
                     <div id="complaints" class="tab-content active">
@@ -120,11 +135,18 @@
 
                 </div>
             </div>
-            </main>
+        </main>
     </div>
     
     <div id="toast" class="toast hidden"></div>
 
+    <!-- 
+    ==================================================================
+    THIS IS THE FIX:
+    We load my-activity.js (for tabs/data) and main-ui.js (for navbar)
+    We DO NOT load translations-loader.js
+    ================================================================== 
+    -->
     <script type="module" src="js/activity.js"></script>
     <script type="module" src="js/main-ui.js"></script>
 

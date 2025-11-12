@@ -1,42 +1,33 @@
-/* --- Main Form Container --- */
+/* css/complaint.css */
+
 .form-container {
-    max-width: 800px;
-    margin: 30px auto;
-    padding: 0 30px;
-}
-
-/* NEW: Back Link Style */
-.back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    color: #444746;
-    font-weight: 500;
-    margin-bottom: 15px;
-    transition: color 0.3s;
-}
-.back-link:hover {
-    color: #0038A8;
-}
-
-.form-container h1 {
-    font-size: 2.2em;
-    font-weight: 600;
-    color: #212529;
-    margin-top: 0;
-    margin-bottom: 30px;
+    padding-top: 20px;
 }
 
 .form-card {
-    background-color: #ffffff;
+    max-width: 700px;
+    margin: 0 auto;
+    background: #ffffff;
     border: 1px solid #e0e0e0;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    padding: 40px;
+    border-radius: 12px;
+    padding: 30px 40px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-/* --- Form Fields --- */
+/* This rule is no longer needed, as the H1 is in the header
+.form-container h1 { ... } 
+*/
+
+/* This is a new, optional style for titles inside cards */
+.form-title {
+    text-align: center;
+    font-size: 2rem;
+    color: #222;
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+/* --- Form Group Styles --- */
 .form-group {
     position: relative;
     text-align: left;
@@ -46,19 +37,13 @@
 .form-label {
     position: absolute;
     top: 14px;
-    left: 15px; /* No icon by default */
+    left: 15px;
     font-size: 1em;
     color: #6c757d;
     pointer-events: none;
     transition: all 0.3s ease;
     background-color: #ffffff;
     padding: 0 5px;
-}
-.form-icon {
-    position: absolute;
-    top: 15px;
-    left: 12px;
-    color: #6c757d;
 }
 .form-input {
     width: 100%;
@@ -70,15 +55,20 @@
     font-family: inherit;
     font-size: 1em;
     color: #212529;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Important! */
 }
-
-/* Float label up */
+/* For select and textarea */
+.form-input:focus,
+.form-input:not(:placeholder-shown),
+select.form-input {
+    padding-top: 22px;
+    padding-bottom: 6px;
+}
 .form-input:focus + .form-label,
 .form-input:not(:placeholder-shown) + .form-label,
-select.form-input:not([value=""]) + .form-label {
+select.form-input + .form-label {
     top: -8px;
-    left: 10px;
+    left: 13px;
     font-size: 0.8em;
     color: #0038A8;
 }
@@ -88,127 +78,51 @@ select.form-input:not([value=""]) + .form-label {
     box-shadow: 0 0 0 1px #0038A8;
 }
 
-/* Special styles for select */
-select.form-input {
-    appearance: none;
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%236c757d%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-13%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2013l128%20128c3.5%203.5%208%205.4%2013%205.4s9.5-1.8%2013-5.4l128-128c3.5-3.5%205.4-8%205.4-13%200-5-1.8-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E');
-    background-repeat: no-repeat;
-    background-position: right 15px center;
-    background-size: 10px auto;
-}
-
-/* Special styles for textarea */
-textarea.form-input {
-    min-height: 120px;
-    resize: vertical;
-    padding-top: 14px;
-}
-
-/* Special styles for date input */
-input[type="date"].form-input {
-    padding-right: 10px;
-}
-input[type="date"] + .form-label {
-    top: -8px;
-    left: 10px;
-    font-size: 0.8em;
-    color: #0038A8;
-}
-
-/* --- File Upload Button --- */
+/* Static label (for file upload) */
 .form-label-static {
-    font-size: 0.9em;
-    font-weight: 500;
-    color: #444746;
-    text-align: left;
     display: block;
-    margin-bottom: 10px;
-}
-.file-upload-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-.file-upload-input {
-    display: none;
-}
-.file-upload-button {
-    display: inline-block;
-    padding: 10px 15px;
-    background-color: transparent;
-    color: #0038A8;
-    border: 1px solid #e0e0e0;
-    border-radius: 100px;
-    cursor: pointer;
-    font-size: 0.9em;
-    font-weight: 500;
-    transition: all 0.3s;
-}
-.file-upload-button:hover {
-    background-color: #f0f5ff;
-    border-color: #0038A8;
-}
-.file-upload-button i {
-    margin-right: 8px;
-}
-.file-name {
-    font-size: 0.9em;
+    font-size: 0.85rem;
     color: #6c757d;
-    font-style: italic;
+    font-weight: 500;
+    margin-bottom: 8px;
 }
+.file-upload-wrapper { display: flex; align-items: center; }
+.file-upload-input { display: none; }
+.file-upload-button { background: #f0f5ff; border: 1px dashed #0038A8; color: #0038A8; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-weight: 500; }
+.file-name { margin-left: 15px; font-size: 0.9rem; color: #6c757d; }
 
 /* --- Button Group --- */
 .button-group {
     display: flex;
     justify-content: flex-end;
     gap: 15px;
-    margin-top: 40px;
+    margin-top: 30px;
     border-top: 1px solid #f0f0f0;
-    padding-top: 30px;
+    padding-top: 25px;
 }
-
 .form-button-filled,
 .form-button-outlined {
-    padding: 12px 24px;
-    border: none;
+    padding: 12px 25px;
+    border: 1px solid #0038A8;
     border-radius: 100px;
     cursor: pointer;
     font-size: 1em;
     font-weight: 500;
-    transition: all 0.3s;
+    transition: all 0.2s ease;
+    font-family: inherit;
 }
-
 .form-button-filled {
     background-color: #0038A8;
     color: white;
 }
-.form-button-filled:hover {
-    background-color: #002a7e;
-}
-
+.form-button-filled:hover { background-color: #002a7e; }
 .form-button-outlined {
     background-color: transparent;
     color: #0038A8;
-    border: 1px solid #e0e0e0;
 }
-.form-button-outlined:hover {
-    background-color: #f0f5ff;
-    border-color: #0038A8;
-}
-
-/* --- RESPONSIVENESS --- */
-@media (max-width: 768px) {
-    .form-container {
-        padding: 20px;
-    }
-    .form-card {
-        padding: 25px;
-    }
-    .button-group {
-        flex-direction: column-reverse;
-    }
-    .form-button-filled,
-    .form-button-outlined {
-        width: 100%;
-    }
+.form-button-outlined:hover { background-color: #f0f5ff; }
+.form-button-filled:disabled {
+    background-color: #a0a0a0;
+    border-color: #a0a0a0;
+    cursor: not-allowed;
 }

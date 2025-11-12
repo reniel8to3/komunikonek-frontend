@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-key="titleDashboard">KomuniKonek | Dashboard</title>
+    <title>KomuniKonek | Dashboard</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,121 +14,172 @@
 </head>
 <body>
     
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
     <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
         <nav class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <h3>KomuniKonek</h3>
             </div>
             <ul class="sidebar-nav">
-                <li class="nav-item active"> <a href="index.html">
+                <li class="nav-item active"> <!-- This page is active -->
+                    <a href="index.html">
                         <i class="fa-solid fa-house"></i>
-                        <span data-key="navDashboard">Dashboard</span>
+                        <span>Dashboard</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="submit-complaint.html">
                         <i class="fa-solid fa-bullhorn"></i>
-                        <span data-key="card1Title">Submit a Complaint</span>
+                        <span>Submit a Complaint</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="request-document.html">
                         <i class="fa-solid fa-file-lines"></i>
-                        <span data-key="card2Title">Request a Document</span>
+                        <span>Request a Document</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="my-activity.html">
                         <i class="fa-solid fa-list-check"></i>
-                        <span data-key="myActivity">My Activity</span>
+                        <span>My Activity</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="settings.html">
                         <i class="fa-solid fa-gear"></i>
-                        <span data-key="settings">Settings</span>
+                        <span>Settings</span>
                     </a>
                 </li>
             </ul>
             <div class="sidebar-footer">
                 <button id="logout-button" class="logout-btn">
                     <i class="fa-solid fa-right-from-bracket"></i>
-                    <span data-key="logout">Logout</span>
+                    <span>Logout</span>
                 </button>
             </div>
         </nav>
 
+        <!-- Main Content Area -->
         <main class="main-content">
+            <!-- This header has the gradient -->
             <header class="main-header is-dashboard">
-                <div>
-                    <h1 data-key="welcomeBack">Welcome back, <span id="user-name">...</span>!</h1>
-                    <p data-key="dashboardSubtitle">Here's what's happening in your community.</p>
+                <!-- Hamburger button -->
+                <button class="mobile-menu-button" id="mobile-menu-button">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                
+                <!-- Welcome Text -->
+                <div class="header-content">
+                    <h1>Welcome back, <span id="user-name">...</span>!</h1>
+                    <p>Here's what's happening in your community.</p>
                 </div>
                 
-                <div class="lang-toggle-container">
-                    <button id="lang-en" class="lang-button active">ENG</button>
-                    <span class="lang-separator">|</span>
-                    <button id="lang-fil" class="lang-button">FIL</button>
+                <!-- Icons Wrapper -->
+                <div class="header-icons">
+                    <!-- Profile icon -->
+                    <div class="profile-dropdown-container">
+                        <button class="profile-button" id="profile-button">
+                            <i class="fa-solid fa-user"></i>
+                        </button>
+                        <div class="profile-dropdown" id="profile-dropdown">
+                            <a href="index.html" class="dropdown-link">
+                                <i class="fa-solid fa-house"></i> <span>Dashboard</span>
+                            </a>
+                            <a href="my-activity.html" class="dropdown-link">
+                                <i class="fa-solid fa-clipboard-list"></i> <span>Track Complaints</span>
+                            </a>
+                            <a href="my-activity.html#documents" class="dropdown-link">
+                                <i class="fa-solid fa-folder-open"></i> <span>Track Document Requests</span>
+                            </a>
+                            <a href="settings.html" class="dropdown-link separator-top">
+                                <i class="fa-solid fa-gear"></i> <span>Settings</span>
+                            </a>
+                            <a href="#" id="logout-button-alt" class="dropdown-link logout">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                </header>
+                <!-- End Icons Wrapper -->
+            </header>
             
+            <!-- 
+            ==================================================================
+            THIS IS THE FIX
+            ================================================================== 
+            -->
             <div class="stats-grid">
-                <div class="stat-card">
-                    <i class="stat-icon fa-solid fa-file-import" style="color: #ffc107;"></i>
-                    <div class="stat-info">
-                        <span class="stat-number" id="stats-pending-complaints">0</span>
-                        <span class="stat-label" data-key="pendingComplaints">Pending Complaints</span>
+                <!-- This card is now a link to the 'complaints' tab -->
+                <a href="my-activity.html" class="stat-card-link">
+                    <div class="stat-card">
+                        <i class="stat-icon fa-solid fa-file-import" style="color: #ffc107;"></i>
+                        <div class="stat-info">
+                            <span class="stat-number" id="stats-pending-complaints">0</span>
+                            <span class="stat-label">Pending Complaints</span>
+                        </div>
                     </div>
-                </div>
-                <div class="stat-card">
-                    <i class="stat-icon fa-solid fa-file-import" style="color: #0d6efd;"></i>
-                    <div class="stat-info">
-                        <span class="stat-number" id="stats-pending-requests">0</span>
-                        <span class="stat-label" data-key="pendingDocs">Pending Documents</span>
+                </a>
+
+                <!-- This card is now a link to the 'documents' tab -->
+                <a href="my-activity.html#documents" class="stat-card-link">
+                    <div class="stat-card">
+                        <i class="stat-icon fa-solid fa-file-import" style="color: #0d6efd;"></i>
+                        <div class="stat-info">
+                            <span class="stat-number" id="stats-pending-requests">0</span>
+                            <span class="stat-label">Pending Documents</span>
+                        </div>
                     </div>
-                </div>
+                </a>
+
+                <!-- This card is NOT a link -->
                 <div class="stat-card">
                     <i class="stat-icon fa-solid fa-file-circle-check" style="color: #198754;"></i>
                     <div class="stat-info">
                         <span class="stat-number" id="stats-resolved">0</span>
-                        <span class="stat-label" data-key="resolved">Resolved Items</span>
+                        <span class="stat-label">Resolved Items</span>
                     </div>
                 </div>
             </div>
+            <!-- === END OF FIX === -->
+
 
             <div class="main-grid">
                 <div class="dashboard-card announcements-container">
-                    <h3 data-key="announcements">📢 Announcements</h3>
+                    <h3>📢 Announcements</h3>
                     <div id="announcements-slideshow">
                         <div class="announcement-slide active">
-                            <h4 data-key="announcementLoadingTitle">Loading Announcements...</h4>
-                            <p data-key="announcementLoadingBody">Please wait while we fetch the latest news.</p>
+                            <h4>Loading Announcements...</h4>
+                            <p>Please wait while we fetch the latest news.</p>
                         </div>
                     </div>
                     <div class="slide-dots" id="announcement-dots">
-                        </div>
+                        <!-- Dots will be injected here -->
+                    </div>
                 </div>
 
                 <div class="dashboard-card actions-container">
-                    <h3 data-key="quickActions">⚡ Quick Actions</h3>
+                    <h3>⚡ Quick Actions</h3>
                     <a href="submit-complaint.html" class="action-button">
                         <i class="fa-solid fa-bullhorn"></i>
-                        <span data-key="card1Title">Submit a Complaint</span>
+                        <span>Submit a Complaint</span>
                     </a>
                     <a href="request-document.html" class="action-button">
                         <i class="fa-solid fa-file-lines"></i>
-                        <span data-key="card2Title">Request a Document</span>
+                        <span>Request a Document</span>
                     </a>
                 </div>
             </div>
 
             <div class="dashboard-card activity-container">
                 <div class="activity-header">
-                    <h3 data-key="myActivity">My Recent Activity</h3>
-                    <a href="my-activity.html" class="view-all-link" data-key="viewAll">View All &rarr;</a>
+                    <h3>My Recent Activity</h3>
+                    <a href="my-activity.html" class="view-all-link">View All &rarr;</a>
                 </div>
                 <ul class="activity-list" id="activity-list">
-                    <li class="activity-item-placeholder" data-key="activityLoading">Loading recent activity...</li>
+                    <li class="activity-item-placeholder">Loading recent activity...</li>
                 </ul>
             </div>
 
@@ -139,6 +190,6 @@
 
     <script type="module" src="js/index.js"></script>
     <script type="module" src="js/main-ui.js"></script>
-    <script type="module" src="js/translations-loader.js"></script>
+    <!-- translations-loader.js is removed -->
 </body>
 </html>

@@ -56,8 +56,6 @@ export async function protectPage(options = { expectedRole: 'user' }) {
  * Attaches a logout listener to ALL logout buttons
  */
 export function setupLogoutButton() {
-    // --- THIS IS THE FIX ---
-    // Find all logout buttons (in sidebar and profile dropdown)
     const logoutButtons = [
         document.getElementById('logout-button'),
         document.getElementById('logout-button-alt')
@@ -79,5 +77,4 @@ export function setupLogoutButton() {
             btn.addEventListener('click', handleLogout);
         }
     });
-    // --- END FIX ---
 }

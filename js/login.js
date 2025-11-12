@@ -5,6 +5,9 @@
 // ============================================
 import { 
     auth, 
+    db,
+    doc,
+    getDoc,
     signInWithEmailAndPassword,
     signInWithPhoneNumber,
     RecaptchaVerifier,
@@ -13,12 +16,14 @@ import {
     browserSessionPersistence,
     browserLocalPersistence
 } from './firebase.js';
-import { langStrings } from './translations.js';
+// This import fixes the 404 error
+import { langStrings } from './translations.js'; 
 
 // ============================================
 // LOGIN.JS
 // ============================================
 
+// All code is wrapped in DOMContentLoaded to prevent errors
 document.addEventListener("DOMContentLoaded", function() {
     
     // ============================================
@@ -97,7 +102,6 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     }
-    // Setup reCAPTCHA immediately for the phone path
     setupRecaptcha();
 
     // ============================================
@@ -129,10 +133,10 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     Elements.langEnBtn?.addEventListener('click', () => setLanguage('en'));
     Elements.langFilBtn?.addEventListener('click', () => setLanguage('fil'));
-    setLanguage('en'); // Initialize
+    setLanguage('en'); 
 
     // ============================================
-    // UTILITY FUNCTIONS (from signup.js)
+    // UTILITY FUNCTIONS
     // ============================================
     function showElement(element, displayType = 'block') {
         if (element) element.style.display = displayType;
@@ -225,7 +229,6 @@ document.addEventListener("DOMContentLoaded", function() {
         showElement(Elements.emailLoginSection);
         hideElement(Elements.phoneLoginSection);
         hideElement(Elements.otpSection);
-        // Reset phone state
         confirmationResult = null;
         if (Elements.phoneInput) {
             Elements.phoneInput.disabled = false;
@@ -269,8 +272,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // --- 1. Email Login ---
     Elements.loginForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
-        // Only run this if the email section is visible
         if (Elements.emailLoginSection.style.display === 'none') return;
         
         setButtonLoading(Elements.emailLoginBtn, true);
@@ -279,23 +280,12 @@ document.addEventListener("DOMContentLoaded", function() {
         const email = Elements.emailInput.value.trim();
         const password = Elements.passwordInput.value.trim();
 
-        // Validation
-        if (email === '') {
-            setError(Elements.emailInput, 'errRequired');
-            isValid = false;
-        } else if (!isValidEmail(email)) {
-            setError(Elements.emailInput, 'errEmail');
-            isValid = false;
-        } else {
-            setSuccess(Elements.emailInput);
-        }
+        if (email === '') { setError(Elements.emailInput, 'errRequired'); isValid = false; }
+        else if (!isValidEmail(email)) { setError(Elements.emailInput, 'errEmail'); isValid = false; }
+        else { setSuccess(Elements.emailInput); }
 
-        if (password === '') {
-            setError(Elements.passwordInput, 'errRequired');
-            isValid = false;
-        } else {
-            setSuccess(Elements.passwordInput);
-        }
+        if (password === '') { setError(Elements.passwordInput, 'errRequired'); isValid = false; }
+        else { setSuccess(Elements.passwordInput); }
 
         if (!isValid) {
             setButtonLoading(Elements.emailLoginBtn, false);
@@ -303,40 +293,53 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         try {
-            // Set persistence based on "Remember me"
             const persistence = Elements.rememberMe.checked ? browserLocalPersistence : browserSessionPersistence;
             await setPersistence(auth, persistence);
             
-            // Sign in
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            // --- CRITICAL: Email Verification Check ---
-            // We add a check for test accounts that might not have verification
             if (!user.emailVerified && !user.email.endsWith('@test.com')) {
-                await signOut(auth); // Log them out
+                await signOut(auth); 
                 showToast(langStrings[AppState.currentLang]['errEmailNotVerified'] || "Please verify your email first. Check your inbox.", "error");
+                setButtonLoading(Elements.emailLoginBtn, false);
+                return;
+            }
+            
+            const userDocRef = doc(db, "users", user.uid);
+            const userDoc = await getDoc(userDocRef);
+
+            if (!userDoc.exists()) {
+                await signOut(auth);
+                showToast("Error: User profile not found.", "error");
+                setButtonLoading(Elements.emailLoginBtn, false);
+                return;
+            }
+
+            const userData = userDoc.data();
+            const actualRole = userData.accountType;
+            const expectedRole = AppState.accountType; 
+
+            if (expectedRole === 'admin' && actualRole !== 'admin') {
+                await signOut(auth);
+                showToast("Login failed: You do not have admin permissions.", "error");
                 setButtonLoading(Elements.emailLoginBtn, false);
                 return;
             }
 
             showToast("Login successful!", "success");
             
-            // --- FIX: Role-based redirect ---
-            if (AppState.accountType === 'admin') {
-                window.location.href = 'admin.html'; // Go to admin page
+            if (actualRole === 'admin') {
+                window.location.href = 'admin.html'; 
             } else {
-                window.location.href = 'index.html'; // Go to user dashboard (index.html)
+                window.location.href = 'index.html';
             }
-            // --- END FIX ---
 
         } catch (error) {
             console.error("Email login error:", error.code);
             let msg = error.message;
             if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
                 msg = langStrings[AppState.currentLang]['errInvalidLogin'] || "Invalid email or password.";
-            } else if (error.code === 'auth/too-many-requests') {
-                msg = "Too many failed attempts. Please reset your password or try again later.";
             }
             showToast(msg, "error");
             setButtonLoading(Elements.emailLoginBtn, false);
@@ -358,7 +361,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const phoneNumber = '+63' + (phoneValue.startsWith('0') ? phoneValue.substring(1) : phoneValue);
         
         try {
-            setupRecaptcha(); // Get a fresh verifier
+            setupRecaptcha(); 
             console.log("Sending OTP to:", phoneNumber);
             confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier);
             
@@ -398,16 +401,35 @@ document.addEventListener("DOMContentLoaded", function() {
             const userCredential = await confirmationResult.confirm(otpCode);
             const user = userCredential.user;
             console.log("Phone login successful:", user.uid);
+
+            const userDocRef = doc(db, "users", user.uid);
+            const userDoc = await getDoc(userDocRef);
+
+            if (!userDoc.exists()) {
+                await signOut(auth);
+                showToast("Error: User profile not found.", "error");
+                setButtonLoading(Elements.verifyOtpButton, false);
+                return;
+            }
+
+            const userData = userDoc.data();
+            const actualRole = userData.accountType;
+            const expectedRole = AppState.accountType; 
+
+            if (expectedRole === 'admin' && actualRole !== 'admin') {
+                await signOut(auth);
+                showToast("Login failed: You do not have admin permissions.", "error");
+                setButtonLoading(Elements.verifyOtpButton, false);
+                return;
+            }
             
             showToast("Login successful!", "success");
 
-            // --- FIX: Role-based redirect ---
-            if (AppState.accountType === 'admin') {
-                window.location.href = 'admin.html'; // Go to admin page
+            if (actualRole === 'admin') {
+                window.location.href = 'admin.html';
             } else {
-                window.location.href = 'index.html'; // Go to user dashboard (index.html)
+                window.location.href = 'index.html';
             }
-            // --- END FIX ---
 
         } catch (error) {
             console.error("OTP Verify Error:", error);

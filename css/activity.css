@@ -1,22 +1,11 @@
-/* css/my-activity.css */
+/* css/activity.css */
 
 .main-container {
     max-width: 900px;
     margin: 20px auto;
     padding: 0 20px;
 }
-
-.main-container h1 {
-    font-size: 2.2rem;
-    color: #222;
-    margin-bottom: 0;
-}
-
-.main-container > p { /* Use > to only select the <p> right under .main-container */
-    font-size: 1.1rem;
-    color: #6c757d;
-    margin-top: 5px;
-}
+/* Remove the h1 and p styles, as they are now in the header */
 
 /* --- Tab Styles --- */
 .tabs-container {
@@ -62,9 +51,17 @@
 
 /* --- Activity List Styles --- */
 .activity-list {
-    list-style: none; /* This removes the bullet points */
+    list-style: none;
     padding: 0;
     margin: 0;
+}
+
+/* This is the new <a> tag */
+.activity-card-link {
+    display: block;
+    text-decoration: none; 
+    color: inherit;
+    margin-bottom: 15px;
 }
 
 .activity-card {
@@ -72,7 +69,6 @@
     border: 1px solid #e0e0e0;
     border-radius: 12px;
     padding: 20px 25px;
-    margin-bottom: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -80,7 +76,7 @@
     transition: all 0.2s ease;
 }
 
-.activity-card:hover {
+.activity-card-link:hover .activity-card {
     box-shadow: 0 4px 10px rgba(0,0,0,0.07);
     border-color: #0038A8;
 }
@@ -123,19 +119,10 @@
 }
 
 /* Status Colors */
-.activity-status.pending {
-    background-color: #fff8e1;
-    color: #f57f17;
-}
-.activity-status.in-progress {
-    background-color: #e3f2fd;
-    color: #0d6efd;
-}
-.activity-status.resolved,
-.activity-status.ready-for-pickup {
-    background-color: #e8f5e9;
-    color: #198754;
-}
+.activity-status.pending { background-color: #fff8e1; color: #f57f17; }
+.activity-status.in-progress { background-color: #e3f2fd; color: #0d6efd; }
+.activity-status.resolved { background-color: #e8f5e9; color: #198754; }
+.activity-status.ready-for-pickup { background-color: #e6f7ff; color: #0056b3; }
 
 .activity-placeholder {
     padding: 30px;
@@ -143,17 +130,4 @@
     color: #6c757d;
     font-size: 1.1rem;
     list-style-type: none; /* Removes bullet */
-}
-
-/* Add to bottom of css/activity.css */
-
-.activity-card-link {
-    text-decoration: none; /* Remove underline from link */
-    color: inherit; /* Make link text black, not blue */
-}
-
-/* This replaces the old .activity-card:hover */
-.activity-card-link:hover .activity-card {
-    box-shadow: 0 4px 10px rgba(0,0,0,0.07);
-    border-color: #0038A8;
 }

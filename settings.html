@@ -9,11 +9,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     
-    <!-- We use the main dashboard layout -->
     <link rel="stylesheet" href="css/dashboard.css"> 
-    <!-- We use the complaint form styles (they are very similar) -->
     <link rel="stylesheet" href="css/complaint.css"> 
-    <!-- This is a new, small CSS file for settings -->
     <link rel="stylesheet" href="css/settings.css"> 
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -71,39 +68,47 @@
         <!-- Main Content Area -->
         <main class="main-content">
             
-            <!-- New Header with Hamburger -->
-            <header class="main-header">
+            <!-- === THIS IS THE FIX === -->
+            <header class="main-header is-dashboard"> 
                 <button class="mobile-menu-button" id="mobile-menu-button">
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 
-                <div class="profile-dropdown-container">
-                    <button class="profile-button" id="profile-button">
-                        <i class="fa-solid fa-user"></i>
-                    </button>
-                    <div class="profile-dropdown" id="profile-dropdown">
-                        <a href="index.html" class="dropdown-link">
-                            <i class="fa-solid fa-house"></i> <span>Dashboard</span>
-                        </a>
-                        <a href="my-activity.html" class="dropdown-link">
-                            <i class="fa-solid fa-clipboard-list"></i> <span>Track Complaints</span>
-                        </a>
-                        <a href="my-activity.html#documents" class="dropdown-link">
-                            <i class="fa-solid fa-folder-open"></i> <span>Track Document Requests</span>
-                        </a>
-                        <a href="settings.html" class="dropdown-link separator-top">
-                            <i class="fa-solid fa-gear"></i> <span>Settings</span>
-                        </a>
-                        <a href="#" id="logout-button-alt" class="dropdown-link logout">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
-                        </a>
+                <!-- 1. H1 is now inside the header -->
+                <div class="header-content">
+                    <h1>Settings</h1>
+                </div>
+
+                <!-- 2. Icons are wrapped in a div -->
+                <div class="header-icons">
+                    <div class="profile-dropdown-container">
+                        <button class="profile-button" id="profile-button">
+                            <i class="fa-solid fa-user"></i>
+                        </button>
+                        <div class="profile-dropdown" id="profile-dropdown">
+                            <a href="index.html" class="dropdown-link">
+                                <i class="fa-solid fa-house"></i> <span>Dashboard</span>
+                            </a>
+                            <a href="my-activity.html" class="dropdown-link">
+                                <i class="fa-solid fa-clipboard-list"></i> <span>Track Complaints</span>
+                            </a>
+                            <a href="my-activity.html#documents" class="dropdown-link">
+                                <i class="fa-solid fa-folder-open"></i> <span>Track Document Requests</span>
+                            </a>
+                            <a href="settings.html" class="dropdown-link separator-top">
+                                <i class="fa-solid fa-gear"></i> <span>Settings</span>
+                            </a>
+                            <a href="#" id="logout-button-alt" class="dropdown-link logout">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </header>
             
             <!-- Settings Form Content -->
             <div class="form-container">
-                <h1>Settings</h1>
+                <!-- 3. H1 is REMOVED from here -->
 
                 <!-- Profile Details Card -->
                 <div class="form-card">
@@ -170,6 +175,21 @@
         </main>
     </div>
     
+    <!-- Confirmation Modal -->
+    <div class="modal-overlay" id="confirm-modal-overlay">
+        <div class="modal-content">
+            <h2 id="confirm-title">Are you sure?</h2>
+            <p id="confirm-text">
+                A password reset link will be sent to your email: 
+                <strong id="confirm-email-display">...</strong>
+            </p>
+            <div class="button-group">
+                <button type="button" class="form-button-outlined" id="confirm-modal-cancel">CANCEL</button>
+                <button type,"submit" class="form-button-filled" id="confirm-modal-confirm">SEND LINK</button>
+            </div>
+        </div>
+    </div>
+
     <div id="toast" class="toast hidden"></div>
 
     <script type="module" src="js/settings.js"></script>

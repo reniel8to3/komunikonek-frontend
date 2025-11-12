@@ -68,9 +68,9 @@
             <div class="login-panel">
                 
                 <div class="lang-toggle-container">
-                    <button id="lang-en" class="lang-button active">ENG</button>
+                    <button id="lang-en" class="lang-button active" data-key="langEn">ENG</button>
                     <span class="lang-separator">|</span>
-                    <button id="lang-fil" class="lang-button">FIL</button>
+                    <button id="lang-fil" class="lang-button" data-key="langFil">FIL</button>
                 </div>
 
                 <p class="login-as-text"><span data-key="loginAs">Login as</span></p>
@@ -131,14 +131,15 @@
                             <label for="login-phone" class="form-label"><span data-key="phoneNumLabel">Phone Number</span> <span class="required">*</span></label>
                             <small class="error-message"></small>
                         </div>
-
+                        
+                        <!-- ADDED: reCAPTCHA container -->
                         <div id="recaptcha-container"></div>
                         
                         <button type="button" id="login-send-otp-btn" class="sign-in-button">
                             <span class="button-text" data-key="sendOtp">Send OTP</span>
                             <span class="button-loader hidden" aria-hidden="true"><i class="fa-solid fa-spinner fa-spin"></i></span>
                         </button>
-                        
+
                         <div id="login-otp-section" style="display: none;">
                             <p class="otp-success-text" data-key="otpSent">OTP sent successfully!</p>
                             <label><span data-key="otpLabel">Enter the OTP code</span> <span class="required">*</span></label>
@@ -150,13 +151,11 @@
                                 <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
                                 <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
                             </div>
-                            
                             <button type="button" id="login-verify-otp-btn" class="sign-in-button">
                                 <span class="button-text" data-key="verifySignIn">Verify & Sign In</span>
                                 <span class="button-loader hidden" aria-hidden="true"><i class="fa-solid fa-spinner fa-spin"></i></span>
                             </button>
                         </div>
-                        
                         <p class="signup-prompt">
                             <a href="#" id="show-email-login-link" class="signup-link" data-key="signInWithEmail">Sign in with Email instead</a>
                         </p>
@@ -171,8 +170,18 @@
         </div>
     </div>
 
+    <!-- ADDED: Toast Notification -->
     <div id="toast" class="toast hidden" role="alert" aria-live="polite" aria-atomic="true"></div>
 
+    <!-- 
+    ==================================================================
+    THIS IS THE FIX:
+    1. We load login.js as a module.
+    2. We REMOVE the old translations.js script.
+    ================================================================== 
+    -->
+    <!-- <script src="js/translations.js"></script> --> <!-- This is GONE -->
     <script type="module" src="js/login.js"></script>
+
 </body>
 </html>

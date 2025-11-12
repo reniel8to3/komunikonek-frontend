@@ -19,6 +19,7 @@
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
     <div class="dashboard-container">
+        <!-- Sidebar -->
         <nav class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <h3>KomuniKonek</h3>
@@ -36,7 +37,8 @@
                         <span>Submit a Complaint</span>
                     </a>
                 </li>
-                <li class="nav-item active"> <a href="request-document.html">
+                <li class="nav-item active"> <!-- This page is active -->
+                    <a href="request-document.html">
                         <i class="fa-solid fa-file-lines"></i>
                         <span>Request a Document</span>
                     </a>
@@ -62,40 +64,37 @@
             </div>
         </nav>
 
+        <!-- Main Content Area -->
         <main class="main-content">
             
-            <header class="main-header">
+            <!-- Header with Gradient and Title -->
+            <header class="main-header is-dashboard"> 
                 <button class="mobile-menu-button" id="mobile-menu-button">
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 
-                <div class="profile-dropdown-container">
-                    <button class="profile-button" id="profile-button">
-                        <i class="fa-solid fa-user"></i>
-                    </button>
-                    <div class="profile-dropdown" id="profile-dropdown">
-                        <a href="index.html" class="dropdown-link">
-                            <i class="fa-solid fa-house"></i> <span>Dashboard</span>
-                        </a>
-                        <a href="my-activity.html" class="dropdown-link">
-                            <i class="fa-solid fa-clipboard-list"></i> <span>Track Complaints</span>
-                        </a>
-                        <a href="my-activity.html#documents" class="dropdown-link">
-                            <i class="fa-solid fa-folder-open"></i> <span>Track Document Requests</span>
-                        </a>
-                        <a href="settings.html" class="dropdown-link separator-top">
-                            <i class="fa-solid fa-gear"></i> <span>Settings</span>
-                        </a>
-                        <a href="#" id="logout-button-alt" class="dropdown-link logout">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
-                        </a>
+                <div class="header-content">
+                    <h1>Request a Document</h1>
+                </div>
+
+                <div class="header-icons">
+                    <div class="profile-dropdown-container">
+                        <button class="profile-button" id="profile-button">
+                            <i class="fa-solid fa-user"></i>
+                        </button>
+                        <div class="profile-dropdown" id="profile-dropdown">
+                            <a href="index.html" class="dropdown-link">...</a>
+                            <a href="my-activity.html" class="dropdown-link">...</a>
+                            <a href="my-activity.html#documents" class="dropdown-link">...</a>
+                            <a href="settings.html" class="dropdown-link separator-top">...</a>
+                            <a href="#" id="logout-button-alt" class="dropdown-link logout">...</a>
+                        </div>
                     </div>
                 </div>
             </header>
             
+            <!-- Form Content -->
             <div class="form-container">
-                <h1>Request a Document</h1>
-
                 <div class="form-card">
                     <form id="request-form" novalidate>
                         
@@ -110,6 +109,13 @@
                             <label for="document-type" class="form-label"><span>Document Type</span> <span class="required">*</span></label>
                         </div>
 
+                        <!-- === NEW "OTHER" FIELD === -->
+                        <div class="form-group" id="other-document-group" style="display: none;">
+                            <input type="text" id="other-document-type" class="form-input" placeholder=" ">
+                            <label for="other-document-type" class="form-label">Please specify</label>
+                        </div>
+                        <!-- === END NEW FIELD === -->
+
                         <div class="form-group">
                             <textarea id="purpose" class="form-input" placeholder=" " rows="5"></textarea>
                             <label for="purpose" class="form-label"><span>Purpose of Request</span></label>
@@ -117,14 +123,6 @@
                         
                         <div class="form-group" style="display: none;">
                             <label class="form-label-static">Upload Requirements</label>
-                            <div class="file-upload-wrapper">
-                                <input type="file" id="file-upload" class="file-upload-input" multiple>
-                                <label for="file-upload" class="file-upload-button">
-                                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
-                                    Choose file(s)...
-                                </label>
-                                <span id="file-name" class="file-name">No file chosen</span>
-                            </div>
                         </div>
 
                         <div class="button-group">
@@ -134,13 +132,11 @@
                     </form>
                 </div>
             </div>
-            </main>
+        </main>
     </div>
     
     <div id="toast" class="toast hidden"></div>
-
     <script type="module" src="js/request.js"></script>
     <script type="module" src="js/main-ui.js"></script>
-
 </body>
 </html>

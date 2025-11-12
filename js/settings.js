@@ -25,34 +25,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const streetInput = document.getElementById('street');
     const passwordCard = document.getElementById('password-card');
 
+    // --- NEW: Get Modal Elements ---
+    const confirmModal = document.getElementById('confirm-modal-overlay');
+    const confirmEmailDisplay = document.getElementById('confirm-email-display');
+    const confirmCancelBtn = document.getElementById('confirm-modal-cancel');
+    const confirmSendBtn = document.getElementById('confirm-modal-confirm');
+
     // --- 3. LOAD USER DATA ---
     document.addEventListener('user-loaded', async (e) => {
         currentUserId = e.detail.user.uid;
         const userData = e.detail.userData;
         
-        // Populate the form with data from Firestore
         firstNameInput.value = userData.firstName || '';
         lastNameInput.value = userData.lastName || '';
         middleNameInput.value = userData.middleName || '';
         houseNumberInput.value = userData.address?.houseNumber || '';
         streetInput.value = userData.address?.street || '';
 
-        // Populate disabled fields
         if (userData.email) {
             emailInput.value = userData.email;
             currentUserEmail = userData.email;
-            passwordCard.style.display = 'block'; // Show change password button
+            passwordCard.style.display = 'block'; 
         } else {
             emailInput.value = "N/A (Phone Sign-in)";
-            passwordCard.style.display = 'none'; // Hide change password button
+            passwordCard.style.display = 'none'; 
         }
         
         phoneInput.value = userData.phone || "N/A (Email Sign-in)";
         
-        // This is a Material CSS fix to make labels float up
         document.querySelectorAll('.form-input').forEach(input => {
             if (input.value) {
-                input.classList.add('not-empty'); // You might need to adjust this class
+                input.classList.add('not-empty');
             }
         });
     });
@@ -70,8 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const userDocRef = doc(db, "users", currentUserId);
             
-            // We use setDoc with merge:true to *update* the document
-            // without overwriting fields that aren't in the form (like 'accountType')
             await setDoc(userDocRef, {
                 firstName: firstNameInput.value,
                 lastName: lastNameInput.value,
@@ -92,22 +93,38 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // --- 5. CHANGE PASSWORD BUTTON ---
-    changePasswordButton?.addEventListener('click', async () => {
+    // --- 5. CHANGE PASSWORD LOGIC (UPDATED) ---
+    
+    // Step 5a: "SEND RESET LINK" button now opens the modal
+    changePasswordButton?.addEventListener('click', () => {
         if (!currentUserEmail) {
             showToast("No email on file to send reset link.", "error");
             return;
         }
+        // Set the email in the modal text
+        confirmEmailDisplay.textContent = currentUserEmail;
+        // Open the modal
+        confirmModal.classList.add('is-open');
+    });
+
+    // Step 5b: "CANCEL" button in modal closes it
+    confirmCancelBtn?.addEventListener('click', () => {
+        confirmModal.classList.remove('is-open');
+    });
+
+    // Step 5c: "SEND LINK" button in modal does the work
+    confirmSendBtn?.addEventListener('click', async () => {
+        setButtonLoading(confirmSendBtn, true, "Sending...");
         
-        setButtonLoading(changePasswordButton, true, "Sending...");
         try {
             await sendPasswordResetEmail(auth, currentUserEmail);
+            confirmModal.classList.remove('is-open'); // Close modal on success
             showToast("Password reset email sent! Check your inbox.", "success");
         } catch (error) {
             console.error("Error sending password reset: ", error);
             showToast(error.message, "error");
         } finally {
-            setButtonLoading(changePasswordButton, false, "SEND RESET LINK");
+            setButtonLoading(confirmSendBtn, false, "SEND LINK");
         }
     });
 
@@ -115,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // --- UTILITY FUNCTIONS ---
-function setButtonLoading(button, isLoading, loadingText = "Saving...") {
+function setButtonLoading(button, isLoading, loadingText = "Loading...") {
     if (!button) return;
     const originalText = button.dataset.originalText || button.textContent;
     if (!button.dataset.originalText) {
