@@ -1,3 +1,25 @@
+// js/signup.js
+
+// ============================================
+// FIREBASE IMPORTS
+// ============================================
+import { 
+    auth, 
+    db, 
+    createUserWithEmailAndPassword, 
+    RecaptchaVerifier, 
+    signInWithPhoneNumber,
+    doc,
+    setDoc,
+    sendEmailVerification,  // <-- IMPORT THIS
+    signOut                 // <-- IMPORT THIS
+} from './firebase.js';
+
+// ============================================
+// TRANSLATION IMPORT
+// ============================================
+import { langStrings } from './translations.js';
+
 // ============================================
 // SIGNUP.JS - Improved & Production Ready
 // ============================================
@@ -5,16 +27,22 @@
 document.addEventListener("DOMContentLoaded", function() {
     
     // ============================================
+    // FIREBASE STATE
+    // ============================================
+    let confirmationResult = null;
+    let recaptchaVerifier = null;
+
+    // ============================================
     // STATE MANAGEMENT
     // ============================================
     
     const AppState = {
         currentLang: 'en',
         currentStep: 1,
-        registrationType: 'email', // 'email' or 'phone'
-        accountType: 'user', // 'user' or 'admin'
+        registrationType: 'email', 
+        accountType: 'user',
         otpSent: false,
-        otpVerified: false,
+        otpVerified: false, 
         otpTimer: null,
         otpCountdown: 60
     };
@@ -24,49 +52,35 @@ document.addEventListener("DOMContentLoaded", function() {
     // ============================================
     
     const Elements = {
-        // Language
         langEnBtn: document.getElementById('lang-en'),
         langFilBtn: document.getElementById('lang-fil'),
-        
-        // Steps
         step1: document.getElementById('step-1-account'),
         step2: document.getElementById('step-2-personal'),
         backButton: document.getElementById('back-button'),
-        
-        // Account Type Toggle
         signupAsSelector: document.getElementById('signup-as-selector'),
         signupAsButtons: document.querySelectorAll('#signup-as-selector .role-button'),
-        
-        // Registration Type Toggle
         registerWithSelector: document.getElementById('register-with-selector'),
         registerEmailBtn: document.getElementById('register-email-btn'),
         registerPhoneBtn: document.getElementById('register-phone-btn'),
-        
-        // Form Inputs
         emailFormGroup: document.getElementById('email-form-group'),
         phoneFormGroup: document.getElementById('phone-form-group'),
         emailInput: document.getElementById('email'),
         phoneInput: document.getElementById('phone'),
         passwordInput: document.getElementById('password'),
         passwordToggle: document.querySelector('.password-toggle'),
-        
-        // Password Checklist
         passChecklist: document.getElementById('password-checklist'),
         passLength: document.getElementById('pass-length'),
         passCapital: document.getElementById('pass-capital'),
         passNumber: document.getElementById('pass-number'),
         passSymbol: document.getElementById('pass-symbol'),
-        
-        // OTP
         sendOtpButton: document.getElementById('send-otp-button'),
+        sendOtpButtonText: document.querySelector('#send-otp-button .button-text'),
         otpSection: document.getElementById('otp-section'),
         otpInputs: document.querySelectorAll('.otp-input'),
         verifyOtpButton: document.getElementById('verify-otp-button'),
         resendOtpButton: document.getElementById('resend-otp-button'),
         otpCountdownSpan: document.getElementById('otp-countdown'),
         otpTimer: document.getElementById('otp-timer'),
-        
-        // Step 2 Inputs
         firstNameInput: document.getElementById('first-name'),
         lastNameInput: document.getElementById('last-name'),
         middleNameInput: document.getElementById('middle-name'),
@@ -75,20 +89,35 @@ document.addEventListener("DOMContentLoaded", function() {
         monthSelect: document.getElementById('month'),
         daySelect: document.getElementById('day'),
         yearSelect: document.getElementById('year'),
-        
-        // Forms
         signupFormStep1: document.getElementById('signup-form-step1'),
         signupFormStep2: document.getElementById('signup-form-step2'),
-        
-        // Slideshow
         slides: document.querySelectorAll('.slide'),
         dots: document.querySelectorAll('.dot'),
         slidePrevBtn: document.getElementById('slide-prev'),
         slideNextBtn: document.getElementById('slide-next'),
-        
-        // Toast
         toast: document.getElementById('toast')
     };
+    
+    // ============================================
+    // FIREBASE RECAPTCHA SETUP
+    // ============================================
+    
+    function setupRecaptcha() {
+        if (recaptchaVerifier) {
+            recaptchaVerifier.clear(); // Clear old instance if it exists
+        }
+        recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+            'size': 'invisible',
+            'callback': (response) => {
+                console.log("reCAPTCHA verified");
+            },
+            'expired-callback': () => {
+                console.log("reCAPTCHA expired, resetting...");
+                setupRecaptcha(); // Re-run setup if it expires
+            }
+        });
+    }
+    setupRecaptcha(); 
 
     // ============================================
     // TRANSLATION / I18N
@@ -112,22 +141,36 @@ document.addEventListener("DOMContentLoaded", function() {
             
             if (el.tagName === 'TITLE') {
                 document.title = "KomuniKonek | " + translation;
+            } else if (el.tagName === 'OPTION') {
+                if (el.value === "") {
+                    el.textContent = translation;
+                }
             } else {
                 el.textContent = translation;
             }
         });
         
-        // Update active language button
         Elements.langEnBtn?.classList.toggle('active', lang === 'en');
         Elements.langFilBtn?.classList.toggle('active', lang === 'fil');
+
+        updateContinueButtonText(lang);
+    }
+    
+    function updateContinueButtonText(lang) {
+        if (Elements.sendOtpButtonText) {
+            let key = (AppState.registrationType === 'email') ? 'continueBtn' : 'sendOtp';
+            if (langStrings[lang]?.[key]) {
+                Elements.sendOtpButtonText.textContent = langStrings[lang][key];
+                Elements.sendOtpButtonText.setAttribute('data-key', key);
+            }
+        }
     }
 
-    // Initialize language buttons
     Elements.langEnBtn?.addEventListener('click', () => setLanguage('en'));
     Elements.langFilBtn?.addEventListener('click', () => setLanguage('fil'));
     
     if (typeof langStrings !== 'undefined') {
-        setLanguage('en');
+        setLanguage('en'); 
     }
 
     // ============================================
@@ -159,7 +202,8 @@ document.addEventListener("DOMContentLoaded", function() {
         button.disabled = isLoading;
         
         if (textSpan && loaderSpan) {
-            toggleElement(loaderSpan, isLoading);
+            textSpan.style.display = isLoading ? 'none' : '';
+            loaderSpan.style.display = isLoading ? 'inline-block' : 'none';
         }
     }
     
@@ -190,9 +234,9 @@ document.addEventListener("DOMContentLoaded", function() {
     
     function isValidPassword(password) {
         return password.length >= 8 &&
-               /[A-Z]/.test(password) &&
-               /[0-9]/.test(password) &&
-               /[^A-Za-z0-9]/.test(password);
+                /[A-Z]/.test(password) &&
+                /[0-9]/.test(password) &&
+                /[^A-Za-z0-9]/.test(password);
     }
     
     function setError(input, messageKey) {
@@ -234,7 +278,6 @@ document.addEventListener("DOMContentLoaded", function() {
     function validateStep1() {
         let isValid = true;
         
-        // Validate email or phone
         if (AppState.registrationType === 'email') {
             const emailValue = Elements.emailInput?.value.trim();
             
@@ -247,7 +290,19 @@ document.addEventListener("DOMContentLoaded", function() {
             } else {
                 setSuccess(Elements.emailInput);
             }
-        } else {
+            
+            const passwordValue = Elements.passwordInput?.value.trim();
+            if (!passwordValue) {
+                setError(Elements.passwordInput, 'errRequired');
+                isValid = false;
+            } else if (!isValidPassword(passwordValue)) {
+                setError(Elements.passwordInput, 'errPassRequirements');
+                isValid = false;
+            } else {
+                setSuccess(Elements.passwordInput);
+            }
+            
+        } else { // 'phone'
             const phoneValue = Elements.phoneInput?.value.trim();
             
             if (!phoneValue) {
@@ -259,18 +314,7 @@ document.addEventListener("DOMContentLoaded", function() {
             } else {
                 setSuccess(Elements.phoneInput);
             }
-        }
-        
-        // Validate password
-        const passwordValue = Elements.passwordInput?.value.trim();
-        
-        if (!passwordValue) {
-            setError(Elements.passwordInput, 'errRequired');
-            isValid = false;
-        } else if (!isValidPassword(passwordValue)) {
-            setError(Elements.passwordInput, 'errPassRequirements');
-            isValid = false;
-        } else {
+            
             setSuccess(Elements.passwordInput);
         }
         
@@ -325,8 +369,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     
     Elements.passwordInput?.addEventListener('blur', () => {
-        // Keep checklist visible if there are errors
-        if (!isValidPassword(Elements.passwordInput.value)) {
+        if (!isValidPassword(Elements.passwordInput.value) && Elements.passwordInput.value.length > 0) {
             return;
         }
         hideElement(Elements.passChecklist);
@@ -392,22 +435,24 @@ document.addEventListener("DOMContentLoaded", function() {
     setupSlidingToggle(Elements.signupAsSelector);
     setupSlidingToggle(Elements.registerWithSelector);
     
-    // Account type selection
     Elements.signupAsButtons?.forEach(button => {
         button.addEventListener('click', function() {
             AppState.accountType = this.dataset.role || 'user';
         });
     });
     
-    // Registration type toggle
     Elements.registerEmailBtn?.addEventListener('click', function() {
         if (this.disabled) return;
         
         AppState.registrationType = 'email';
+        AppState.otpVerified = false; 
         showElement(Elements.emailFormGroup);
+        showElement(Elements.passwordInput?.closest('.form-group')); 
         hideElement(Elements.phoneFormGroup);
-        
-        // Clear phone validation
+        hideElement(Elements.otpSection); 
+        showElement(Elements.sendOtpButton);
+        updateContinueButtonText(AppState.currentLang);
+
         if (Elements.phoneInput) {
             setSuccess(Elements.phoneInput);
             Elements.phoneInput.value = '';
@@ -418,13 +463,21 @@ document.addEventListener("DOMContentLoaded", function() {
         if (this.disabled) return;
         
         AppState.registrationType = 'phone';
+        AppState.otpVerified = false; 
         hideElement(Elements.emailFormGroup);
+        hideElement(Elements.passwordInput?.closest('.form-group')); 
         showElement(Elements.phoneFormGroup);
+        showElement(Elements.sendOtpButton); 
+        updateContinueButtonText(AppState.currentLang); 
         
-        // Clear email validation
         if (Elements.emailInput) {
             setSuccess(Elements.emailInput);
             Elements.emailInput.value = '';
+        }
+        
+        if (Elements.passwordInput) {
+            setSuccess(Elements.passwordInput);
+            Elements.passwordInput.value = '';
         }
     });
 
@@ -434,7 +487,6 @@ document.addEventListener("DOMContentLoaded", function() {
     
     function setupOtpInputs() {
         Elements.otpInputs.forEach((input, index) => {
-            // Auto-focus next input
             input.addEventListener('input', function() {
                 this.value = this.value.replace(/[^0-9]/g, '');
                 
@@ -443,14 +495,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
             
-            // Handle backspace
             input.addEventListener('keydown', (e) => {
                 if (e.key === 'Backspace' && !input.value && index > 0) {
                     e.preventDefault();
                     Elements.otpInputs[index - 1].focus();
                 }
-                
-                // Arrow key navigation
                 if (e.key === 'ArrowLeft' && index > 0) {
                     Elements.otpInputs[index - 1].focus();
                 }
@@ -459,7 +508,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
             
-            // Handle paste
             input.addEventListener('paste', function(e) {
                 e.preventDefault();
                 const pastedData = e.clipboardData.getData('text').replace(/[^0-9]/g, '');
@@ -484,6 +532,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         if (Elements.otpTimer) {
             showElement(Elements.otpTimer);
+        }
+        
+        if (AppState.otpTimer) {
+            clearInterval(AppState.otpTimer);
         }
         
         AppState.otpTimer = setInterval(() => {
@@ -514,7 +566,6 @@ document.addEventListener("DOMContentLoaded", function() {
         Elements.otpInputs[0]?.focus();
     }
     
-    // Send OTP
     Elements.sendOtpButton?.addEventListener('click', async function() {
         if (!validateStep1()) {
             showToast('Please fix the errors before continuing', 'error');
@@ -523,60 +574,65 @@ document.addEventListener("DOMContentLoaded", function() {
         
         setButtonLoading(this, true);
         
-        try {
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1500));
+        if (AppState.registrationType === 'email') {
+            // NOTE: Email verification happens AFTER Step 2
+            // We just proceed to the next step
+            AppState.otpVerified = true; 
             
-            // TODO: Replace with actual API call
-            // const response = await fetch('/api/send-otp', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify({
-            //         type: AppState.registrationType,
-            //         value: AppState.registrationType === 'email' 
-            //             ? Elements.emailInput.value 
-            //             : Elements.phoneInput.value
-            //     })
-            // });
+            hideElement(Elements.step1);
+            showElement(Elements.step2);
+            AppState.currentStep = 2;
+            Elements.firstNameInput?.focus();
             
-            AppState.otpSent = true;
-            showElement(Elements.otpSection);
-            startOtpTimer();
-            
-            // Disable and hide send OTP button
-            hideElement(Elements.sendOtpButton);
-            
-            // Disable form inputs
-            [Elements.emailInput, Elements.phoneInput, Elements.passwordInput].forEach(input => {
-                if (input) input.disabled = true;
-            });
-            
-            Elements.signupAsSelector?.classList.add('disabled');
-            Elements.registerWithSelector?.classList.add('disabled');
-            
-            showToast('OTP sent successfully!', 'success');
-            
-            // Focus first OTP input
-            Elements.otpInputs[0]?.focus();
-            
-        } catch (error) {
-            console.error('Error sending OTP:', error);
-            showToast('Failed to send OTP. Please try again.', 'error');
-        } finally {
             setButtonLoading(this, false);
+
+        } else {
+            // --- PHONE PATH ---
+            try {
+                const phoneValue = Elements.phoneInput.value.trim();
+                const phoneNumber = '+63' + (phoneValue.startsWith('0') ? phoneValue.substring(1) : phoneValue);
+
+                setupRecaptcha(); 
+                console.log("Sending OTP to:", phoneNumber); 
+                confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier);
+                
+                AppState.otpSent = true;
+                showElement(Elements.otpSection);
+                startOtpTimer();
+                hideElement(Elements.sendOtpButton);
+                
+                [Elements.phoneInput, Elements.passwordInput].forEach(input => {
+                    if (input) input.disabled = true;
+                });
+                
+                Elements.signupAsSelector?.classList.add('disabled');
+                Elements.registerWithSelector?.classList.add('disabled');
+                showToast('OTP sent successfully!', 'success');
+                Elements.otpInputs[0]?.focus();
+
+            } catch (error) {
+                console.error('Error sending OTP:', error);
+                showToast(`Failed to send OTP. Check console and Firebase config.`, 'error');
+                if (recaptchaVerifier) {
+                    recaptchaVerifier.clear(); 
+                }
+            } finally {
+                setButtonLoading(this, false);
+            }
         }
     });
     
-    // Resend OTP
     Elements.resendOtpButton?.addEventListener('click', async function() {
-        setButtonLoading(Elements.sendOtpButton, true);
+        setButtonLoading(this, true); 
         clearOtpInputs();
         
         try {
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            const phoneValue = Elements.phoneInput.value.trim();
+            const phoneNumber = '+63' + (phoneValue.startsWith('0') ? phoneValue.substring(1) : phoneValue);
             
-            // TODO: Replace with actual API call
+            setupRecaptcha(); 
+            console.log("Resending OTP to:", phoneNumber); 
+            confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier);
             
             startOtpTimer();
             showToast('OTP resent successfully!', 'success');
@@ -584,12 +640,14 @@ document.addEventListener("DOMContentLoaded", function() {
         } catch (error) {
             console.error('Error resending OTP:', error);
             showToast('Failed to resend OTP. Please try again.', 'error');
+            if (recaptchaVerifier) {
+                recaptchaVerifier.clear(); 
+            }
         } finally {
-            setButtonLoading(Elements.sendOtpButton, false);
+            setButtonLoading(this, false);
         }
     });
     
-    // Verify OTP
     Elements.verifyOtpButton?.addEventListener('click', async function() {
         const otpCode = getOtpCode();
         
@@ -601,28 +659,21 @@ document.addEventListener("DOMContentLoaded", function() {
         setButtonLoading(this, true);
         
         try {
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            
-            // TODO: Replace with actual API call
-            // const response = await fetch('/api/verify-otp', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify({ otp: otpCode })
-            // });
-            
-            // Simulate success
-            AppState.otpVerified = true;
+            if (!confirmationResult) {
+                throw new Error("OTP not sent. Please try again.");
+            }
+            const userCredential = await confirmationResult.confirm(otpCode);
+            const user = userCredential.user;
+            console.log("Phone user verified:", user.uid);
+
+            AppState.otpVerified = true; 
             clearInterval(AppState.otpTimer);
             
-            // Move to step 2
             hideElement(Elements.step1);
             showElement(Elements.step2);
             AppState.currentStep = 2;
             
             showToast('OTP verified successfully!', 'success');
-            
-            // Focus first input in step 2
             Elements.firstNameInput?.focus();
             
         } catch (error) {
@@ -643,85 +694,115 @@ document.addEventListener("DOMContentLoaded", function() {
         showElement(Elements.step1);
         AppState.currentStep = 1;
         
-        // Reset OTP section if going back
         if (AppState.otpSent) {
-            // Keep OTP section visible but allow re-edit
             showElement(Elements.sendOtpButton);
             hideElement(Elements.otpSection);
             clearInterval(AppState.otpTimer);
             AppState.otpSent = false;
-            AppState.otpVerified = false;
+            AppState.otpVerified = false; 
             clearOtpInputs();
         }
         
-        // Re-enable inputs
         [Elements.emailInput, Elements.phoneInput, Elements.passwordInput].forEach(input => {
             if (input) input.disabled = false;
         });
         
         Elements.signupAsSelector?.classList.remove('disabled');
         Elements.registerWithSelector?.classList.remove('disabled');
+        
+        confirmationResult = null;
     });
 
     // ============================================
-    // FORM SUBMISSIONS
+    // FORM SUBMISSIONS (EMAIL VERIFICATION ADDED)
     // ============================================
     
     Elements.signupFormStep2?.addEventListener('submit', async function(e) {
         e.preventDefault();
         
+        const submitButton = this.querySelector('button[type="submit"]');
+        setButtonLoading(submitButton, true);
+
         if (!validateStep2()) {
             showToast('Please fill in all required fields', 'error');
+            setButtonLoading(submitButton, false);
             return;
         }
         
-        const submitButton = this.querySelector('button[type="submit"]');
-        setButtonLoading(submitButton, true);
-        
+        // Security check for phone path
+        if (AppState.registrationType === 'phone' && !AppState.otpVerified) {
+            showToast('OTP was not verified. Please go back.', 'error');
+            setButtonLoading(submitButton, false);
+            return;
+        }
+
+        const formData = {
+            accountType: AppState.accountType,
+            firstName: Elements.firstNameInput?.value.trim(),
+            lastName: Elements.lastNameInput?.value.trim(),
+            middleName: Elements.middleNameInput?.value.trim(),
+            address: {
+                houseNumber: Elements.houseNumberInput?.value.trim(),
+                street: Elements.streetInput?.value.trim()
+            },
+            birthDate: {
+                month: Elements.monthSelect?.value,
+                day: Elements.daySelect?.value,
+                year: Elements.yearSelect?.value
+            },
+            [AppState.registrationType]: AppState.registrationType === 'email' 
+                ? Elements.emailInput?.value.trim()
+                : '+63' + (Elements.phoneInput?.value.trim().startsWith('0') ? Elements.phoneInput?.value.trim().substring(1) : Elements.phoneInput?.value.trim()),
+            createdAt: new Date().toISOString()
+        };
+
         try {
-            // Gather form data
-            const formData = {
-                accountType: AppState.accountType,
-                [AppState.registrationType]: AppState.registrationType === 'email' 
-                    ? Elements.emailInput?.value 
-                    : '+63' + Elements.phoneInput?.value,
-                password: Elements.passwordInput?.value,
-                firstName: Elements.firstNameInput?.value,
-                lastName: Elements.lastNameInput?.value,
-                middleName: Elements.middleNameInput?.value,
-                address: {
-                    houseNumber: Elements.houseNumberInput?.value,
-                    street: Elements.streetInput?.value
-                },
-                birthDate: {
-                    month: Elements.monthSelect?.value,
-                    day: Elements.daySelect?.value,
-                    year: Elements.yearSelect?.value
-                }
-            };
-            
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            
-            // TODO: Replace with actual API call
-            // const response = await fetch('/api/signup', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify(formData)
-            // });
-            
-            console.log('Signup data:', formData);
-            
-            showToast('Account created successfully!', 'success');
-            
-            // Redirect after success
-            setTimeout(() => {
-                window.location.href = 'login.html';
-            }, 2000);
-            
+            let user;
+
+            if (AppState.registrationType === 'email') {
+                // --- NEW EMAIL FLOW ---
+                const email = Elements.emailInput.value;
+                const password = Elements.passwordInput.value;
+                
+                // 1. Create user
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                user = userCredential.user;
+
+                // 2. Save profile data
+                await setDoc(doc(db, "users", user.uid), formData);
+
+                // 3. Send verification email
+                await sendEmailVerification(user);
+
+                // 4. Log them out (so they must verify to log in)
+                await signOut(auth);
+
+                console.log('Account created, profile saved, verification email sent.');
+                
+                // 5. Redirect to "please verify" page
+                window.location.href = 'verify-email.html'; 
+                // No toast, the new page will explain
+
+            } else {
+                // --- PHONE FLOW (Unchanged) ---
+                user = auth.currentUser;
+                if (!user) throw new Error("User not found. Please sign up again.");
+
+                // Save profile data
+                await setDoc(doc(db, "users", user.uid), formData);
+                
+                console.log('Account created and profile saved:', user.uid, formData);
+                showToast('Account created successfully!', 'success');
+                
+                // Redirect to login
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+            }
+
         } catch (error) {
             console.error('Error creating account:', error);
-            showToast('Failed to create account. Please try again.', 'error');
+            showToast(`Failed to create account: ${error.message}`, 'error');
         } finally {
             setButtonLoading(submitButton, false);
         }
@@ -742,10 +823,14 @@ document.addEventListener("DOMContentLoaded", function() {
     function populateDays() {
         if (!Elements.daySelect) return;
         
+        const currentDay = Elements.daySelect.value;
+        Elements.daySelect.innerHTML = '<option value="" disabled selected hidden data-key="day">Day</option>'; // Reset
+        
         for (let i = 1; i <= 31; i++) {
             const option = document.createElement('option');
             option.value = i;
             option.textContent = i;
+            if (i == currentDay) option.selected = true;
             Elements.daySelect.appendChild(option);
         }
     }
@@ -753,6 +838,9 @@ document.addEventListener("DOMContentLoaded", function() {
     function populateYears() {
         if (!Elements.yearSelect) return;
         
+        const currentYearValue = Elements.yearSelect.value;
+        Elements.yearSelect.innerHTML = '<option value="" disabled selected hidden data-key="year">Year</option>'; // Reset
+
         const currentYear = new Date().getFullYear();
         const maxYear = currentYear - 18; // Must be 18+
         const minYear = currentYear - 100; // Max 100 years old
@@ -761,12 +849,14 @@ document.addEventListener("DOMContentLoaded", function() {
             const option = document.createElement('option');
             option.value = i;
             option.textContent = i;
+            if (i == currentYearValue) option.selected = true;
             Elements.yearSelect.appendChild(option);
         }
     }
 
     populateDays();
     populateYears();
+    setLanguage(AppState.currentLang); 
 
     // ============================================
     // SLIDESHOW
@@ -821,11 +911,9 @@ document.addEventListener("DOMContentLoaded", function() {
         resetSlideTimer();
     });
 
-    // Initialize slideshow
     showSlide(slideIndex);
     resetSlideTimer();
 
-    // Pause slideshow on hover
     const slideshowContainer = document.querySelector('.slideshow-container');
     slideshowContainer?.addEventListener('mouseenter', () => {
         clearInterval(slideInterval);

@@ -1,4 +1,7 @@
-const langStrings = {
+// js/translations.js
+
+// FIX: Combined both declarations into one and added all necessary keys
+export const langStrings = {
     "en": {
         // --- Login Page ---
         "titleLogin": "Login",
@@ -16,7 +19,6 @@ const langStrings = {
         "noAccount": "Don't have an account?",
         "signUpLink": "Sign up",
         "phoneNumLabel": "Phone Number",
-        "sendOtp": "Send OTP",
         "otpSent": "OTP sent successfully!",
         "otpLabel": "Enter the OTP code",
         "verifySignIn": "Verify & Sign In",
@@ -29,6 +31,8 @@ const langStrings = {
         "joinPrompt": "Join KomuniKonek to connect with your community",
         "signUpAs": "Sign up as",
         "registerWith": "Register with",
+        "sendOtp": "Send OTP",
+        "continueBtn": "Continue", // <-- KEY ADDED FROM SMALL OBJECT
         "verifyOtp": "Verify OTP",
         "haveAccount": "Already have an account?",
         "signInLink": "Sign in",
@@ -52,6 +56,14 @@ const langStrings = {
         "admin": "Admin",
         "email": "Email",
         "phone": "Phone Number",
+        "resendOtp": "Resend OTP",
+        "resendTimer": "Resend OTP in ",
+
+        // --- Password Checklist Keys (from small object) ---
+        "passLength": "At least 8 characters",
+        "passCapital": "At least one capital letter",
+        "passNumber": "At least one number",
+        "passSymbol": "At least one symbol",
         
         // --- Homepage ---
         "titleDashboard": "Dashboard",
@@ -170,7 +182,8 @@ const langStrings = {
         "errRequired": "This field is required",
         "errEmail": "Provide a valid email address (e.g., user@domain.com)",
         "errPassLength": "Password must be at least 8 characters long",
-        "errPhoneLength": "Please enter a 10-digit phone number"
+        "errPhoneLength": "Please enter a 10-digit phone number",
+        "errPassRequirements": "Please meet all password requirements" // Added this for consistency
     },
     "fil": {
         // --- Login Page ---
@@ -189,7 +202,6 @@ const langStrings = {
         "noAccount": "Wala ka pang account?",
         "signUpLink": "Mag-sign up",
         "phoneNumLabel": "Numero ng Telepono",
-        "sendOtp": "Ipadala ang OTP",
         "otpSent": "Matagumpay na naipadala ang OTP!",
         "otpLabel": "Ilagay ang OTP code",
         "verifySignIn": "Patunayan at Mag-sign In",
@@ -202,6 +214,8 @@ const langStrings = {
         "joinPrompt": "Sumali sa KomuniKonek para kumonekta sa iyong komunidad",
         "signUpAs": "Mag-sign up bilang",
         "registerWith": "Magrehistro gamit ang",
+        "sendOtp": "Ipadala ang OTP",
+        "continueBtn": "Magpatuloy", // <-- KEY ADDED FROM SMALL OBJECT
         "verifyOtp": "Patunayan ang OTP",
         "haveAccount": "May account ka na?",
         "signInLink": "Mag-sign in",
@@ -225,6 +239,14 @@ const langStrings = {
         "admin": "Admin",
         "email": "Email",
         "phone": "Numero ng Telepono",
+        "resendOtp": "Muling ipadala ang OTP",
+        "resendTimer": "Muling ipadala ang OTP sa ",
+
+        // --- Password Checklist Keys (from small object) ---
+        "passLength": "Hindi bababa sa 8 karakter",
+        "passCapital": "Hindi bababa sa isang malaking titik",
+        "passNumber": "Hindi bababa sa isang numero",
+        "passSymbol": "Hindi bababa sa isang simbolo",
 
         // --- Homepage ---
         "titleDashboard": "Dashboard",
@@ -343,6 +365,7 @@ const langStrings = {
         "errRequired": "Kinakailangan ang field na ito",
         "errEmail": "Magbigay ng wastong email address (hal., user@domain.com)",
         "errPassLength": "Ang password ay dapat na hindi bababa sa 8 character",
-        "errPhoneLength": "Magpasok ng 10-digit na numero ng telepono"
+        "errPhoneLength": "Magpasok ng 10-digit na numero ng telepono",
+        "errPassRequirements": "Mangyaring matugunan ang lahat ng kinakailangan sa password" // Added this for consistency
     }
 };

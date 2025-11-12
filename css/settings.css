@@ -1,203 +1,48 @@
-/* --- Main Settings Container --- */
-.settings-container {
-    max-width: 800px;
-    margin: 30px auto;
-    padding: 40px;
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+/* css/settings.css */
+
+.form-card {
+    margin-bottom: 30px;
 }
 
-.settings-container h1 {
-    font-size: 2.2em;
-    font-weight: 600;
-    color: #212529;
+.form-card h2 {
     margin-top: 0;
-    margin-bottom: 30px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 15px;
 }
 
-/* --- Form Sections --- */
-.form-section {
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 20px;
-    margin-bottom: 30px;
-}
-.form-section:last-of-type {
-    border-bottom: none;
-    margin-bottom: 0;
+.form-card p {
+    font-size: 0.95rem;
+    color: #6c757d;
+    margin-top: -10px;
+    margin-bottom: 25px;
 }
 
-.section-title {
-    font-size: 1.2em;
-    font-weight: 600;
-    color: #0038A8; /* Flag Blue */
-    margin-bottom: 20px;
-    text-align: left;
+.form-card h3 {
+    font-size: 1.1rem;
+    color: #0038A8;
+    margin-top: 25px;
+    margin-bottom: 15px;
 }
 
-/* --- Form Row for side-by-side fields --- */
 .form-row {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
 }
-.form-row .form-group {
-    flex: 1; /* Each group takes 50% */
-}
 
-/* --- Material Text Fields (Copied from login.css) --- */
-.form-group {
-    position: relative;
-    text-align: left;
-    margin-bottom: 20px;
-    width: 100%;
-}
-.form-label {
-    position: absolute;
-    top: 14px;
-    left: 40px; /* Default for icon fields */
-    font-size: 1em;
+/* Make disabled fields look correct */
+.form-input:disabled {
+    background-color: #f7f9fc;
     color: #6c757d;
-    pointer-events: none;
-    transition: all 0.3s ease;
-    background-color: #ffffff;
-    padding: 0 5px;
+    cursor: not-allowed;
 }
-.form-icon {
-    position: absolute;
-    top: 15px;
-    left: 12px;
+.form-input:disabled + .form-label {
     color: #6c757d;
 }
-.form-input {
-    width: 100%;
-    border: 1px solid #8e9190;
-    border-radius: 4px;
-    padding: 14px 15px 14px 40px;
-    background-color: #ffffff;
-    transition: border-color 0.3s;
-    font-family: inherit;
-    font-size: 1em;
-    color: #212529;
-    box-sizing: border-box;
-}
 
-/* Fields with NO icon */
-.form-group input[type="text"]:not(:placeholder-shown) + .form-label,
-.form-group input[type="text"]:focus + .form-label,
-.form-group select:not([value=""]) + .form-label,
-.form-group select:focus + .form-label {
-    top: -8px;
-    left: 10px;
-    font-size: 0.8em;
-    color: #0038A8;
-}
-.form-group input[type="text"],
-.form-group select.form-input {
-    padding-left: 15px; /* No icon padding */
-}
-.form-group input[type="text"] + .form-label,
-.form-group select.form-input + .form-label {
-    left: 12px; /* No icon padding */
-}
-
-
-/* Fields WITH icon */
-.form-group input[type="email"] + .form-label,
-.form-group input[type="tel"] + .form-label,
-.form-group input[type="password"] + .form-label {
-    left: 40px;
-}
-.form-group input[type="email"]:not(:placeholder-shown) + .form-label,
-.form-group input[type="email"]:focus + .form-label,
-.form-group input[type="tel"]:not(:placeholder-shown) + .form-label,
-.form-group input[type="tel"]:focus + .form-label,
-.form-group input[type="password"]:not(:placeholder-shown) + .form-label,
-.form-group input[type="password"]:focus + .form-label {
-    top: -8px;
-    left: 38px;
-    font-size: 0.8em;
-    color: #0038A8;
-}
-
-.form-input:focus {
-    outline: none;
-    border-color: #0038A8;
-    box-shadow: 0 0 0 1px #0038A8;
-}
-
-/* Select-specific styles */
-select.form-input {
-    appearance: none;
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%236c757d%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-13%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2013l128%20128c3.5%203.5%208%205.4%2013%205.4s9.5-1.8%2013-5.4l128-128c3.5-3.5%205.4-8%205.4-13%200-5-1.8-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E');
-    background-repeat: no-repeat;
-    background-position: right 15px center;
-    background-size: 10px auto;
-}
-
-.form-helper {
-    font-size: 0.85em;
-    color: #6c757d;
-    margin-top: 5px;
-    text-align: left;
-    display: block;
-}
-
-/* --- Button Group --- */
-.button-group {
-    display: flex;
-    justify-content: flex-end;
-    gap: 15px;
-    margin-top: 30px;
-}
-
-.form-button-filled,
-.form-button-outlined {
-    padding: 12px 24px;
-    border: none;
-    border-radius: 100px;
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: 500;
-    transition: all 0.3s;
-}
-
-.form-button-filled {
-    background-color: #0038A8;
-    color: white;
-}
-.form-button-filled:hover {
-    background-color: #002a7e;
-}
-
-.form-button-outlined {
-    background-color: transparent;
-    color: #0038A8;
-    border: 1px solid #e0e0e0;
-}
-.form-button-outlined:hover {
-    background-color: #f0f5ff;
-    border-color: #0038A8;
-}
-
-/* --- RESPONSIVENESS --- */
-@media (max-width: 768px) {
-    .settings-container {
-        padding: 20px;
-        margin: 20px;
-    }
+@media (max-width: 600px) {
     .form-row {
-        flex-direction: column;
+        grid-template-columns: 1fr;
         gap: 0;
-    }
-    .form-row .form-group {
-        margin-bottom: 20px;
-    }
-    .button-group {
-        flex-direction: column-reverse;
-    }
-    .form-button-filled,
-    .form-button-outlined {
-        width: 100%;
     }
 }

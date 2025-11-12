@@ -1,4 +1,4 @@
-// js/request.js
+// js/submit-complaint.js
 import { protectPage, setupLogoutButton } from './auth-guard.js';
 import { db, collection, addDoc, serverTimestamp } from './firebase.js';
 
@@ -13,11 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('user-loaded', (e) => {
         currentUserId = e.detail.user.uid;
-        console.log("Request Document page loaded for user:", currentUserId);
+        console.log("Submit Complaint page loaded for user:", currentUserId);
     });
 
     // --- 2. GET FORM & HIDE UPLOAD ---
-    const requestForm = document.getElementById('request-form');
+    const complaintForm = document.getElementById('complaint-form');
     const submitButton = document.querySelector('.form-button-filled');
     const fileUpload = document.getElementById('file-upload');
     const fileUploadGroup = fileUpload?.closest('.form-group');
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- 3. FORM SUBMIT LISTENER ---
-    requestForm?.addEventListener('submit', async (e) => {
+    complaintForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
         if (!currentUserId) {
             showToast("Error: User not identified. Please try logging in again.", "error");
@@ -34,25 +34,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         setButtonLoading(submitButton, true);
-        showToast("Submitting request...", "info");
+        showToast("Submitting complaint...", "info");
 
         // --- 4a. GET ELEMENT VALUES ---
-        const documentType = document.getElementById('document-type');
-        const purpose = document.getElementById('purpose');
+        const complaintType = document.getElementById('complaint-type');
+        const otherComplaintType = document.getElementById('other-complaint-type');
+        const complaintSubject = document.getElementById('subject'); 
+        const incidentDate = document.getElementById('incident-date');
+        const complaintDescription = document.getElementById('description'); 
 
         try {
-            // --- 4b. Prepare Document Data ---
-            const newRequest = {
+            // --- 4b. Prepare Complaint Data ---
+            let finalComplaintType = complaintType.value;
+            if (finalComplaintType === 'other') {
+                finalComplaintType = otherComplaintType.value || 'Other';
+            }
+
+            const newComplaint = {
                 userId: currentUserId,
-                documentType: documentType.value,
-                purpose: purpose.value,
+                type: finalComplaintType,
+                subject: complaintSubject.value,
+                incidentDate: incidentDate.value,
+                description: complaintDescription.value,
                 fileUrls: [], 
                 status: "Pending", 
                 createdAt: serverTimestamp(), // This one is correct
                 progress: [
                     {
                         status: "Pending",
-                        notes: "Your document request has been submitted.",
+                        notes: "Your complaint has been submitted and is awaiting review.",
                         // --- THIS IS THE FIX ---
                         timestamp: new Date() // Changed from serverTimestamp()
                         // --- END FIX ---
@@ -61,18 +71,18 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             // --- 4c. Save to Firestore ---
-            const docRef = await addDoc(collection(db, "document_requests"), newRequest);
+            const docRef = await addDoc(collection(db, "complaints"), newComplaint);
             
-            console.log("Request submitted with ID: ", docRef.id);
-            showToast("Request submitted successfully!", "success");
+            console.log("Complaint submitted with ID: ", docRef.id);
+            showToast("Complaint submitted successfully!", "success");
 
             setTimeout(() => {
-                window.location.href = 'my-activity.html#documents'; 
+                window.location.href = 'my-activity.html';
             }, 2000);
 
         } catch (error) {
-            console.error("Error submitting request: ", error);
-            showToast("Error submitting request. Please try again.", "error");
+            console.error("Error submitting complaint: ", error);
+            showToast("Error submitting complaint. Please try again.", "error");
             setButtonLoading(submitButton, false);
         }
     });
@@ -84,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function setButtonLoading(button, isLoading) {
     if (!button) return;
     button.disabled = isLoading;
-    button.textContent = isLoading ? "Submitting..." : "SUBMIT REQUEST";
+    button.textContent = isLoading ? "Submitting..." : "SUBMIT COMPLAINT";
 }
 
 function showToast(message, type = 'info') {

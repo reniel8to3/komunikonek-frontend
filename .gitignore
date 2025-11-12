@@ -1,0 +1,16 @@
+This is a comment.
+
+Ignore Node.js dependencies
+
+/node_modules
+
+Ignore system files
+
+.DS_Store
+*.log
+
+=== THE IMPORTANT PART ===
+
+Ignore our secret Firebase config file.
+
+js/firebase.js

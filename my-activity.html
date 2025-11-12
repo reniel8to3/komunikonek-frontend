@@ -3,130 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-key="titleActivity">KomuniKonek | My Activity</title>
+    <title>KomuniKonek | My Activity</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="css/style.css"> 
-    <link rel="stylesheet" href="css/activity.css">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard.css"> <link rel="stylesheet" href="css/activity.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 
-    <header class="navbar">
-        <div class="navbar-container">
-            <a href="index.html" class="navbar-logo">KomuniKonek</a>
-            <nav class="navbar-menu">
-                <div class="lang-toggle-container-nav">
-                    <button id="lang-en" class="lang-button active">ENG</button>
-                    <span class="lang-separator">|</span>
-                    <button id="lang-fil" class="lang-button">FIL</button>
-                </div>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <div class="dashboard-container">
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>KomuniKonek</h3>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="nav-item">
+                    <a href="index.html">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="submit-complaint.html">
+                        <i class="fa-solid fa-bullhorn"></i>
+                        <span>Submit a Complaint</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="request-document.html">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span>Request a Document</span>
+                    </a>
+                </li>
+                <li class="nav-item active"> <a href="my-activity.html">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>My Activity</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <button id="logout-button" class="logout-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            
+            <header class="main-header">
+                <button class="mobile-menu-button" id="mobile-menu-button">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                
                 <div class="profile-dropdown-container">
                     <button class="profile-button" id="profile-button">
                         <i class="fa-solid fa-user"></i>
                     </button>
                     <div class="profile-dropdown" id="profile-dropdown">
-                        <a href="#" class="dropdown-link">
-                            <i class="fa-solid fa-user-circle"></i> <span data-key="myProfile">My Profile</span>
+                        <a href="index.html" class="dropdown-link">
+                            <i class="fa-solid fa-house"></i> <span>Dashboard</span>
                         </a>
                         <a href="my-activity.html" class="dropdown-link">
-                            <i class="fa-solid fa-clipboard-list"></i> <span data-key="trackComplaints">Track Complaints</span>
+                            <i class="fa-solid fa-clipboard-list"></i> <span>Track Complaints</span>
                         </a>
                         <a href="my-activity.html#documents" class="dropdown-link">
-                            <i class="fa-solid fa-folder-open"></i> <span data-key="trackDocs">Track Document Requests</span>
+                            <i class="fa-solid fa-folder-open"></i> <span>Track Document Requests</span>
                         </a>
                         <a href="settings.html" class="dropdown-link separator-top">
-                            <i class="fa-solid fa-gear"></i> <span data-key="settings">Settings</span>
+                            <i class="fa-solid fa-gear"></i> <span>Settings</span>
                         </a>
-                        <a href="login.html" class="dropdown-link logout">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i> <span data-key="logout">Logout</span>
+                        <a href="#" id="logout-button-alt" class="dropdown-link logout">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
                         </a>
                     </div>
                 </div>
-            </nav>
-        </div>
-    </header>
-
-    <div class="form-container"> <h1 data-key="myActivity">My Activity</h1>
-
-        <div class="form-card">
+            </header>
             
-            <nav class="activity-tabs">
-                <button class="tab-button active" data-tab="complaints">
-                    <i class="fa-solid fa-comments"></i>
-                    <span data-key="myComplaints">My Complaints</span>
-                </button>
-                <button class="tab-button" data-tab="documents">
-                    <i class="fa-solid fa-file-lines"></i>
-                    <span data-key="myDocuments">My Document Requests</span>
-                </button>
-            </nav>
+            <div class="main-container"> <h1>My Activity</h1>
+                <p>Track the status of your submissions.</p>
 
-            <div class="tab-content-container">
-                
-                <div id="complaints" class="tab-content active">
-                    <ul class="activity-list">
-                        <li class="activity-item">
-                            <div class="item-details">
-                                <h3 class="item-title">Loud Neighbor (Unit 3B)</h3>
-                                <p class="item-date"><span data-key="submittedOn">Submitted on</span>: Nov 09, 2025</p>
-                            </div>
-                            <div class="item-status">
-                                <span class="status-badge pending" data-key="pending">Pending</span>
-                            </div>
-                        </li>
-                        <li class="activity-item">
-                            <div class="item-details">
-                                <h3 class="item-title">Garbage not collected</h3>
-                                <p class="item-date"><span data-key="submittedOn">Submitted on</span>: Nov 05, 2025</p>
-                            </div>
-                            <div class="item-status">
-                                <span class="status-badge in-progress" data-key="inProgress">In Progress</span>
-                            </div>
-                        </li>
-                        <li class="activity-item">
-                            <div class="item-details">
-                                <h3 class="item-title">Broken Streetlight</h3>
-                                <p class="item-date"><span data-key="submittedOn">Submitted on</span>: Oct 28, 2025</p>
-                            </div>
-                            <div class="item-status">
-                                <span class="status-badge resolved" data-key="resolved">Resolved</span>
-                            </div>
-                        </li>
-                    </ul>
+                <div class="tabs-container">
+                    <a href="#complaints" class="tab-button active" data-tab="complaints">
+                        <i class="fa-solid fa-bullhorn"></i>
+                        <span>My Complaints</span>
+                    </a>
+                    <a href="#documents" class="tab-button" data-tab="documents">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span>My Document Requests</span>
+                    </a>
                 </div>
 
-                <div id="documents" class="tab-content">
-                    <ul class="activity-list">
-                        <li class="activity-item">
-                            <div class="item-details">
-                                <h3 class="item-title">Barangay Clearance</h3>
-                                <p class="item-date"><span data-key="submittedOn">Submitted on</span>: Nov 10, 2025</p>
-                            </div>
-                            <div class="item-status">
-                                <span class="status-badge ready" data-key="readyForPickup">Ready for Pickup</span>
-                            </div>
-                        </li>
-                        <li class="activity-item">
-                            <div class="item-details">
-                                <h3 class="item-title">Business Permit</h3>
-                                <p class="item-date"><span data-key="submittedOn">Submitted on</span>: Nov 01, 2025</p>
-                            </div>
-                            <div class="item-status">
-                                <span class="status-badge resolved" data-key="resolved">Resolved</span>
-                            </div>
-                        </li>
-                    </ul>
+                <div class="content-container">
+                    
+                    <div id="complaints" class="tab-content active">
+                        <ul class="activity-list" id="complaints-list">
+                            <li class="activity-placeholder">Loading your complaints...</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="documents" class="tab-content">
+                        <ul class="activity-list" id="documents-list">
+                            <li class="activity-placeholder">Loading your document requests...</li>
+                        </ul>
+                    </div>
+
                 </div>
             </div>
-
-        </div>
+            </main>
     </div>
+    
+    <div id="toast" class="toast hidden"></div>
 
-    <script src="js/translations.js"></script>
-    <script src="js/main.js"></script> <script src="js/activity.js"></script> </body>
+    <script type="module" src="js/activity.js"></script>
+    <script type="module" src="js/main-ui.js"></script>
+
+</body>
 </html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Email</title>
+    <link rel="stylesheet" href="css/signup.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Simple styles to center the box */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f2f5;
+        }
+        .verify-box {
+            text-align: center;
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 500px;
+        }
+        .verify-icon {
+            font-size: 60px;
+            color: #0038A8; /* Using your blue theme color */
+            margin-bottom: 20px;
+        }
+        .verify-box p {
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        .verify-box a {
+            text-decoration: none;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="verify-box">
+        <i class="fa-solid fa-envelope-circle-check verify-icon"></i>
+        <h2 data-key="verifyTitle">Account Created!</h2>
+        <p data-key="verifyMessage">
+            We've sent a verification link to your email. Please check your inbox (and spam folder) to activate your account before logging in.
+        </p>
+        
+        <a href="login.html" class="sign-in-button" data-key="backToLogin">
+            <span class="button-text">Back to Sign In</span>
+        </a>
+    </div>
+
+    <script src="js/translations.js"></script>
+    <script>
+        // Simple script to set language based on browser preference or default to 'en'
+        (function() {
+            // Check if langStrings exists (it won't be a module here, just a global)
+            if (typeof langStrings !== 'undefined') {
+                const browserLang = (navigator.language || navigator.userLanguage).split('-')[0];
+                const lang = langStrings[browserLang] ? browserLang : 'en';
+                
+                document.querySelectorAll('[data-key]').forEach(el => {
+                    const key = el.getAttribute('data-key');
+                    if (langStrings[lang][key]) {
+                        el.textContent = langStrings[lang][key];
+                    }
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

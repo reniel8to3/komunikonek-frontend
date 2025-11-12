@@ -3,107 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-key="titleRequestDoc">KomuniKonek | Request Document</title>
+    <title>KomuniKonek | Request Document</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="css/style.css"> 
+    <link rel="stylesheet" href="css/dashboard.css"> 
     <link rel="stylesheet" href="css/complaint.css"> 
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 
-    <header class="navbar">
-        <div class="navbar-container">
-            <a href="index.html" class="navbar-logo">KomuniKonek</a>
-            <nav class="navbar-menu">
-                <div class="lang-toggle-container-nav">
-                    <button id="lang-en" class="lang-button active">ENG</button>
-                    <span class="lang-separator">|</span>
-                    <button id="lang-fil" class="lang-button">FIL</button>
-                </div>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <div class="dashboard-container">
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>KomuniKonek</h3>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="nav-item">
+                    <a href="index.html">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="submit-complaint.html">
+                        <i class="fa-solid fa-bullhorn"></i>
+                        <span>Submit a Complaint</span>
+                    </a>
+                </li>
+                <li class="nav-item active"> <a href="request-document.html">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span>Request a Document</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="my-activity.html">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>My Activity</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <button id="logout-button" class="logout-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            
+            <header class="main-header">
+                <button class="mobile-menu-button" id="mobile-menu-button">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                
                 <div class="profile-dropdown-container">
                     <button class="profile-button" id="profile-button">
                         <i class="fa-solid fa-user"></i>
                     </button>
                     <div class="profile-dropdown" id="profile-dropdown">
-                        <a href="#" class="dropdown-link">
-                            <i class="fa-solid fa-user-circle"></i> <span data-key="myProfile">My Profile</span>
+                        <a href="index.html" class="dropdown-link">
+                            <i class="fa-solid fa-house"></i> <span>Dashboard</span>
                         </a>
                         <a href="my-activity.html" class="dropdown-link">
-                            <i class="fa-solid fa-clipboard-list"></i> <span data-key="trackComplaints">Track Complaints</span>
+                            <i class="fa-solid fa-clipboard-list"></i> <span>Track Complaints</span>
                         </a>
                         <a href="my-activity.html#documents" class="dropdown-link">
-                            <i class="fa-solid fa-folder-open"></i> <span data-key="trackDocs">Track Document Requests</span>
+                            <i class="fa-solid fa-folder-open"></i> <span>Track Document Requests</span>
                         </a>
                         <a href="settings.html" class="dropdown-link separator-top">
-                            <i class="fa-solid fa-gear"></i> <span data-key="settings">Settings</span>
+                            <i class="fa-solid fa-gear"></i> <span>Settings</span>
                         </a>
-                        <a href="login.html" class="dropdown-link logout">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i> <span data-key="logout">Logout</span>
+                        <a href="#" id="logout-button-alt" class="dropdown-link logout">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
                         </a>
                     </div>
                 </div>
-            </nav>
-        </div>
-    </header>
+            </header>
+            
+            <div class="form-container">
+                <h1>Request a Document</h1>
 
-    <div class="form-container">
-        
-        <a href="index.html" class="back-link">
-            <i class="fa-solid fa-arrow-left"></i>
-            <span data-key="back">Back</span>
-        </a>
+                <div class="form-card">
+                    <form id="request-form" novalidate>
+                        
+                        <div class="form-group">
+                            <select id="document-type" class="form-input" required value="">
+                                <option value="" disabled selected></option>
+                                <option value="Barangay Clearance">Barangay Clearance</option>
+                                <option value="Certificate of Indigency">Certificate of Indigency</option>
+                                <option value="Business Permit">Business Permit</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <label for="document-type" class="form-label"><span>Document Type</span> <span class="required">*</span></label>
+                        </div>
 
-        <h1 data-key="titleRequestDoc">Request a Document</h1>
+                        <div class="form-group">
+                            <textarea id="purpose" class="form-input" placeholder=" " rows="5"></textarea>
+                            <label for="purpose" class="form-label"><span>Purpose of Request</span></label>
+                        </div>
+                        
+                        <div class="form-group" style="display: none;">
+                            <label class="form-label-static">Upload Requirements</label>
+                            <div class="file-upload-wrapper">
+                                <input type="file" id="file-upload" class="file-upload-input" multiple>
+                                <label for="file-upload" class="file-upload-button">
+                                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                                    Choose file(s)...
+                                </label>
+                                <span id="file-name" class="file-name">No file chosen</span>
+                            </div>
+                        </div>
 
-        <div class="form-card">
-            <form id="request-form" novalidate>
-                
-                <div class="form-group">
-                    <select id="doc-type" class="form-input" required value="">
-                        <option value="" disabled selected></option>
-                        <option value="clearance">Barangay Clearance</option>
-                        <option value="indigency">Certificate of Indigency</option>
-                        <option value="permit">Business Permit</option>
-                        <option value="other">Other</option>
-                    </select>
-                    <label for="doc-type" class="form-label"><span data-key="docType">Document Type</span> <span class="required">*</span></label>
+                        <div class="button-group">
+                            <button type="button" class="form-button-outlined">CANCEL</button>
+                            <button type="submit" class="form-button-filled">SUBMIT REQUEST</button>
+                        </div>
+                    </form>
                 </div>
-
-                <div class="form-group" id="other-doc-group" style="display: none;">
-                    <input type="text" id="other-doc-type" class="form-input" placeholder=" ">
-                    <label for="other-doc-type" class="form-label">Please specify</label>
-                </div>
-
-                <div class="form-group">
-                    <textarea id="purpose" class="form-input" placeholder=" " rows="5" required></textarea>
-                    <label for="purpose" class="form-label"><span data-key="purpose">Purpose of Request</span> <span class="required">*</span></label>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label-static" data-key="uploadReqs">Upload Requirements</label>
-                    <div class="file-upload-wrapper">
-                        <input type="file" id="file-upload" class="file-upload-input" multiple>
-                        <label for="file-upload" class="file-upload-button">
-                            <i class="fa-solid fa-arrow-up-from-bracket"></i>
-                            Choose file(s)...
-                        </label>
-                        <span id="file-name" class="file-name" data-key="noFileChosen">No file chosen</span>
-                    </div>
-                </div>
-
-                <div class="button-group">
-                    <button type="button" class="form-button-outlined" id="cancel-button" data-key="cancel">CANCEL</button>
-                    <button type="submit" class="form-button-filled" data-key="submitRequest">SUBMIT REQUEST</button>
-                </div>
-            </form>
-        </div>
+            </div>
+            </main>
     </div>
+    
+    <div id="toast" class="toast hidden"></div>
 
-    <script src="js/translations.js"></script>
-    <script src="js/main.js"></script> <script src="js/request.js"></script> </body>
+    <script type="module" src="js/request.js"></script>
+    <script type="module" src="js/main-ui.js"></script>
+
+</body>
 </html>

@@ -15,7 +15,6 @@
 <body>
     <div class="signup-container">
         <div class="split-container">
-            <!-- Left Welcome Panel -->
             <div class="welcome-panel">
                 <div class="welcome-panel-inner">
                     <div class="panel-icon-container">
@@ -27,7 +26,6 @@
                         <p class="tagline" data-key="tagline">Connecting Communities, Strengthening Support.</p>
                     </div>
                     
-                    <!-- Slideshow -->
                     <div class="slideshow-container">
                         <div class="slide fade active">
                             <div class="slide-icon">
@@ -61,16 +59,13 @@
                 </div>
             </div>
 
-            <!-- Right Signup Panel -->
             <div class="signup-panel">
-                <!-- Language Toggle -->
                 <div class="lang-toggle-container">
                     <button id="lang-en" class="lang-button active" aria-label="Switch to English">ENG</button>
                     <span class="lang-separator" aria-hidden="true">|</span>
                     <button id="lang-fil" class="lang-button" aria-label="Switch to Filipino">FIL</button>
                 </div>
 
-                <!-- Step 1: Account Setup -->
                 <section id="step-1-account">
                     <p class="step-indicator" data-key="step1">Step 1 of 2</p>
                     
@@ -97,7 +92,6 @@
                     </div>
 
                     <form id="signup-form-step1" novalidate>
-                        <!-- Email Input -->
                         <div id="email-form-group" class="form-group">
                             <i class="form-icon fa-solid fa-envelope" aria-hidden="true"></i>
                             <input type="email" id="email" class="form-input" placeholder=" " required autocomplete="email" aria-describedby="email-error">
@@ -105,7 +99,6 @@
                             <small class="error-message" id="email-error" role="alert"></small>
                         </div>
 
-                        <!-- Phone Input -->
                         <div id="phone-form-group" class="form-group hidden">
                             <i class="form-icon fa-solid fa-phone" aria-hidden="true"></i>
                             <span class="phone-prefix" aria-hidden="true">+63</span>
@@ -114,7 +107,6 @@
                             <small class="error-message" id="phone-error" role="alert"></small>
                         </div>
 
-                        <!-- Password Input -->
                         <div class="form-group">
                             <i class="form-icon fa-solid fa-lock" aria-hidden="true"></i>
                             <input type="password" id="password" class="form-input" placeholder=" " required autocomplete="new-password" aria-describedby="password-error password-checklist">
@@ -124,25 +116,25 @@
                             </button>
                             <small class="error-message" id="password-error" role="alert"></small>
                             
-                            <!-- Password Strength Checklist -->
                             <div id="password-checklist" class="hidden" aria-live="polite">
                                 <ul>
-                                    <li id="pass-length">At least 8 characters</li>
-                                    <li id="pass-capital">At least one capital letter</li>
-                                    <li id="pass-number">At least one number</li>
-                                    <li id="pass-symbol">At least one symbol</li>
+                                    <li id="pass-length" data-key="passLength">At least 8 characters</li>
+                                    <li id="pass-capital" data-key="passCapital">At least one capital letter</li>
+                                    <li id="pass-number" data-key="passNumber">At least one number</li>
+                                    <li id="pass-symbol" data-key="passSymbol">At least one symbol</li>
                                 </ul>
                             </div>
                         </div>
 
-                        <button type="button" id="send-otp-button" class="sign-in-button" data-key="sendOtp">
-                            <span class="button-text">Send OTP</span>
+                        <div id="recaptcha-container"></div>
+
+                        <button type="button" id="send-otp-button" class="sign-in-button">
+                            <span class="button-text" data-key="sendOtp">Send OTP</span>
                             <span class="button-loader hidden" aria-hidden="true">
                                 <i class="fa-solid fa-spinner fa-spin"></i>
                             </span>
                         </button>
 
-                        <!-- OTP Verification Section -->
                         <div id="otp-section" class="hidden">
                             <p class="otp-success-text" data-key="otpSent" role="status">OTP sent successfully!</p>
                             <label for="otp-input-1"><span data-key="otpLabel">Enter the OTP code</span> <span class="required">*</span></label>
@@ -154,10 +146,11 @@
                                 <input type="text" inputmode="numeric" maxlength="1" class="otp-input" id="otp-input-5" aria-label="OTP digit 5" />
                                 <input type="text" inputmode="numeric" maxlength="1" class="otp-input" id="otp-input-6" aria-label="OTP digit 6" />
                             </div>
-                            <p class="otp-timer" id="otp-timer">Resend OTP in <span id="otp-countdown">60</span>s</p>
+                            <p class="otp-timer" id="otp-timer" data-key="resendTimer">Resend OTP in <span id="otp-countdown">60</span>s</p>
                             <button type="button" id="resend-otp-button" class="text-button hidden" data-key="resendOtp">Resend OTP</button>
-                            <button type="button" id="verify-otp-button" class="sign-in-button" data-key="verifyOtp">
-                                <span class="button-text">Verify OTP</span>
+                            
+                            <button type="button" id="verify-otp-button" class="sign-in-button">
+                                <span class="button-text" data-key="verifyOtp">Verify OTP</span>
                                 <span class="button-loader hidden" aria-hidden="true">
                                     <i class="fa-solid fa-spinner fa-spin"></i>
                                 </span>
@@ -171,7 +164,6 @@
                     </form>
                 </section>
                 
-                <!-- Step 2: Personal Information -->
                 <section id="step-2-personal" class="hidden">
                     <div class="step-header">
                         <button type="button" id="back-button" class="back-button" aria-label="Go back to step 1">
@@ -191,7 +183,6 @@
                     </div>
 
                     <form id="signup-form-step2" novalidate>
-                        <!-- Name Fields -->
                         <div class="form-row">
                             <div class="form-group">
                                 <i class="form-icon fa-solid fa-user" aria-hidden="true"></i>
@@ -212,7 +203,6 @@
                             <label for="middle-name" class="form-label" data-key="middleName">Middle Name</label>
                         </div>
 
-                        <!-- Address Fields -->
                         <label class="section-title" data-key="address">Address</label>
                         <div class="form-row">
                             <div class="form-group">
@@ -227,46 +217,45 @@
                             </div>
                         </div>
 
-                        <!-- Birth Date Fields -->
                         <label class="section-title" data-key="birthDate">Birth Date</label>
                         <div class="form-row">
                             <div class="form-group">
                                 <select id="month" name="month" class="form-input" required aria-describedby="month-error">
-                                    <option value="" disabled selected hidden></option>
-                                    <option value="1">January</option>
-                                    <option value="2">February</option>
-                                    <option value="3">March</option>
-                                    <option value="4">April</option>
-                                    <option value="5">May</option>
-                                    <option value="6">June</option>
-                                    <option value="7">July</option>
-                                    <option value="8">August</option>
-                                    <option value="9">September</option>
-                                    <option value="10">October</option>
-                                    <option value="11">November</option>
-                                    <option value="12">December</option>
+                                    <option value="" disabled selected hidden data-key="month">Month</option>
+                                    <option value="1" data-key="month1">January</option>
+                                    <option value="2" data-key="month2">February</option>
+                                    <option value="3" data-key="month3">March</option>
+                                    <option value="4" data-key="month4">April</option>
+                                    <option value="5" data-key="month5">May</option>
+                                    <option value="6" data-key="month6">June</option>
+                                    <option value="7" data-key="month7">July</option>
+                                    <option value="8" data-key="month8">August</option>
+                                    <option value="9" data-key="month9">September</option>
+                                    <option value="10" data-key="month10">October</option>
+                                    <option value="11" data-key="month11">November</option>
+                                    <option value="12" data-key="month12">December</option>
                                 </select>
                                 <label for="month" class="form-label"><span data-key="month">Month</span> <span class="required">*</span></label>
                                 <small class="error-message" id="month-error" role="alert"></small>
                             </div>
                             <div class="form-group">
                                 <select id="day" name="day" class="form-input" required aria-describedby="day-error">
-                                    <option value="" disabled selected hidden></option>
+                                    <option value="" disabled selected hidden data-key="day">Day</option>
                                 </select>
                                 <label for="day" class="form-label"><span data-key="day">Day</span> <span class="required">*</span></label>
                                 <small class="error-message" id="day-error" role="alert"></small>
                             </div>
                             <div class="form-group">
                                 <select id="year" name="year" class="form-input" required aria-describedby="year-error">
-                                    <option value="" disabled selected hidden></option>
+                                    <option value="" disabled selected hidden data-key="year">Year</to-work>
                                 </select>
                                 <label for="year" class="form-label"><span data-key="year">Year</span> <span class="required">*</span></label>
                                 <small class="error-message" id="year-error" role="alert"></small>
                             </div>
                         </div>
 
-                        <button type="submit" class="sign-in-button" data-key="createAccountBtn">
-                            <span class="button-text">Create Account</span>
+                        <button type="submit" class="sign-in-button">
+                            <span class="button-text" data-key="createAccountBtn">Create Account</span>
                             <span class="button-loader hidden" aria-hidden="true">
                                 <i class="fa-solid fa-spinner fa-spin"></i>
                             </span>
@@ -277,10 +266,8 @@
         </div>
     </div>
 
-    <!-- Toast Notification -->
     <div id="toast" class="toast hidden" role="alert" aria-live="polite" aria-atomic="true"></div>
 
-    <script src="js/translations.js"></script>
-    <script src="js/signup.js"></script>
+    <script type="module" src="js/signup.js"></script>
 </body>
 </html>

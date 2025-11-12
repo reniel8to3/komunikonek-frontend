@@ -1,119 +1,159 @@
-/* --- Shared Form/Card Styles (from complaint.css) --- */
-.form-container {
-    max-width: 800px;
-    margin: 30px auto;
-    padding: 0 30px;
+/* css/my-activity.css */
+
+.main-container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 0 20px;
 }
 
-.form-container h1 {
-    font-size: 2.2em;
-    font-weight: 600;
-    color: #212529;
-    margin-top: 0;
-    margin-bottom: 30px;
+.main-container h1 {
+    font-size: 2.2rem;
+    color: #222;
+    margin-bottom: 0;
 }
 
-.form-card {
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    padding: 40px;
+.main-container > p { /* Use > to only select the <p> right under .main-container */
+    font-size: 1.1rem;
+    color: #6c757d;
+    margin-top: 5px;
 }
 
-/* --- ================== --- */
-/* --- ACTIVITY STYLES (FIXED) --- */
-/* --- ================== --- */
-
-/* --- Tab Navigation --- */
-.activity-tabs {
+/* --- Tab Styles --- */
+.tabs-container {
     display: flex;
     border-bottom: 2px solid #e0e0e0;
-    margin-bottom: 30px;
+    margin-top: 30px;
 }
 
 .tab-button {
-    flex: 1;
-    background: none;
-    border: none;
-    padding: 15px;
-    font-size: 1em;
+    padding: 12px 20px;
+    font-size: 1.1rem;
     font-weight: 500;
-    font-family: inherit;
     color: #6c757d;
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    margin-bottom: -2px; /* Aligns border with parent */
-    transition: all 0.3s ease;
-    text-decoration: none; /* For <a> tag version */
-    text-align: center;
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px; /* Sits on top of the container border */
+    transition: all 0.2s ease;
 }
+
 .tab-button i {
     margin-right: 8px;
 }
+
 .tab-button:hover {
-    background-color: #f8f9fa;
+    color: #0038A8;
 }
+
 .tab-button.active {
     color: #0038A8;
+    font-weight: 600;
     border-bottom-color: #0038A8;
 }
 
 /* --- Tab Content --- */
 .tab-content {
-    display: none; /* Hide all by default */
-}
-.tab-content.active {
-    display: block; /* Show active tab */
+    display: none; /* This hides the inactive tabs */
+    padding-top: 25px;
 }
 
-/* --- Activity List --- */
+.tab-content.active {
+    display: block; /* This shows the active tab */
+}
+
+/* --- Activity List Styles --- */
 .activity-list {
-    list-style: none;
+    list-style: none; /* This removes the bullet points */
     padding: 0;
     margin: 0;
 }
-.activity-item {
+
+.activity-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px 25px;
+    margin-bottom: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    margin-bottom: 15px;
-}
-.item-details .item-title {
-    font-size: 1.1em;
-    font-weight: 600;
-    color: #212529;
-    margin: 0 0 5px 0;
-}
-.item-details .item-date {
-    font-size: 0.9em;
-    color: #6c757d;
-    margin: 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    transition: all 0.2s ease;
 }
 
-/* --- Status Badges --- */
-.status-badge {
-    font-size: 0.9em;
-    font-weight: 500;
-    padding: 5px 12px;
-    border-radius: 100px;
+.activity-card:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.07);
+    border-color: #0038A8;
 }
-.status-badge.pending {
-    color: #b95000;
-    background-color: #fff4e6;
+
+.activity-info {
+    display: flex;
+    align-items: center;
 }
-.status-badge.in-progress {
-    color: #0056b3;
-    background-color: #e6f0ff;
+
+.activity-icon {
+    font-size: 1.5rem;
+    margin-right: 20px;
+    width: 25px;
+    text-align: center;
 }
-.status-badge.resolved {
-    color: #1e7d34;
-    background-color: #e9f9ec;
+
+.activity-icon.fa-bullhorn { color: #ffc107; }
+.activity-icon.fa-file-lines { color: #0d6efd; }
+
+.activity-details h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
 }
-.status-badge.ready {
-    color: #1e7d34;
-    background-color: #e9f9ec;
+
+.activity-details p {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin: 2px 0 0 0;
+}
+
+.activity-status {
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background-color: #f0f0f0;
+    text-transform: capitalize;
+}
+
+/* Status Colors */
+.activity-status.pending {
+    background-color: #fff8e1;
+    color: #f57f17;
+}
+.activity-status.in-progress {
+    background-color: #e3f2fd;
+    color: #0d6efd;
+}
+.activity-status.resolved,
+.activity-status.ready-for-pickup {
+    background-color: #e8f5e9;
+    color: #198754;
+}
+
+.activity-placeholder {
+    padding: 30px;
+    text-align: center;
+    color: #6c757d;
+    font-size: 1.1rem;
+    list-style-type: none; /* Removes bullet */
+}
+
+/* Add to bottom of css/activity.css */
+
+.activity-card-link {
+    text-decoration: none; /* Remove underline from link */
+    color: inherit; /* Make link text black, not blue */
+}
+
+/* This replaces the old .activity-card:hover */
+.activity-card-link:hover .activity-card {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.07);
+    border-color: #0038A8;
 }

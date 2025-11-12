@@ -3,130 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-key="settings">KomuniKonek | Settings</title>
+    <title>KomuniKonek | Settings</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="css/style.css"> <link rel="stylesheet" href="css/settings.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- We use the main dashboard layout -->
+    <link rel="stylesheet" href="css/dashboard.css"> 
+    <!-- We use the complaint form styles (they are very similar) -->
+    <link rel="stylesheet" href="css/complaint.css"> 
+    <!-- This is a new, small CSS file for settings -->
+    <link rel="stylesheet" href="css/settings.css"> 
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-    <header class="navbar">
-        <div class="navbar-container">
-            <a href="index.html" class="navbar-logo">KomuniKonek</a>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>KomuniKonek</h3>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="nav-item">
+                    <a href="index.html">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="submit-complaint.html">
+                        <i class="fa-solid fa-bullhorn"></i>
+                        <span>Submit a Complaint</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="request-document.html">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span>Request a Document</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="my-activity.html">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>My Activity</span>
+                    </a>
+                </li>
+                <li class="nav-item active"> <!-- This page is active -->
+                    <a href="settings.html">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <button id="logout-button" class="logout-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
             
-            <nav class="navbar-menu">
-                <div class="lang-toggle-container-nav">
-                    <button id="lang-en" class="lang-button active">ENG</button>
-                    <span class="lang-separator">|</span>
-                    <button id="lang-fil" class="lang-button">FIL</button>
-                </div>
+            <!-- New Header with Hamburger -->
+            <header class="main-header">
+                <button class="mobile-menu-button" id="mobile-menu-button">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
                 
                 <div class="profile-dropdown-container">
                     <button class="profile-button" id="profile-button">
                         <i class="fa-solid fa-user"></i>
                     </button>
                     <div class="profile-dropdown" id="profile-dropdown">
-                        <a href="settings.html" class="dropdown-link"> <i class="fa-solid fa-user-circle"></i> <span data-key="myProfile">My Profile</span>
+                        <a href="index.html" class="dropdown-link">
+                            <i class="fa-solid fa-house"></i> <span>Dashboard</span>
                         </a>
                         <a href="my-activity.html" class="dropdown-link">
-                            <i class="fa-solid fa-clipboard-list"></i> <span data-key="trackComplaints">Track Complaints</span>
+                            <i class="fa-solid fa-clipboard-list"></i> <span>Track Complaints</span>
                         </a>
                         <a href="my-activity.html#documents" class="dropdown-link">
-                            <i class="fa-solid fa-folder-open"></i> <span data-key="trackDocs">Track Document Requests</span>
+                            <i class="fa-solid fa-folder-open"></i> <span>Track Document Requests</span>
                         </a>
                         <a href="settings.html" class="dropdown-link separator-top">
-                            <i class="fa-solid fa-gear"></i> <span data-key="settings">Settings</span>
+                            <i class="fa-solid fa-gear"></i> <span>Settings</span>
                         </a>
-                        <a href="login.html" class="dropdown-link logout">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i> <span data-key="logout">Logout</span>
+                        <a href="#" id="logout-button-alt" class="dropdown-link logout">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
                         </a>
                     </div>
                 </div>
-            </nav>
-        </div>
-    </header>
-
-    <div class="settings-container">
-        <h1 data-key="settings">Settings</h1>
-
-        <form id="settings-form" novalidate>
+            </header>
             
-            <div class="form-section">
-                <h2 class="section-title" data-key="account">Account</h2>
-                <div class="form-group">
-                    <i class="form-icon fa-solid fa-user"></i>
-                    <input type="text" id="full-name" class="form-input" placeholder=" " value="Juan Dela Cruz">
-                    <label for="full-name" class="form-label" data-key="fullName">Full Name</label>
-                </div>
-                <div class="form-group">
-                    <i class="form-icon fa-solid fa-envelope"></i>
-                    <input type="email" id="email" class="form-input" placeholder=" " value="juan.cruz@example.com">
-                    <label for="email" class="form-label" data-key="emailLabel">Email Address</label>
-                </div>
-                <div class="form-group">
-                    <i class="form-icon fa-solid fa-phone"></i>
-                    <input type="tel" id="phone" class="form-input" placeholder=" " value="+63 917 123 4567">
-                    <label for="phone" class="form-label" data-key="phoneNumLabel">Phone Number</label>
-                </div>
-            </div>
+            <!-- Settings Form Content -->
+            <div class="form-container">
+                <h1>Settings</h1>
 
-            <div class="form-section">
-                <h2 class="section-title" data-key="address">Business Address</h2>
-                <div class="form-group">
-                    <input type="text" id="street-address" class="form-input" placeholder=" " value="123 Rizal St.">
-                    <label for="street-address" class="form-label" data-key="street">Street Address</label>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <input type="text" id="city" class="form-input" placeholder=" " value="Quezon City">
-                        <label for="city" class="form-label" data-key="city">City</label>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="province" class="form-input" placeholder=" " value="Metro Manila">
-                        <label for="province" class="form-label" data-key="province">Province</label>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <input type="text" id="zip-code" class="form-input" placeholder=" " value="1101">
-                        <label for="zip-code" class="form-label" data-key="zipCode">ZIP/Postal Code</label>
-                    </div>
-                    <div class="form-group">
-                        <select id="country" name="country" class="form-input" required value="Philippines">
-                            <option value="Philippines" selected>Philippines</option>
-                            <option value="USA">USA</option>
-                            <option value="Canada">Canada</option>
-                        </select>
-                        <label for="country" class="form-label" data-key="country">Country</label>
-                    </div>
-                </div>
-            </div>
+                <!-- Profile Details Card -->
+                <div class="form-card">
+                    <form id="profile-form" novalidate>
+                        <h2>My Profile</h2>
+                        <p>This information will be used when you submit complaints or requests.</p>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="text" id="first-name" class="form-input" placeholder=" " required>
+                                <label for="first-name" class="form-label"><span>First Name</span> <span class="required">*</span></label>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="last-name" class="form-input" placeholder=" " required>
+                                <label for="last-name" class="form-label"><span>Last Name</span> <span class="required">*</span></label>
+                            </div>
+                        </div>
 
-            <div class="form-section">
-                <h2 class="section-title" data-key="changePass">Change Password</h2>
-                <div class="form-group">
-                    <i class="form-icon fa-solid fa-lock"></i>
-                    <input type="password" id="password" class="form-input" placeholder=" ">
-                    <label for="password" class="form-label" data-key="newPass">New Password</label>
-                    <small class="form-helper" data-key="passHelper">Password must be at least 8 characters.</small>
-                </div>
-                <div class="form-group">
-                    <i class="form-icon fa-solid fa-lock"></i>
-                    <input type="password" id="confirm-password" class="form-input" placeholder=" ">
-                    <label for="confirm-password" class="form-label" data-key="confirmPass">Confirm Password</label>
-                </div>
-            </div>
+                        <div class="form-group">
+                            <input type="text" id="middle-name" class="form-input" placeholder=" ">
+                            <label for="middle-name" class="form-label"><span>Middle Name</span></label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="email" id="email" class="form-input" placeholder=" " disabled>
+                            <label for="email" class="form-label"><span>Email</span></label>
+                        </div>
 
-            <div class="button-group">
-                <button type="button" class="form-button-outlined" data-key="cancel">CANCEL</button>
-                <button type="submit" class="form-button-filled" data-key="update">UPDATE</button>
+                        <div class="form-group">
+                            <input type="tel" id="phone" class="form-input" placeholder=" " disabled>
+                            <label for="phone" class="form-label"><span>Phone</span></label>
+                        </div>
+
+                        <h3>Address</h3>
+                        <div class="form-row">
+                             <div class="form-group">
+                                <input type="text" id="house-number" class="form-input" placeholder=" " required>
+                                <label for="house-number" class="form-label"><span>House Number</span> <span class="required">*</span></label>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="street" class="form-input" placeholder=" " required>
+                                <label for="street" class="form-label"><span>Street</span> <span class="required">*</span></label>
+                            </div>
+                        </div>
+
+                        <div class="button-group">
+                            <button type="submit" class="form-button-filled" id="save-profile-btn">SAVE CHANGES</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Change Password Card -->
+                <div class="form-card" id="password-card">
+                    <h2>Change Password</h2>
+                    <p>Click the button below to send a password reset link to your email. This only works if you signed up with an email.</p>
+                    <div class="button-group">
+                        <button type="button" class="form-button-outlined" id="change-password-btn">SEND RESET LINK</button>
+                    </div>
+                </div>
+
             </div>
-        </form>
+            <!-- End of Form Content -->
+
+        </main>
     </div>
+    
+    <div id="toast" class="toast hidden"></div>
 
-    <script src="js/translations.js"></script>
-    <script src="js/main.js"></script> </body>
+    <script type="module" src="js/settings.js"></script>
+    <script type="module" src="js/main-ui.js"></script>
+
+</body>
 </html>

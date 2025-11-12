@@ -75,10 +75,10 @@
 
                 <p class="login-as-text"><span data-key="loginAs">Login as</span></p>
                 
-                <div class="role-selector">
+                <div class="role-selector" id="login-as-selector">
                     <span class="glider"></span>
-                    <button class="role-button active">User</button>
-                    <button class="role-button">Admin</button>
+                    <button class="role-button active" data-role="user"><span data-key="user">User</span></button>
+                    <button class="role-button" data-role="admin"><span data-key="admin">Admin</span></button>
                 </div>
 
                 <p class="sign-in-text"><span data-key="signInPrompt">Sign in to your account to continue</span></p>
@@ -103,12 +103,15 @@
 
                         <div class="form-options">
                             <label class="checkbox-label">
-                                <input type="checkbox" name="remember-me"> <span data-key="rememberMe">Remember me</span>
+                                <input type="checkbox" id="remember-me" name="remember-me"> <span data-key="rememberMe">Remember me</span>
                             </label>
                             <a href="forgot-password.html" class="forgot-password" data-key="forgotPassword">Forgot password?</a>
                         </div>
 
-                        <button type="submit" class="sign-in-button" data-key="signInButton">Sign in</button>
+                        <button type="submit" class="sign-in-button" id="email-login-btn">
+                            <span class="button-text" data-key="signInButton">Sign in</span>
+                            <span class="button-loader hidden" aria-hidden="true"><i class="fa-solid fa-spinner fa-spin"></i></span>
+                        </button>
                         
                         <div class="separator">
                             <span data-key="orSignInWith">Or sign in with</span>
@@ -128,7 +131,14 @@
                             <label for="login-phone" class="form-label"><span data-key="phoneNumLabel">Phone Number</span> <span class="required">*</span></label>
                             <small class="error-message"></small>
                         </div>
-                        <button type="button" id="login-send-otp-btn" class="sign-in-button" data-key="sendOtp">Send OTP</button>
+
+                        <div id="recaptcha-container"></div>
+                        
+                        <button type="button" id="login-send-otp-btn" class="sign-in-button">
+                            <span class="button-text" data-key="sendOtp">Send OTP</span>
+                            <span class="button-loader hidden" aria-hidden="true"><i class="fa-solid fa-spinner fa-spin"></i></span>
+                        </button>
+                        
                         <div id="login-otp-section" style="display: none;">
                             <p class="otp-success-text" data-key="otpSent">OTP sent successfully!</p>
                             <label><span data-key="otpLabel">Enter the OTP code</span> <span class="required">*</span></label>
@@ -140,8 +150,13 @@
                                 <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
                                 <input type="tel" inputmode="numeric" maxlength="1" class="otp-input" />
                             </div>
-                            <button type="button" id="login-verify-otp-btn" class="sign-in-button" data-key="verifySignIn">Verify & Sign In</button>
+                            
+                            <button type="button" id="login-verify-otp-btn" class="sign-in-button">
+                                <span class="button-text" data-key="verifySignIn">Verify & Sign In</span>
+                                <span class="button-loader hidden" aria-hidden="true"><i class="fa-solid fa-spinner fa-spin"></i></span>
+                            </button>
                         </div>
+                        
                         <p class="signup-prompt">
                             <a href="#" id="show-email-login-link" class="signup-link" data-key="signInWithEmail">Sign in with Email instead</a>
                         </p>
@@ -156,7 +171,8 @@
         </div>
     </div>
 
-    <script src="js/translations.js"></script>
-    <script src="js/login.js"></script>
+    <div id="toast" class="toast hidden" role="alert" aria-live="polite" aria-atomic="true"></div>
+
+    <script type="module" src="js/login.js"></script>
 </body>
 </html>

@@ -9,116 +9,136 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    
+    <div class="dashboard-container">
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>KomuniKonek</h3>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="nav-item active"> <a href="index.html">
+                        <i class="fa-solid fa-house"></i>
+                        <span data-key="navDashboard">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="submit-complaint.html">
+                        <i class="fa-solid fa-bullhorn"></i>
+                        <span data-key="card1Title">Submit a Complaint</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="request-document.html">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span data-key="card2Title">Request a Document</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="my-activity.html">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span data-key="myActivity">My Activity</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html">
+                        <i class="fa-solid fa-gear"></i>
+                        <span data-key="settings">Settings</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <button id="logout-button" class="logout-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span data-key="logout">Logout</span>
+                </button>
+            </div>
+        </nav>
 
-    <header class="navbar">
-        <div class="navbar-container">
-            <a href="index.html" class="navbar-logo">KomuniKonek</a>
-            
-            <nav class="navbar-menu">
-                <div class="lang-toggle-container-nav">
+        <main class="main-content">
+            <header class="main-header is-dashboard">
+                <div>
+                    <h1 data-key="welcomeBack">Welcome back, <span id="user-name">...</span>!</h1>
+                    <p data-key="dashboardSubtitle">Here's what's happening in your community.</p>
+                </div>
+                
+                <div class="lang-toggle-container">
                     <button id="lang-en" class="lang-button active">ENG</button>
                     <span class="lang-separator">|</span>
                     <button id="lang-fil" class="lang-button">FIL</button>
                 </div>
-                
-                <div class="profile-dropdown-container">
-                    <button class="profile-button" id="profile-button">
-                        <i class="fa-solid fa-user"></i>
-                    </button>
-                    <div class="profile-dropdown" id="profile-dropdown">
-                        <a href="settings.html" class="dropdown-link"> 
-                            <i class="fa-solid fa-user-circle"></i> <span data-key="myProfile">My Profile</span>
-                        </a>
-                        <a href="my-activity.html" class="dropdown-link">
-                            <i class="fa-solid fa-clipboard-list"></i> <span data-key="trackComplaints">Track Complaints</span>
-                        </a>
-                        <a href="my-activity.html#documents" class="dropdown-link separator-top">
-                            <i class="fa-solid fa-folder-open"></i> <span data-key="trackDocs">Track Document Requests</span>
-                        </a>
-                        <a href="login.html" class="dropdown-link logout">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i> <span data-key="logout">Logout</span>
-                        </a>
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </header>
-
-    <div class="main-container">
-        
-        <div class="welcome-banner">
-            <h1 data-key="welcomeBack">Welcome back!</h1>
-            <p data-key="dashboardSubtitle">Here's what's happening in your community.</p>
-        </div>
-        
-        <div class="dashboard-layout">
+                </header>
             
-            <main class="main-content">
-
-                <section class="dashboard-section">
-                    <h2 class="section-title" data-key="quickActions">Quick Actions</h2>
-                    <div class="card-grid">
-                        <a href="submit-complaint.html" class="action-card">
-                            <i class="fa-solid fa-comments card-icon"></i>
-                            <h3 data-key="card1Title">Submit a Complaint</h3>
-                            <p data-key="card1Desc">Report an issue or concern in your community.</p>
-                            <div class="card-button" data-key="card1Btn">Submit</div>
-                        </a>
-                        
-                        <a href="request-document.html" class="action-card">
-                            <i class="fa-solid fa-file-lines card-icon"></i>
-                            <h3 data-key="card2Title">Request a Document</h3>
-                            <p data-key="card2Desc">Get barangay clearances, permits, and more.</p>
-                            <div class="card-button" data-key="card2Btn">Request</div>
-                        </a>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="stat-icon fa-solid fa-file-import" style="color: #ffc107;"></i>
+                    <div class="stat-info">
+                        <span class="stat-number" id="stats-pending-complaints">0</span>
+                        <span class="stat-label" data-key="pendingComplaints">Pending Complaints</span>
                     </div>
-                </section>
-
-                <section class="dashboard-section">
-                    <h2 class="section-title" data-key="myActivity">My Activity</h2>
-                    <div class="activity-card">
-                        <a href="my-activity.html" class="activity-link">
-                            <i class="fa-solid fa-clipboard-list"></i>
-                            <span data-key="trackComplaints">Track Complaints</span>
-                            <span class="activity-arrow">&rarr;</span>
-                        </a>
-                        <a href="my-activity.html#documents" class="activity-link">
-                            <i class="fa-solid fa-folder-open"></i>
-                            <span data-key="trackDocs">Track Document Requests</span>
-                            <span class="activity-arrow">&rarr;</span>
-                        </a>
-                    </div>
-                </section>
-
-            </main>
-
-            <aside class="sidebar-feed">
-                <div class="announcements-card">
-                    <h2 class="section-title" data-key="announcements">Announcements</h2>
-                    <ul class="announcement-list">
-                        <li class="announcement-item">
-                            <p class="date">Nov 10, 2025</p>
-                            <p class="title">Bayanihan: Community Clean-Up Drive</p>
-                        </li>
-                        <li class="announcement-item">
-                            <p class="date">Nov 8, 2025</p>
-                            <p class="title">Free Vaccination Schedule for Week 2</p>
-                        </li>
-                        <li class="announcement-item">
-                            <p class="date">Nov 5, 2025</p>
-                            <p class="title">Barangay Assembly Day Postponed</p>
-                        </li>
-                    </ul>
                 </div>
-            </aside>
-        </div>
+                <div class="stat-card">
+                    <i class="stat-icon fa-solid fa-file-import" style="color: #0d6efd;"></i>
+                    <div class="stat-info">
+                        <span class="stat-number" id="stats-pending-requests">0</span>
+                        <span class="stat-label" data-key="pendingDocs">Pending Documents</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="stat-icon fa-solid fa-file-circle-check" style="color: #198754;"></i>
+                    <div class="stat-info">
+                        <span class="stat-number" id="stats-resolved">0</span>
+                        <span class="stat-label" data-key="resolved">Resolved Items</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-grid">
+                <div class="dashboard-card announcements-container">
+                    <h3 data-key="announcements">📢 Announcements</h3>
+                    <div id="announcements-slideshow">
+                        <div class="announcement-slide active">
+                            <h4 data-key="announcementLoadingTitle">Loading Announcements...</h4>
+                            <p data-key="announcementLoadingBody">Please wait while we fetch the latest news.</p>
+                        </div>
+                    </div>
+                    <div class="slide-dots" id="announcement-dots">
+                        </div>
+                </div>
+
+                <div class="dashboard-card actions-container">
+                    <h3 data-key="quickActions">⚡ Quick Actions</h3>
+                    <a href="submit-complaint.html" class="action-button">
+                        <i class="fa-solid fa-bullhorn"></i>
+                        <span data-key="card1Title">Submit a Complaint</span>
+                    </a>
+                    <a href="request-document.html" class="action-button">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span data-key="card2Title">Request a Document</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="dashboard-card activity-container">
+                <div class="activity-header">
+                    <h3 data-key="myActivity">My Recent Activity</h3>
+                    <a href="my-activity.html" class="view-all-link" data-key="viewAll">View All &rarr;</a>
+                </div>
+                <ul class="activity-list" id="activity-list">
+                    <li class="activity-item-placeholder" data-key="activityLoading">Loading recent activity...</li>
+                </ul>
+            </div>
+
+        </main>
     </div>
 
-    <script src="js/translations.js"></script>
-    <script src="js/main.js"></script>
+    <div id="toast" class="toast hidden"></div>
+
+    <script type="module" src="js/index.js"></script>
+    <script type="module" src="js/main-ui.js"></script>
+    <script type="module" src="js/translations-loader.js"></script>
 </body>
 </html>

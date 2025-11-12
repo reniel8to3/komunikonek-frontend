@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KomuniKonek | Activity Detail</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/style.css"> 
+    <link rel="stylesheet" href="css/activity-detail.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-logo">KomuniKonek</a>
+            <nav class="navbar-menu">
+                <div class="profile-dropdown-container">
+                    <button class="profile-button" id="profile-button">
+                        <i class="fa-solid fa-user"></i>
+                    </button>
+                    <div class="profile-dropdown" id="profile-dropdown">
+                        <a href="index.html" class="dropdown-link">
+                            <i class="fa-solid fa-house"></i> <span>Dashboard</span>
+                        </a>
+                        <a href="my-activity.html" class="dropdown-link">
+                            <i class="fa-solid fa-clipboard-list"></i> <span>Track Complaints</span>
+                        </a>
+                        <a href="my-activity.html#documents" class="dropdown-link">
+                            <i class="fa-solid fa-folder-open"></i> <span>Track Document Requests</span>
+                        </a>
+                        <a href="settings.html" class="dropdown-link separator-top">
+                            <i class="fa-solid fa-gear"></i> <span>Settings</span>
+                        </a>
+                        <a href="#" id="logout-button" class="dropdown-link logout">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <a href="my-activity.html" class="back-link">&larr; Back to My Activity</a>
+        
+        <div class_ ="detail-header">
+            <h1 id="detail-title">Loading...</h1>
+            <span class="activity-status pending" id="detail-status">Pending</span>
+        </div>
+        <p class="detail-subtext">Submitted on: <span id="detail-created-at">...</span></p>
+
+        <div class="detail-grid">
+            
+            <div class="detail-card timeline-card">
+                <h3>Progress</h3>
+                <ul class="timeline" id="timeline-list">
+                    </ul>
+            </div>
+
+            <div class="detail-card info-card">
+                <h3>Details</h3>
+                <ul class="info-list" id="info-list">
+                    </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module" src="js/activity-detail.js"></script> <script type="module" src="js/main-ui.js"></script>
+
+</body>
+</html>
