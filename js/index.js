@@ -6,32 +6,25 @@ let announcementSlideInterval;
 let announcementSlideIndex = 0;
 
 // --- 1. PROTECT PAGE & LOAD USER ---
-// Protect this page, only allow 'user'
 protectPage({ expectedRole: 'user' });
 
-// Listen for the 'user-loaded' event (from auth-guard.js)
 document.addEventListener('user-loaded', (e) => {
     const user = e.detail.user;
     const userData = e.detail.userData;
     
-    // Populate the header
     const welcomeEl = document.getElementById('user-name');
     if (welcomeEl) {
-        // Use their first name if it exists, otherwise use their email
         welcomeEl.textContent = userData.firstName || user.email;
     }
     
-    // Load all dashboard data
     loadDashboardData(user.uid);
 });
 
-// Activate the logout button
 setupLogoutButton();
 
 
 // --- 2. MAIN DATA FETCHING ---
 async function loadDashboardData(userId) {
-    // Run all data fetches in parallel
     await Promise.all([
         fetchStats(userId),
         fetchAnnouncements(),
@@ -39,20 +32,17 @@ async function loadDashboardData(userId) {
     ]);
 }
 
-// --- 3. FETCH STATS WIDGETS ---
+// --- 3. FETCH STATS ---
 async function fetchStats(userId) {
     try {
-        // Define references
         const complaintsRef = collection(db, "complaints");
         const requestsRef = collection(db, "document_requests");
 
-        // Create queries
         const pendingComplaintsQuery = query(complaintsRef, where("userId", "==", userId), where("status", "==", "Pending"));
         const pendingRequestsQuery = query(requestsRef, where("userId", "==", userId), where("status", "==", "Pending"));
         const resolvedComplaintsQuery = query(complaintsRef, where("userId", "==", userId), where("status", "==", "Resolved"));
         const resolvedRequestsQuery = query(requestsRef, where("userId", "==", userId), where("status", "==", "Resolved"));
 
-        // Get snapshots
         const [
             pendingComplaintsSnap, 
             pendingRequestsSnap, 
@@ -65,22 +55,16 @@ async function fetchStats(userId) {
             getDocs(resolvedRequestsQuery)
         ]);
 
-        // Calculate totals
-        const totalPendingComplaints = pendingComplaintsSnap.size;
-        const totalPendingRequests = pendingRequestsSnap.size;
-        const totalResolved = resolvedComplaintsSnap.size + resolvedRequestsSnap.size;
-
-        // Update HTML
-        document.getElementById('stats-pending-complaints').textContent = totalPendingComplaints;
-        document.getElementById('stats-pending-requests').textContent = totalPendingRequests;
-        document.getElementById('stats-resolved').textContent = totalResolved;
+        document.getElementById('stats-pending-complaints').textContent = pendingComplaintsSnap.size;
+        document.getElementById('stats-pending-requests').textContent = pendingRequestsSnap.size;
+        document.getElementById('stats-resolved').textContent = resolvedComplaintsSnap.size + resolvedRequestsSnap.size;
 
     } catch (error) {
         console.error("Error fetching stats:", error);
     }
 }
 
-// --- 4. FETCH ANNOUNCEMENTS SLIDESHOW ---
+// --- 4. FETCH ANNOUNCEMENTS (NEWS CARD STYLE) ---
 async function fetchAnnouncements() {
     const slideshowContainer = document.getElementById('announcements-slideshow');
     const dotsContainer = document.getElementById('announcement-dots');
@@ -92,11 +76,16 @@ async function fetchAnnouncements() {
         const q = query(announcementsRef, orderBy("createdAt", "desc"), limit(5));
         const querySnapshot = await getDocs(q);
 
-        slideshowContainer.innerHTML = ''; // Clear loading message
-        dotsContainer.innerHTML = ''; // Clear dots
+        slideshowContainer.innerHTML = ''; 
+        dotsContainer.innerHTML = ''; 
 
         if (querySnapshot.empty) {
-            slideshowContainer.innerHTML = '<div class="announcement-slide active"><h4>No Announcements</h4><p>There is no new information at this time.</p></div>';
+            slideshowContainer.innerHTML = `
+                <div class="announcement-slide active empty-state">
+                    <div class="icon-circle"><i class="fa-solid fa-bell-slash"></i></div>
+                    <h4>No Announcements</h4>
+                    <p>There is no new information at this time.</p>
+                </div>`;
             return;
         }
 
@@ -104,15 +93,36 @@ async function fetchAnnouncements() {
         querySnapshot.forEach((doc) => {
             const announcement = doc.data();
             const isActive = slideIndex === 0 ? 'active' : '';
+            
+            // Format Date
+            const dateStr = announcement.createdAt ? announcement.createdAt.toDate().toLocaleDateString('en-US', { 
+                year: 'numeric', month: 'long', day: 'numeric' 
+            }) : 'Just now';
+
+            // Get author name, default to 'Admin'
+            const author = announcement.authorName || 'Admin';
+            
+            // Create a placeholder image (you can change this URL later)
+            const imageUrl = `https://placehold.co/600x400/0038A8/FFFFFF?text=${encodeURIComponent(announcement.title.substring(0, 10))}`;
 
             // Create Slide
             const slide = document.createElement('div');
             slide.className = `announcement-slide ${isActive}`;
             slide.dataset.index = slideIndex;
+            
+            // --- THIS HTML MATCHES THE NEW CSS ---
             slide.innerHTML = `
-                <h4>${announcement.title}</h4>
-                <p>${announcement.body}</p>
+                <img class="announcement-image" src="${imageUrl}" alt="${announcement.title}">
+                <div class="announcement-content">
+                    <span class="announcement-date"><i class="fa-regular fa-calendar"></i> ${dateStr}</span>
+                    <h4 class="announcement-title">${announcement.title}</h4>
+                    <div class="announcement-body">${announcement.body}</div>
+                    <div class="announcement-footer">
+                        <span class="announcement-author">Posted by: <strong>${author}</strong></span>
+                    </div>
+                </div>
             `;
+            
             slideshowContainer.appendChild(slide);
 
             // Create Dot
@@ -125,7 +135,6 @@ async function fetchAnnouncements() {
             slideIndex++;
         });
 
-        // Start the slideshow timer
         startAnnouncementSlideshow();
 
     } catch (error) {
@@ -162,12 +171,12 @@ function nextAnnouncementSlide() {
 
 function startAnnouncementSlideshow() {
     if (announcementSlideInterval) clearInterval(announcementSlideInterval);
-    announcementSlideInterval = setInterval(nextAnnouncementSlide, 5000); // Change slide every 5 seconds
+    announcementSlideInterval = setInterval(nextAnnouncementSlide, 6000); 
 }
 
 function resetAnnouncementTimer() {
     clearInterval(announcementSlideInterval);
-    announcementSlideInterval = setInterval(nextAnnouncementSlide, 5000);
+    announcementSlideInterval = setInterval(nextAnnouncementSlide, 6000);
 }
 
 
@@ -177,11 +186,9 @@ async function fetchRecentActivity(userId) {
     if (!activityList) return;
 
     try {
-        // Get last 2 complaints
         const complaintsRef = collection(db, "complaints");
         const complaintsQuery = query(complaintsRef, where("userId", "==", userId), orderBy("createdAt", "desc"), limit(2));
         
-        // Get last 2 document requests
         const requestsRef = collection(db, "document_requests");
         const requestsQuery = query(requestsRef, where("userId", "==", userId), orderBy("createdAt", "desc"), limit(2));
 
@@ -200,20 +207,16 @@ async function fetchRecentActivity(userId) {
             allActivity.push({ ...doc.data(), type: 'request', createdAt: doc.data().createdAt.toDate() });
         });
 
-        // Sort all items by date and take the most recent 3
         allActivity.sort((a, b) => b.createdAt - a.createdAt);
         const recentActivity = allActivity.slice(0, 3);
 
-        // Clear the loading message
         activityList.innerHTML = '';
 
         if (recentActivity.length === 0) {
             activityList.innerHTML = '<li class="activity-item-placeholder" data-key="activityNone">No recent activity found.</li>';
-            // You may need to add 'activityNone' to your translations.js
             return;
         }
 
-        // Render to HTML
         recentActivity.forEach(item => {
             const li = document.createElement('li');
             li.className = 'activity-item';
@@ -227,7 +230,7 @@ async function fetchRecentActivity(userId) {
                 title = item.documentType || 'Document Requested';
             }
 
-            const statusClass = item.status ? item.status.toLowerCase() : 'pending'; // e.g., 'pending', 'resolved'
+            const statusClass = item.status ? item.status.toLowerCase() : 'pending'; 
 
             li.innerHTML = `
                 <div class="activity-info">

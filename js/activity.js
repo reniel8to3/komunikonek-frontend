@@ -1,120 +1,179 @@
-// js/admin.js
+// js/my-activity.js
 import { protectPage, setupLogoutButton } from './auth-guard.js';
-// Note: We are not sorting by time here to avoid the Index error.
-import { db, collection, query, where, getDocs, limit } from './firebase.js';
+// We REMOVED orderBy from the import, as we won't use it in the query
+import { db, collection, query, where, getDocs } from './firebase.js'; 
 
-// --- 1. SET UP THE PAGE ---
-// CRITICAL: We set the expectedRole to 'admin'
-protectPage({ expectedRole: 'admin' });
-setupLogoutButton();
+document.addEventListener("DOMContentLoaded", function() {
 
-// Listen for the 'user-loaded' event
-document.addEventListener('user-loaded', (e) => {
-    const userData = e.detail.userData;
-    
-    // Populate the admin's name in the dropdown
-    const adminNameEl = document.getElementById('admin-name');
-    if (adminNameEl) {
-        adminNameEl.textContent = userData.firstName || 'Admin';
-    }
-    
-    // Now that admin is verified, load the data
-    loadAdminDashboard();
-});
+    // --- 1. SECURE THE PAGE & GET USER ---
+    protectPage({ expectedRole: 'user' });
+    setupLogoutButton();
 
-// --- 2. MAIN DATA FETCHING ---
-async function loadAdminDashboard() {
-    // Run all data fetches in parallel
-    await Promise.all([
-        fetchAdminStats(),
-        fetchRecentActivity()
-    ]);
-}
-
-// --- 3. FETCH STATS ---
-async function fetchAdminStats() {
-    try {
-        // Define references
-        const complaintsRef = collection(db, "complaints");
-        const requestsRef = collection(db, "document_requests");
-        const usersRef = collection(db, "users");
-
-        // Create queries
-        const pendingComplaintsQuery = query(complaintsRef, where("status", "==", "Pending"));
-        const pendingRequestsQuery = query(requestsRef, where("status", "==", "Pending"));
-        const allUsersQuery = query(usersRef, where("accountType", "==", "user"));
-
-        // Get snapshots
-        const [
-            pendingComplaintsSnap, 
-            pendingRequestsSnap, 
-            allUsersSnap
-        ] = await Promise.all([
-            getDocs(pendingComplaintsQuery),
-            getDocs(pendingRequestsQuery),
-            getDocs(allUsersQuery)
-        ]);
-
-        // Update HTML
-        document.getElementById('stats-pending-complaints').textContent = pendingComplaintsSnap.size;
-        document.getElementById('stats-pending-requests').textContent = pendingRequestsSnap.size;
-        document.getElementById('stats-total-users').textContent = allUsersSnap.size;
-
-    } catch (error) {
-        console.error("Error fetching admin stats:", error);
-    }
-}
-
-// --- 4. FETCH RECENT ACTIVITY ---
-async function fetchRecentActivity() {
-    const activityList = document.getElementById('activity-list');
-    if (!activityList) return;
-
-    try {
-        // Get last 5 complaints from ALL users
-        const complaintsRef = collection(db, "complaints");
-        // We will sort by date in JS to avoid needing an index
-        const complaintsQuery = query(complaintsRef, limit(20)); // Get latest 20
+    // --- THIS IS THE FIX ---
+    // We wait for the 'user-loaded' event before we do ANYTHING else
+    document.addEventListener('user-loaded', (e) => {
+        const currentUserId = e.detail.user.uid;
+        console.log("My Activity page loaded for user:", currentUserId);
         
-        const complaintsSnap = await getDocs(complaintsQuery);
-
-        activityList.innerHTML = ''; // Clear loading
+        // Now that we are safe, get the elements
+        const tabs = document.querySelectorAll(".tab-button");
+        const tabContents = document.querySelectorAll(".tab-content");
         
-        if (complaintsSnap.empty) {
-            activityList.innerHTML = '<li class="activity-item-placeholder">No recent complaints found.</li>';
-            return;
+        // Fetch data
+        fetchMyActivity(currentUserId);
+        
+        // Set up tab logic
+        setupTabs(tabs, tabContents);
+    });
+
+    // --- 2. TAB SWITCHING LOGIC ---
+    function setupTabs(tabs, tabContents) {
+        function showTab(tabId) {
+            const targetContent = document.getElementById(tabId);
+            
+            tabs.forEach(t => t.classList.remove("active"));
+            tabContents.forEach(c => c.classList.remove("active"));
+
+            const activeButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+            if(activeButton) activeButton.classList.add("active");
+            if(targetContent) targetContent.classList.add("active");
         }
 
-        // Sort in JavaScript
-        let complaints = [];
-        complaintsSnap.forEach(doc => complaints.push(doc.data()));
-        complaints.sort((a, b) => b.createdAt.toDate() - a.createdAt.toDate());
-        
-        // Take just the first 5
-        const recentComplaints = complaints.slice(0, 5);
+        if (tabs.length > 0 && tabContents.length > 0) {
+            tabs.forEach(tab => {
+                tab.addEventListener("click", function(e) {
+                    e.preventDefault(); 
+                    const targetId = this.getAttribute("data-tab");
+                    window.location.hash = targetId; // Set the hash
+                    showTab(targetId);
+                });
+            });
+        }
 
-        // Render to HTML
-        recentComplaints.forEach(item => {
-            const li = document.createElement('li');
-            li.className = 'activity-item';
-            
-            const statusClass = item.status ? item.status.toLowerCase() : 'pending';
-
-            li.innerHTML = `
-                <div class="activity-info">
-                    <i class="activity-icon fa-solid fa-bullhorn"></i>
-                    <div class="activity-details">
-                        <p>${item.subject || 'Complaint'}</p>
-                        <span class="date">Submitted on: ${item.createdAt.toDate().toLocaleDateString()}</span>
-                    </div>
-                </div>
-                <span class="activity-status ${statusClass}">${item.status}</span>
-            `;
-            activityList.appendChild(li);
-        });
-
-    } catch (error) {
-        console.error("Error fetching recent activity:", error);
-        activityList.innerHTML = '<li class="activity-item-placeholder">Could not load activity.</li>';
+        // Check URL hash on page load
+        if (window.location.hash === '#documents') {
+            showTab('documents');
+        } else {
+            showTab('complaints'); // Default tab
+        }
     }
-}
+
+
+    // --- 3. FETCH DATA FROM FIRESTORE ---
+    async function fetchMyActivity(userId) {
+        if (!userId) return;
+        
+        // Run fetches in parallel
+        await Promise.all([
+            fetchComplaints(userId),
+            fetchDocuments(userId)
+        ]);
+    }
+
+    async function fetchComplaints(userId) {
+        const complaintsList = document.getElementById('complaints-list');
+        if (!complaintsList) return;
+        
+        try {
+            const complaintsRef = collection(db, "complaints");
+            // --- TYPO FIX: 'qhere' is now 'where' ---
+            const q = query(complaintsRef, 
+                        where("userId", "==", userId));
+            
+            const querySnapshot = await getDocs(q);
+            
+            complaintsList.innerHTML = ''; 
+            
+            if (querySnapshot.empty) {
+                complaintsList.innerHTML = '<li class="activity-placeholder">You have not submitted any complaints.</li>';
+                return;
+            }
+
+            const complaints = [];
+            querySnapshot.forEach((doc) => {
+                complaints.push({ id: doc.id, ...doc.data() });
+            });
+            complaints.sort((a, b) => b.createdAt.toDate() - a.createdAt.toDate());
+
+            for (const complaint of complaints) {
+                const card = createActivityCard(complaint, 'complaint');
+                complaintsList.appendChild(card);
+            }
+
+        } catch (error) {
+            console.error("Error fetching complaints:", error);
+            complaintsList.innerHTML = '<li class="activity-placeholder">Error loading complaints.</li>';
+        }
+    }
+
+    async function fetchDocuments(userId) {
+        const documentsList = document.getElementById('documents-list');
+        if (!documentsList) return;
+
+        try {
+            const requestsRef = collection(db, "document_requests");
+            // --- TYPO FIX: 'qhere' is now 'where' ---
+            const q = query(requestsRef, 
+                        where("userId", "==", userId));
+
+            const querySnapshot = await getDocs(q);
+
+            documentsList.innerHTML = ''; 
+
+            if (querySnapshot.empty) {
+                documentsList.innerHTML = '<li class="activity-placeholder">You have not requested any documents.</li>';
+                return;
+            }
+
+            const requests = [];
+            querySnapshot.forEach((doc) => {
+                requests.push({ id: doc.id, ...doc.data() });
+            });
+            requests.sort((a, b) => b.createdAt.toDate() - a.createdAt.toDate());
+
+            for (const request of requests) {
+                const card = createActivityCard(request, 'document');
+                documentsList.appendChild(card);
+            }
+
+        } catch (error) {
+            console.error("Error fetching documents:", error);
+            documentsList.innerHTML = '<li class="activity-placeholder">Error loading document requests.</li>';
+        }
+    }
+
+    // --- 4. CREATE HTML FOR ACTIVITY CARDS ---
+    function createActivityCard(item, type) {
+        const link = document.createElement('a');
+        link.className = 'activity-card-link';
+        link.href = `activity-detail.html?id=${item.id}&type=${type}`;
+        
+        const li = document.createElement('li');
+        li.className = 'activity-card';
+
+        const iconClass = (type === 'complaint') ? 'fa-bullhorn' : 'fa-file-lines';
+        let title = (type === 'complaint') ? item.subject : item.documentType;
+        let subtext = (type === 'complaint') ? `Incident Date: ${item.incidentDate}` : `Purpose: ${item.purpose}`;
+        
+        if (!title) title = (type === 'complaint') ? "Complaint" : "Document Request";
+        if (!subtext) subtext = "No details provided.";
+
+        const status = item.status || 'Pending';
+        const statusClass = status.toLowerCase().replace(/\s+/g, '-'); 
+
+        li.innerHTML = `
+            <div class="activity-info">
+                <i class="activity-icon fa-solid ${iconClass}"></i>
+                <div class="activity-details">
+                    <h3>${title}</h3>
+                    <p>${subtext}</p>
+                    <p class="date">Submitted on: ${item.createdAt ? item.createdAt.toDate().toLocaleDateString() : 'N/A'}</p>
+                </div>
+            </div>
+            <span class="activity-status ${statusClass}">${status}</span>
+        `;
+        
+        link.appendChild(li);
+        return link; 
+    }
+});

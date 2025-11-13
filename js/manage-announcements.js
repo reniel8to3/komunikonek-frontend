@@ -38,11 +38,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const deleteCancelBtn = document.getElementById('delete-modal-cancel');
     const deleteConfirmBtn = document.getElementById('delete-modal-confirm');
     
-    let activeDocId = null; // Store the doc ID for the modal
+    let activeDocId = null; 
     let adminUserId = null;
+    let adminName = 'Admin'; // Default author name
 
     document.addEventListener('user-loaded', (e) => {
         adminUserId = e.detail.user.uid;
+        adminName = e.detail.userData.firstName || 'Admin'; // <-- GET ADMIN'S NAME
+        
         const adminNameEl = document.getElementById('admin-name');
         if (adminNameEl) {
             adminNameEl.textContent = e.detail.userData.firstName || 'Admin';
@@ -57,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         try {
             const announcementsRef = collection(db, "announcements");
-            // Sort by date, newest first
             const q = query(announcementsRef, orderBy("createdAt", "desc"));
             const querySnapshot = await getDocs(q);
 
@@ -66,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            tableBody.innerHTML = ''; // Clear loading
+            tableBody.innerHTML = ''; 
             
             for (const docSnap of querySnapshot.docs) {
                 const item = docSnap.data();
@@ -89,16 +91,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 tableBody.appendChild(tr);
             }
             
-            // Add event listeners to the new buttons
             document.querySelectorAll('.edit').forEach(button => {
                 button.addEventListener('click', (e) => {
-                    openModal(e.target.dataset.id); // Open in "Edit" mode
+                    openModal(e.target.dataset.id); 
                 });
             });
             
             document.querySelectorAll('.delete').forEach(button => {
                 button.addEventListener('click', (e) => {
-                    openDeleteModal(e.target.dataset.id); // Open delete confirm
+                    openDeleteModal(e.target.dataset.id); 
                 });
             });
 
@@ -109,15 +110,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- 3. MODAL AND CREATE/UPDATE LOGIC ---
-    
-    // Opens the modal. If id is null, it's "Create" mode. If id is provided, it's "Edit" mode.
     async function openModal(docId = null) {
-        activeDocId = docId; // Store the id
+        activeDocId = docId; 
         
         if (docId) {
-            // --- EDIT MODE ---
             modalTitle.textContent = 'Edit Announcement';
-            
             const docRef = doc(db, "announcements", docId);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
@@ -127,9 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 statusInput.value = item.status;
             }
         } else {
-            // --- CREATE MODE ---
             modalTitle.textContent = 'Create Announcement';
-            updateForm.reset(); // Clear all fields
+            updateForm.reset(); 
         }
         modalOverlay.classList.add('is-open');
     }
@@ -139,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
         activeDocId = null;
     }
 
-    createNewBtn.addEventListener('click', () => openModal()); // "Create New" button
+    createNewBtn.addEventListener('click', () => openModal()); 
     modalCancelBtn.addEventListener('click', closeModal);
 
     updateForm.addEventListener('submit', async (e) => {
@@ -150,25 +146,24 @@ document.addEventListener('DOMContentLoaded', () => {
             title: titleInput.value,
             body: bodyInput.value,
             status: statusInput.value,
-            authorId: adminUserId
+            authorId: adminUserId,
+            authorName: adminName // <-- ADD THE AUTHOR'S NAME
         };
 
         try {
             if (activeDocId) {
-                // --- UPDATE existing document ---
                 data.updatedAt = serverTimestamp();
                 const docRef = doc(db, "announcements", activeDocId);
                 await updateDoc(docRef, data);
                 showToast("Announcement updated successfully!", "success");
             } else {
-                // --- CREATE new document ---
                 data.createdAt = serverTimestamp();
                 await addDoc(collection(db, "announcements"), data);
                 showToast("Announcement created successfully!", "success");
             }
             
             closeModal();
-            loadAnnouncements(); // Refresh the table
+            loadAnnouncements(); 
             
         } catch (error) {
             console.error("Error saving document:", error);
@@ -179,19 +174,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // --- 4. DELETE LOGIC ---
-    
     function openDeleteModal(docId) {
         activeDocId = docId;
         deleteModalOverlay.classList.add('is-open');
     }
-    
     function closeDeleteModal() {
         deleteModalOverlay.classList.remove('is-open');
         activeDocId = null;
     }
-    
     deleteCancelBtn.addEventListener('click', closeDeleteModal);
-    
     deleteConfirmBtn.addEventListener('click', async () => {
         if (!activeDocId) return;
         
@@ -200,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
             await deleteDoc(doc(db, "announcements", activeDocId));
             showToast("Announcement deleted.", "success");
             closeDeleteModal();
-            loadAnnouncements(); // Refresh the table
+            loadAnnouncements(); 
         } catch (error) {
             console.error("Error deleting document:", error);
             showToast("Failed to delete. Please try again.", "error");
@@ -222,7 +213,6 @@ function setButtonLoading(button, isLoading, loadingText = "Loading...") {
     button.disabled = isLoading;
     button.textContent = isLoading ? loadingText : originalText;
 }
-
 function showToast(message, type = 'info') {
     let toast = document.getElementById('toast');
     if (!toast) {

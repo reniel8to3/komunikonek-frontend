@@ -108,6 +108,11 @@
     color: #6c757d;
     margin: 2px 0 0 0;
 }
+.activity-details .date {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-top: 5px;
+}
 
 .activity-status {
     font-size: 0.9rem;
