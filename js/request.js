@@ -1,63 +1,79 @@
 // js/request.js
 import { protectPage, setupLogoutButton } from './auth-guard.js';
-// We only import what we need (no file upload)
 import { db, collection, addDoc, serverTimestamp } from './firebase.js';
 
-// We wrap EVERYTHING in a DOMContentLoaded listener.
 document.addEventListener('DOMContentLoaded', () => {
     
     let currentUserId = null;
 
     // --- 1. SET UP THE PAGE ---
     protectPage({ expectedRole: 'user' });
-    setupLogoutButton(); // Activates the logout button in your navbar
+    setupLogoutButton(); 
 
-    // Listen for the 'user-loaded' event from auth-guard.js
     document.addEventListener('user-loaded', (e) => {
         currentUserId = e.detail.user.uid;
         console.log("Request Document page loaded for user:", currentUserId);
     });
 
-    // --- 2. GET FORM & HIDE UPLOAD ---
+    // --- 2. GET FORM ELEMENTS ---
     const requestForm = document.getElementById('request-form');
     const submitButton = document.querySelector('.form-button-filled');
-
-    // Hide the file upload UI since we aren't using it
-    const fileUpload = document.getElementById('file-upload');
-    const fileUploadGroup = fileUpload?.closest('.form-group');
+    const purposeInput = document.getElementById('purpose');
+    const charCounter = document.getElementById('purpose-char-counter');
+    
+    // --- 3. HIDE UPLOAD & SETUP COUNTER ---
+    const fileUploadGroup = document.getElementById('file-upload')?.closest('.form-group');
     if (fileUploadGroup) {
         fileUploadGroup.style.display = 'none';
     }
 
-    // --- 3. FORM SUBMIT LISTENER ---
+    purposeInput?.addEventListener('input', () => {
+        const len = purposeInput.value.length;
+        charCounter.textContent = `${len}/1000`;
+        charCounter.style.color = len > 950 ? '#CE1126' : '#6c757d';
+    });
+
+
+    // --- 4. FORM SUBMIT LISTENER ---
     requestForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
+        
+        // --- 4a. VALIDATION ---
+        let isValid = true;
+        if (purposeInput.value.trim() === '') {
+            setError(purposeInput, "Purpose is required.");
+            isValid = false;
+        } else {
+            setSuccess(purposeInput);
+        }
+
+        if (!isValid) {
+            showToast("Please fill in all required fields.", "error");
+            return;
+        }
+        // --- END VALIDATION ---
+
         if (!currentUserId) {
             showToast("Error: User not identified. Please try logging in again.", "error");
             return;
         }
         
-        setButtonLoading(submitButton, true);
-        showToast("Submitting request...", "info");
+        setButtonLoading(submitButton, true, "Submitting...");
 
-        // --- 4a. GET ELEMENT VALUES ---
         const documentTypeEl = document.getElementById('document-type');
-        const purposeEl = document.getElementById('purpose');
-        const otherDocumentTypeEl = document.getElementById('other-document-type'); // <-- NEW
+        const otherDocumentTypeEl = document.getElementById('other-document-type');
 
         try {
-            // --- 4b. Prepare Document Data (UPDATED) ---
             let finalDocumentType = documentTypeEl.value;
             if (finalDocumentType === 'Other') {
                 finalDocumentType = otherDocumentTypeEl.value || 'Other (Not Specified)';
             }
-            // --- END UPDATE ---
 
             const newRequest = {
                 userId: currentUserId,
-                documentType: finalDocumentType, // <-- Uses new variable
-                purpose: purposeEl.value,
-                fileUrls: [], // Send an empty array
+                documentType: finalDocumentType,
+                purpose: purposeInput.value,
+                fileUrls: [], 
                 status: "Pending", 
                 createdAt: serverTimestamp(),
                 progress: [
@@ -69,31 +85,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 ]
             };
 
-            // --- 4c. Save to Firestore ---
             const docRef = await addDoc(collection(db, "document_requests"), newRequest);
             
             console.log("Request submitted with ID: ", docRef.id);
             showToast("Request submitted successfully!", "success");
 
             setTimeout(() => {
-                window.location.href = 'my-activity.html#documents'; // Go to activity page, show documents tab
+                window.location.href = 'my-activity.html#documents'; 
             }, 2000);
 
         } catch (error) {
             console.error("Error submitting request: ", error);
             showToast("Error submitting request. Please try again.", "error");
-            setButtonLoading(submitButton, false);
+            setButtonLoading(submitButton, false, "SUBMIT REQUEST");
         }
     });
 
 }); // --- End of DOMContentLoaded listener ---
 
 
-// --- 5. UTILITY FUNCTIONS (Must be outside the listener) ---
-function setButtonLoading(button, isLoading) {
+// --- 5. UTILITY FUNCTIONS ---
+function setButtonLoading(button, isLoading, loadingText = "Submitting...") {
     if (!button) return;
+    const originalText = button.dataset.originalText || "SUBMIT REQUEST";
+    if (!button.dataset.originalText) {
+        button.dataset.originalText = button.textContent;
+    }
+    
     button.disabled = isLoading;
-    button.textContent = isLoading ? "Submitting..." : "SUBMIT REQUEST";
+    button.textContent = isLoading ? loadingText : originalText;
 }
 
 function showToast(message, type = 'info') {
@@ -111,4 +131,25 @@ function showToast(message, type = 'info') {
     setTimeout(() => {
         toast.classList.add('hidden');
     }, 3000);
+}
+
+// --- NEW: Validation Helpers ---
+function setError(inputElement, message) {
+    const formGroup = inputElement.closest('.form-group');
+    const errorElement = formGroup.querySelector('.error-message');
+    
+    formGroup.classList.add('error');
+    if (errorElement) {
+        errorElement.textContent = message;
+    }
+}
+
+function setSuccess(inputElement) {
+    const formGroup = inputElement.closest('.form-group');
+    const errorElement = formGroup.querySelector('.error-message');
+    
+    formGroup.classList.remove('error');
+    if (errorElement) {
+        errorElement.textContent = '';
+    }
 }

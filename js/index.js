@@ -249,4 +249,4 @@ async function fetchRecentActivity(userId) {
         console.error("Error fetching recent activity:", error);
         activityList.innerHTML = '<li class="activity-item-placeholder">Could not load activity.</li>';
     }
-}
+}   

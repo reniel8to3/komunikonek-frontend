@@ -39,13 +39,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 3. "Other" Complaint Field Toggle ---
     const complaintType = document.getElementById('complaint-type');
-    const otherGroup = document.getElementById('other-complaint-group');
+    const otherComplaintGroup = document.getElementById('other-complaint-group');
 
     complaintType?.addEventListener('change', () => {
         if (complaintType.value === 'other') {
-            otherGroup.style.display = 'block';
+            otherComplaintGroup.style.display = 'block';
         } else {
-            otherGroup.style.display = 'none';
+            otherComplaintGroup.style.display = 'none';
         }
     });
     
@@ -62,15 +62,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- 5. Cancel Button Logic ---
-    // This finds ALL cancel buttons on any page
     const cancelButtons = document.querySelectorAll('.form-button-outlined');
     cancelButtons.forEach(cancelButton => {
-        // We check if it's NOT the password reset button
         if (cancelButton.id !== 'change-password-btn' && cancelButton.id !== 'confirm-modal-cancel') {
              cancelButton.addEventListener('click', () => {
-                // Go back to the dashboard
                 window.location.href = 'index.html';
             });
+        }
+    });
+
+    // --- 6. NEW: File Name Display Logic (for BOTH pages) ---
+    
+    // For submit-complaint.html
+    const fileUpload = document.getElementById('file-upload');
+    const fileNameDisplay = document.getElementById('file-name');
+    fileUpload?.addEventListener('change', () => {
+        if (fileUpload.files.length > 0) {
+            fileNameDisplay.textContent = `${fileUpload.files.length} file(s) selected`;
+        } else {
+            fileNameDisplay.textContent = "No file chosen";
+        }
+    });
+
+    // For request-document.html
+    const fileUploadReq = document.getElementById('file-upload-req');
+    const fileNameDisplayReq = document.getElementById('file-name-req');
+    fileUploadReq?.addEventListener('change', () => {
+        if (fileUploadReq.files.length > 0) {
+            fileNameDisplayReq.textContent = `${fileUploadReq.files.length} file(s) selected`;
+        } else {
+            fileNameDisplayReq.textContent = "No file chosen";
         }
     });
     

@@ -14,11 +14,6 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-/* This rule is no longer needed, as the H1 is in the header
-.form-container h1 { ... } 
-*/
-
-/* This is a new, optional style for titles inside cards */
 .form-title {
     text-align: center;
     font-size: 2rem;
@@ -55,9 +50,8 @@
     font-family: inherit;
     font-size: 1em;
     color: #212529;
-    box-sizing: border-box; /* Important! */
+    box-sizing: border-box; 
 }
-/* For select and textarea */
 .form-input:focus,
 .form-input:not(:placeholder-shown),
 select.form-input {
@@ -77,19 +71,6 @@ select.form-input + .form-label {
     border-color: #0038A8;
     box-shadow: 0 0 0 1px #0038A8;
 }
-
-/* Static label (for file upload) */
-.form-label-static {
-    display: block;
-    font-size: 0.85rem;
-    color: #6c757d;
-    font-weight: 500;
-    margin-bottom: 8px;
-}
-.file-upload-wrapper { display: flex; align-items: center; }
-.file-upload-input { display: none; }
-.file-upload-button { background: #f0f5ff; border: 1px dashed #0038A8; color: #0038A8; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-weight: 500; }
-.file-name { margin-left: 15px; font-size: 0.9rem; color: #6c757d; }
 
 /* --- Button Group --- */
 .button-group {
@@ -125,4 +106,45 @@ select.form-input + .form-label {
     background-color: #a0a0a0;
     border-color: #a0a0a0;
     cursor: not-allowed;
+}
+
+/* --- File Upload Styling --- */
+.form-label-static {
+    display: block;
+    font-size: 0.85rem;
+    color: #6c757d;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+.file-upload-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+/* We hide the ugly default input */
+.file-upload-input {
+    display: none; 
+}
+/* We style the label to look like a button */
+.file-upload-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #f0f5ff;
+    border: 1px dashed #0038A8;
+    color: #0038A8;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease;
+}
+.file-upload-button:hover {
+    background-color: #e0e9ff;
+}
+.file-name {
+    font-size: 0.9rem;
+    color: #6c757d;
+    font-style: italic;
 }
