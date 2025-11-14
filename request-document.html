@@ -17,7 +17,47 @@
     <div class="dashboard-container">
         <!-- Sidebar -->
         <nav class="sidebar" id="sidebar">
-            <!-- ... (sidebar code) ... -->
+            <div class="sidebar-header">
+                <h3>KomuniKonek</h3>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="nav-item">
+                    <a href="index.html">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="submit-complaint.html">
+                        <i class="fa-solid fa-bullhorn"></i>
+                        <span>Submit Complaint</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="request-document.html">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span>Request Document</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="announcements.html">
+                        <i class="fa-solid fa-bullhorn"></i>
+                        <span>Announcements</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="my-requests.html">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <span>My Requests</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <button class="logout-btn" id="logout-button-alt">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
         </nav>
 
         <!-- Main Content Area -->
@@ -32,7 +72,24 @@
                 </div>
                 <div class="header-icons">
                     <div class="profile-dropdown-container">
-                        <!-- ... (profile button code) ... -->
+                        <button class="profile-button" id="profile-button">
+                            <i class="fa-solid fa-user"></i>
+                        </button>
+                        <div class="profile-dropdown" id="profile-dropdown">
+                            <div class="profile-dropdown-header">Account</div>
+                            <a href="profile.html" class="dropdown-link">
+                                <i class="fa-solid fa-user"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <a href="settings.html" class="dropdown-link">
+                                <i class="fa-solid fa-gear"></i>
+                                <span>Settings</span>
+                            </a>
+                            <a href="#" class="dropdown-link separator-top logout" id="logout-button">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -43,7 +100,13 @@
                         
                         <div class="form-group">
                             <select id="document-type" class="form-input" required value="">
-                                <!-- ... (options) ... -->
+                                <option value="" disabled selected></option>
+                                <option value="Barangay Clearance">Barangay Clearance</option>
+                                <option value="Barangay ID">Barangay ID</option>
+                                <option value="Certificate of Residency">Certificate of Residency</option>
+                                <option value="Certificate of Indigency">Certificate of Indigency</option>
+                                <option value="Business Permit">Business Permit</option>
+                                <option value="Other">Other</option>
                             </select>
                             <label for="document-type" class="form-label"><span>Document Type</span> <span class="required">*</span></label>
                         </div>
@@ -53,17 +116,14 @@
                             <label for="other-document-type" class="form-label">Please specify</label>
                         </div>
 
-                        <!-- === THIS IS THE FIX === -->
                         <div class="form-group">
                             <textarea id="purpose" class="form-input" placeholder=" " rows="5" required maxlength="1000"></textarea>
                             <label for="purpose" class="form-label"><span>Purpose of Request</span> <span class="required">*</span></label>
-                            <!-- New footer for counter and error -->
                             <div class="form-group-footer">
                                 <small class="error-message"></small>
                                 <small class="char-counter" id="purpose-char-counter">0/1000</small>
                             </div>
                         </div>
-                        <!-- === END FIX === -->
                         
                         <div class="form-group" style="display: none;">
                             <label class="form-label-static">Upload Requirements</label>

@@ -31,7 +31,6 @@
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
     <div class="dashboard-container">
-        <!-- Admin Sidebar -->
         <nav class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <h3>KomuniKonek <span class="admin-badge">Admin</span></h3>
@@ -43,32 +42,30 @@
                         <span data-key="navDashboard">Dashboard</span>
                     </a>
                 </li>
-                <!-- === ICON FIXES === -->
                 <li class="nav-item">
                     <a href="manage-complaints.html">
-                        <i class="fa-solid fa-comment-dots"></i> <!-- Changed from fa-bullhorn -->
+                        <i class="fa-solid fa-comment-dots"></i>
                         <span data-key="navComplaints">Manage Complaints</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="manage-documents.html">
-                        <i class="fa-solid fa-file-lines"></i> <!-- This was correct -->
+                        <i class="fa-solid fa-file-lines"></i>
                         <span data-key="navDocs">Manage Documents</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="manage-announcements.html">
-                        <i class="fa-solid fa-bullhorn"></i> <!-- Changed from fa-newspaper -->
+                        <i class="fa-solid fa-bullhorn"></i>
                         <span data-key="navAnnouncements">Manage Announcements</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="manage-users.html">
-                        <i class="fa-solid fa-users"></i> <!-- This was correct -->
+                        <i class="fa-solid fa-users"></i>
                         <span data-key="navUsers">Manage Users</span>
                     </a>
                 </li>
-                <!-- === END ICON FIXES === -->
             </ul>
             <div class="sidebar-footer">
                 <button id="logout-button" class="logout-btn">
@@ -78,7 +75,6 @@
             </div>
         </nav>
 
-        <!-- Main Content Area -->
         <main class="main-content">
             
             <header class="main-header is-dashboard"> 
@@ -111,32 +107,37 @@
                 </div>
             </header>
             
-            <!-- Admin Stats Grid -->
             <div class="stats-grid">
-                <div class="stat-card">
-                    <i class="stat-icon fa-solid fa-comment-dots" style="color: #ffc107;"></i>
-                    <div class="stat-info">
-                        <span class="stat-number" id="stats-pending-complaints">...</span>
-                        <span class="stat-label" data-key="pendingComplaints">Pending Complaints</span>
+                <a href="manage-complaints.html" class="stat-card-link">
+                    <div class="stat-card">
+                        <i class="stat-icon fa-solid fa-comment-dots" style="color: #ffc107;"></i>
+                        <div class="stat-info">
+                            <span class="stat-number" id="stats-pending-complaints">...</span>
+                            <span class="stat-label" data-key="pendingComplaints">Pending Complaints</span>
+                        </div>
                     </div>
-                </div>
-                <div class="stat-card">
-                    <i class="stat-icon fa-solid fa-file-lines" style="color: #0d6efd;"></i>
-                    <div class="stat-info">
-                        <span class="stat-number" id="stats-pending-requests">...</span>
-                        <span class="stat-label" data-key="pendingDocs">Pending Documents</span>
+                </a>
+                
+                <a href="manage-documents.html" class="stat-card-link">
+                    <div class="stat-card">
+                        <i class="stat-icon fa-solid fa-file-lines" style="color: #0d6efd;"></i>
+                        <div class="stat-info">
+                            <span class="stat-number" id="stats-pending-requests">...</span>
+                            <span class="stat-label" data-key="pendingDocs">Pending Documents</span>
+                        </div>
                     </div>
-                </div>
-                <div class="stat-card">
-                    <i class="stat-icon fa-solid fa-users" style="color: #198754;"></i>
-                    <div class="stat-info">
-                        <span class="stat-number" id="stats-total-users">...</span>
-                        <span class="stat-label" data-key="newSignups">Total Users</span>
+                </a>
+                
+                <a href="manage-users.html" class="stat-card-link">
+                    <div class="stat-card">
+                        <i class="stat-icon fa-solid fa-users" style="color: #198754;"></i>
+                        <div class="stat-info">
+                            <span class="stat-number" id="stats-total-users">...</span>
+                            <span class="stat-label" data-key="newSignups">Total Users</span>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
-
-            <!-- Recent Activity -->
             <div class="dashboard-card activity-container" style="margin-top: 25px;">
                 <div class="activity-header">
                     <h3 data-key="recentActivity">Recent Activity</h3>

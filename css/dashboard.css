@@ -536,3 +536,77 @@ select.form-input + .form-label {
     border-color: #a0a0a0;
     cursor: not-allowed;
 }
+/* --- Profile Icon in Header --- */
+.profile-dropdown-container {
+    position: relative;
+    z-index: 1000; /* ADD THIS - ensures dropdown appears above everything */
+}
+.profile-button {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+    width: 42px;
+    height: 42px;
+    font-size: 1.2rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.profile-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+.profile-dropdown {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 260px;
+    z-index: 1001; /* CHANGED from 100 to 1001 - ensures it's above container */
+    padding: 10px 0;
+}
+.profile-dropdown.active { display: block; }
+.profile-dropdown .dropdown-link { 
+    display: flex; 
+    align-items: center; 
+    padding: 12px 20px; 
+    text-decoration: none; 
+    color: #444746; 
+    font-size: 0.95rem; 
+}
+.profile-dropdown .dropdown-link i { 
+    width: 20px; 
+    margin-right: 15px; 
+    color: #6c757d; 
+}
+.profile-dropdown .dropdown-link:hover { 
+    background: #f7f9fc; 
+    color: #0038A8; 
+}
+.profile-dropdown .dropdown-link.separator-top { 
+    border-top: 1px solid #f0f0f0; 
+    margin-top: 5px; 
+    padding-top: 10px; 
+}
+.profile-dropdown .dropdown-link.logout { 
+    color: #CE1126; 
+}
+.profile-dropdown .dropdown-link.logout:hover { 
+    background: #fff0f0; 
+}
+.profile-dropdown-header { 
+    padding: 10px 20px; 
+    font-size: 0.9rem; 
+    color: #6c757d; 
+}
+.activity-item-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.activity-item-link:hover .activity-item {
+    background-color: #f0f5ff;
+}
