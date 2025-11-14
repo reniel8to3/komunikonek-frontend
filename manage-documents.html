@@ -5,12 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KomuniKonek | Manage Documents</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="css/dashboard.css"> 
-    <link rel="stylesheet" href="css/admin-manage.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/admin-manage.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     
@@ -30,18 +27,19 @@
                 </li>
                 <li class="nav-item"> 
                     <a href="manage-complaints.html">
-                        <i class="fa-solid fa-bullhorn"></i>
+                        <i class="fa-solid fa-comment-dots"></i>
                         <span>Manage Complaints</span>
                     </a>
                 </li>
-                <li class="nav-item active"> <a href="manage-documents.html">
+                <li class="nav-item active"> 
+                    <a href="manage-documents.html">
                         <i class="fa-solid fa-file-lines"></i>
                         <span>Manage Documents</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="manage-announcements.html">
-                        <i class="fa-solid fa-newspaper"></i>
+                        <i class="fa-solid fa-bullhorn"></i>
                         <span>Manage Announcements</span>
                     </a>
                 </li>
@@ -62,31 +60,34 @@
 
         <main class="main-content">
             
-            <header class="main-header">
+            <header class="main-header is-dashboard">
                 <button class="mobile-menu-button" id="mobile-menu-button">
                     <i class="fa-solid fa-bars"></i>
                 </button>
-                
-                <div class="profile-dropdown-container">
-                    <button class="profile-button" id="profile-button">
-                        <i class="fa-solid fa-user-shield"></i>
-                    </button>
-                    <div class="profile-dropdown" id="profile-dropdown">
-                        <div class="profile-dropdown-header">
-                            Signed in as: <strong id="admin-name">Admin...</strong>
+                <div class="header-content">
+                    <h1>Manage Document Requests</h1>
+                </div>
+                <div class="header-icons">
+                    <div class="profile-dropdown-container">
+                        <button class="profile-button" id="profile-button">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </button>
+                        <div class="profile-dropdown" id="profile-dropdown">
+                            <div class="profile-dropdown-header">
+                                Signed in as: <strong id="admin-name">Admin...</strong>
+                            </div>
+                            <a href="index.html" class="dropdown-link">
+                                <i class="fa-solid fa-user"></i> <span>View User Dashboard</span>
+                            </a>
+                            <a href="#" id="logout-button-alt" class="dropdown-link logout separator-top">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
+                            </a>
                         </div>
-                        <a href="index.html" class="dropdown-link">
-                            <i class="fa-solid fa-user"></i> <span>View User Dashboard</span>
-                        </a>
-                        <a href="#" id="logout-button-alt" class="dropdown-link logout separator-top">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
-                        </a>
                     </div>
                 </div>
             </header>
             
             <div class="main-container">
-                <h1>Manage Document Requests</h1>
                 <p>Review, update, and fulfill user-submitted document requests.</p>
                 
                 <div class="table-container dashboard-card">
@@ -95,7 +96,8 @@
                             <tr>
                                 <th>Date</th>
                                 <th>Document Type</th>
-                                <th>Requester</th> <th>Status</th>
+                                <th>Requester</th>
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -119,9 +121,11 @@
                     <label for="modal-status">New Status</label>
                     <select id="modal-status" class="form-input">
                         <option value="Pending">Pending</option>
-                        <option value="In Progress">In Progress</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Processing">Processing</option>
                         <option value="Ready for Pickup">Ready for Pickup</option>
-                        <option value="Resolved">Resolved</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Rejected">Rejected</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -138,6 +142,7 @@
 
     <div id="toast" class="toast hidden"></div>
 
-    <script type="module" src="js/manage-documents.js"></script> <script type="module" src="js/main-ui.js"></script>
+    <script type="module" src="js/manage-documents.js"></script>
+    <script type="module" src="js/main-ui.js"></script>
 </body>
 </html>

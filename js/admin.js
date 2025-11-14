@@ -1,10 +1,9 @@
 // js/admin.js
 import { protectPage, setupLogoutButton } from './auth-guard.js';
-// Note: We are not sorting by time here to avoid the Index error.
-import { db, collection, query, where, getDocs, limit } from './firebase.js';
+// Note: We are not sorting by time in the query to avoid Index errors for now.
+import { db, collection, query, where, getDocs, limit, orderBy } from './firebase.js';
 
 // --- 1. SET UP THE PAGE ---
-// CRITICAL: We set the expectedRole to 'admin'
 protectPage({ expectedRole: 'admin' });
 setupLogoutButton();
 
@@ -71,10 +70,9 @@ async function fetchRecentActivity() {
     if (!activityList) return;
 
     try {
-        // Get last 5 complaints from ALL users
+        // Get recent complaints (limit to 20 to sort client-side)
         const complaintsRef = collection(db, "complaints");
-        // We will sort by date in JS to avoid needing an index
-        const complaintsQuery = query(complaintsRef, limit(20)); // Get latest 20
+        const complaintsQuery = query(complaintsRef, limit(20)); 
         
         const complaintsSnap = await getDocs(complaintsQuery);
 
@@ -85,10 +83,18 @@ async function fetchRecentActivity() {
             return;
         }
 
-        // Sort in JavaScript
+        // Sort in JavaScript with Safety Check
         let complaints = [];
         complaintsSnap.forEach(doc => complaints.push(doc.data()));
-        complaints.sort((a, b) => b.createdAt.toDate() - a.createdAt.toDate());
+        
+        // --- THIS IS THE FIX ---
+        complaints.sort((a, b) => {
+            // If createdAt is missing, treat it as a very old date (0)
+            const dateA = a.createdAt ? a.createdAt.toDate() : new Date(0);
+            const dateB = b.createdAt ? b.createdAt.toDate() : new Date(0);
+            return dateB - dateA; // Newest first
+        });
+        // --- END FIX ---
         
         // Take just the first 5
         const recentComplaints = complaints.slice(0, 5);
@@ -99,13 +105,16 @@ async function fetchRecentActivity() {
             li.className = 'activity-item';
             
             const statusClass = item.status ? item.status.toLowerCase() : 'pending';
+            
+            // Safety check for date display
+            const dateDisplay = item.createdAt ? item.createdAt.toDate().toLocaleDateString() : 'N/A';
 
             li.innerHTML = `
                 <div class="activity-info">
                     <i class="activity-icon fa-solid fa-bullhorn"></i>
                     <div class="activity-details">
                         <p>${item.subject || 'Complaint'}</p>
-                        <span class="date">Submitted on: ${item.createdAt.toDate().toLocaleDateString()}</span>
+                        <span class="date">Submitted on: ${dateDisplay}</span>
                     </div>
                 </div>
                 <span class="activity-status ${statusClass}">${item.status}</span>

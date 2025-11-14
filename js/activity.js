@@ -1,6 +1,6 @@
 // js/my-activity.js
 import { protectPage, setupLogoutButton } from './auth-guard.js';
-// We REMOVED orderBy from the import, as we won't use it in the query
+// We REMOVED orderBy from the import to avoid the index error
 import { db, collection, query, where, getDocs } from './firebase.js'; 
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function() {
         
         try {
             const complaintsRef = collection(db, "complaints");
-            // --- TYPO FIX: 'qhere' is now 'where' ---
+            // Query without 'orderBy' to avoid index error
             const q = query(complaintsRef, 
                         where("userId", "==", userId));
             
@@ -89,6 +89,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 return;
             }
 
+            // Sort the results in JavaScript
             const complaints = [];
             querySnapshot.forEach((doc) => {
                 complaints.push({ id: doc.id, ...doc.data() });
@@ -112,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         try {
             const requestsRef = collection(db, "document_requests");
-            // --- TYPO FIX: 'qhere' is now 'where' ---
+            // Query without 'orderBy' to avoid index error
             const q = query(requestsRef, 
                         where("userId", "==", userId));
 
@@ -125,6 +126,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 return;
             }
 
+            // Sort the results in JavaScript
             const requests = [];
             querySnapshot.forEach((doc) => {
                 requests.push({ id: doc.id, ...doc.data() });
@@ -151,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const li = document.createElement('li');
         li.className = 'activity-card';
 
-        const iconClass = (type === 'complaint') ? 'fa-bullhorn' : 'fa-file-lines';
+        const iconClass = (type === 'complaint') ? 'fa-solid fa-bullhorn' : 'fa-solid fa-file-lines';
         let title = (type === 'complaint') ? item.subject : item.documentType;
         let subtext = (type === 'complaint') ? `Incident Date: ${item.incidentDate}` : `Purpose: ${item.purpose}`;
         
@@ -163,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         li.innerHTML = `
             <div class="activity-info">
-                <i class="activity-icon fa-solid ${iconClass}"></i>
+                <i class="activity-icon ${iconClass}"></i>
                 <div class="activity-details">
                     <h3>${title}</h3>
                     <p>${subtext}</p>

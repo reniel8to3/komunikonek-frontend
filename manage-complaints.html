@@ -14,7 +14,6 @@
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
     <div class="dashboard-container">
-        <!-- Sidebar -->
         <nav class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <h3>KomuniKonek <span class="admin-badge">Admin</span></h3>
@@ -26,10 +25,9 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <!-- === ICON FIX === -->
                 <li class="nav-item active"> 
                     <a href="manage-complaints.html">
-                        <i class="fa-solid fa-comment-dots"></i> <!-- Changed icon -->
+                        <i class="fa-solid fa-comment-dots"></i>
                         <span>Manage Complaints</span>
                     </a>
                 </li>
@@ -41,7 +39,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="manage-announcements.html">
-                        <i class="fa-solid fa-bullhorn"></i> <!-- Changed icon -->
+                        <i class="fa-solid fa-bullhorn"></i>
                         <span>Manage Announcements</span>
                     </a>
                 </li>
@@ -51,7 +49,6 @@
                         <span>Manage Users</span>
                     </a>
                 </li>
-                <!-- === END ICON FIX === -->
             </ul>
             <div class="sidebar-footer">
                 <button id="logout-button" class="logout-btn">
@@ -61,20 +58,36 @@
             </div>
         </nav>
 
-        <!-- Main Content Area -->
         <main class="main-content">
             
-            <header class="main-header">
+            <header class="main-header is-dashboard">
                 <button class="mobile-menu-button" id="mobile-menu-button">
                     <i class="fa-solid fa-bars"></i>
                 </button>
-                <div class="profile-dropdown-container">
-                    <!-- ... (profile dropdown html) ... -->
+                <div class="header-content">
+                    <h1>Manage Complaints</h1>
+                </div>
+                <div class="header-icons">
+                    <div class="profile-dropdown-container">
+                        <button class="profile-button" id="profile-button">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </button>
+                        <div class="profile-dropdown" id="profile-dropdown">
+                            <div class="profile-dropdown-header">
+                                Signed in as: <strong id="admin-name">Admin...</strong>
+                            </div>
+                            <a href="index.html" class="dropdown-link">
+                                <i class="fa-solid fa-user"></i> <span>View User Dashboard</span>
+                            </a>
+                            <a href="#" id="logout-button-alt" class="dropdown-link logout separator-top">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </header>
             
             <div class="main-container">
-                <h1>Manage Complaints</h1>
                 <p>Review, update, and resolve user-submitted complaints.</p>
                 
                 <div class="table-container dashboard-card">
@@ -99,9 +112,30 @@
         </main>
     </div>
     
-    <!-- Modal for Updating Status -->
     <div class="modal-overlay" id="modal-overlay">
-        <!-- ... (modal html) ... -->
+        <div class="modal-content">
+            <h2 id="modal-title">Update Status</h2>
+            <form id="update-form">
+                
+                <div class="form-group">
+                    <label for="modal-status">New Status</label>
+                    <select id="modal-status" class="form-input">
+                        <option value="Pending">Pending</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Processing">Processing</option>
+                        <option value="Resolved">Resolved</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="modal-notes">Notes (visible to user)</label>
+                    <textarea id="modal-notes" class="form-input" rows="4" placeholder="e.g., 'An officer has been dispatched.'"></textarea>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="form-button-outlined" id="modal-cancel-btn">CANCEL</button>
+                    <button type="submit" class="form-button-filled" id="modal-save-btn">SAVE UPDATE</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <div id="toast" class="toast hidden"></div>

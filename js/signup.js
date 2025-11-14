@@ -1,28 +1,17 @@
 // js/signup.js
-
-// ============================================
-// FIREBASE IMPORTS
-// ============================================
 import { 
     auth, 
     db, 
     createUserWithEmailAndPassword, 
+    sendEmailVerification,
+    signOut,
     RecaptchaVerifier, 
     signInWithPhoneNumber,
     doc,
     setDoc,
-    sendEmailVerification,  // <-- IMPORT THIS
-    signOut                 // <-- IMPORT THIS
+    serverTimestamp
 } from './firebase.js';
-
-// ============================================
-// TRANSLATION IMPORT
-// ============================================
 import { langStrings } from './translations.js';
-
-// ============================================
-// SIGNUP.JS - Improved & Production Ready
-// ============================================
 
 document.addEventListener("DOMContentLoaded", function() {
     
@@ -35,14 +24,13 @@ document.addEventListener("DOMContentLoaded", function() {
     // ============================================
     // STATE MANAGEMENT
     // ============================================
-    
     const AppState = {
         currentLang: 'en',
         currentStep: 1,
         registrationType: 'email', 
-        accountType: 'user',
+        accountType: 'user', 
         otpSent: false,
-        otpVerified: false, 
+        otpVerified: false,
         otpTimer: null,
         otpCountdown: 60
     };
@@ -50,7 +38,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // ============================================
     // DOM ELEMENTS
     // ============================================
-    
     const Elements = {
         langEnBtn: document.getElementById('lang-en'),
         langFilBtn: document.getElementById('lang-fil'),
@@ -64,6 +51,7 @@ document.addEventListener("DOMContentLoaded", function() {
         registerPhoneBtn: document.getElementById('register-phone-btn'),
         emailFormGroup: document.getElementById('email-form-group'),
         phoneFormGroup: document.getElementById('phone-form-group'),
+        passwordFormGroup: document.getElementById('password-form-group'),
         emailInput: document.getElementById('email'),
         phoneInput: document.getElementById('phone'),
         passwordInput: document.getElementById('password'),
@@ -80,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function() {
         verifyOtpButton: document.getElementById('verify-otp-button'),
         resendOtpButton: document.getElementById('resend-otp-button'),
         otpCountdownSpan: document.getElementById('otp-countdown'),
-        otpTimer: document.getElementById('otp-timer'),
+        otpTimerDisplay: document.getElementById('otp-timer'), // Renamed
         firstNameInput: document.getElementById('first-name'),
         lastNameInput: document.getElementById('last-name'),
         middleNameInput: document.getElementById('middle-name'),
@@ -89,7 +77,6 @@ document.addEventListener("DOMContentLoaded", function() {
         monthSelect: document.getElementById('month'),
         daySelect: document.getElementById('day'),
         yearSelect: document.getElementById('year'),
-        signupFormStep1: document.getElementById('signup-form-step1'),
         signupFormStep2: document.getElementById('signup-form-step2'),
         slides: document.querySelectorAll('.slide'),
         dots: document.querySelectorAll('.dot'),
@@ -101,20 +88,14 @@ document.addEventListener("DOMContentLoaded", function() {
     // ============================================
     // FIREBASE RECAPTCHA SETUP
     // ============================================
-    
     function setupRecaptcha() {
         if (recaptchaVerifier) {
-            recaptchaVerifier.clear(); // Clear old instance if it exists
+            recaptchaVerifier.clear(); 
         }
         recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
             'size': 'invisible',
-            'callback': (response) => {
-                console.log("reCAPTCHA verified");
-            },
-            'expired-callback': () => {
-                console.log("reCAPTCHA expired, resetting...");
-                setupRecaptcha(); // Re-run setup if it expires
-            }
+            'callback': (response) => { console.log("reCAPTCHA verified"); },
+            'expired-callback': () => { setupRecaptcha(); }
         });
     }
     setupRecaptcha(); 
@@ -122,29 +103,20 @@ document.addEventListener("DOMContentLoaded", function() {
     // ============================================
     // TRANSLATION / I18N
     // ============================================
-    
     function setLanguage(lang) {
-        if (typeof langStrings === 'undefined' || !langStrings[lang]) {
-            console.error(`Translation for language "${lang}" not found.`);
-            return;
-        }
-
+        if (typeof langStrings === 'undefined' || !langStrings[lang]) return;
         AppState.currentLang = lang;
         document.documentElement.lang = lang;
         
         document.querySelectorAll('[data-key]').forEach(el => {
             const key = el.getAttribute('data-key');
-            if (!key) return;
-            
+            if (!key || !langStrings[lang][key]) return;
             const translation = langStrings[lang][key];
-            if (!translation) return;
             
             if (el.tagName === 'TITLE') {
                 document.title = "KomuniKonek | " + translation;
             } else if (el.tagName === 'OPTION') {
-                if (el.value === "") {
-                    el.textContent = translation;
-                }
+                if (el.value === "") el.textContent = translation;
             } else {
                 el.textContent = translation;
             }
@@ -152,7 +124,6 @@ document.addEventListener("DOMContentLoaded", function() {
         
         Elements.langEnBtn?.classList.toggle('active', lang === 'en');
         Elements.langFilBtn?.classList.toggle('active', lang === 'fil');
-
         updateContinueButtonText(lang);
     }
     
@@ -161,118 +132,71 @@ document.addEventListener("DOMContentLoaded", function() {
             let key = (AppState.registrationType === 'email') ? 'continueBtn' : 'sendOtp';
             if (langStrings[lang]?.[key]) {
                 Elements.sendOtpButtonText.textContent = langStrings[lang][key];
-                Elements.sendOtpButtonText.setAttribute('data-key', key);
             }
         }
     }
-
     Elements.langEnBtn?.addEventListener('click', () => setLanguage('en'));
     Elements.langFilBtn?.addEventListener('click', () => setLanguage('fil'));
     
-    if (typeof langStrings !== 'undefined') {
-        setLanguage('en'); 
-    }
-
     // ============================================
     // UTILITY FUNCTIONS
     // ============================================
+    function showElement(element) { element?.classList.remove('hidden'); }
+    function hideElement(element) { element?.classList.add('hidden'); }
     
-    function showElement(element) {
-        element?.classList.remove('hidden');
-    }
-    
-    function hideElement(element) {
-        element?.classList.add('hidden');
-    }
-    
-    function toggleElement(element, show) {
-        if (show) {
-            showElement(element);
-        } else {
-            hideElement(element);
-        }
-    }
-    
-    function setButtonLoading(button, isLoading) {
+    function setButtonLoading(button, isLoading, text = null) {
         if (!button) return;
-        
+        button.disabled = isLoading;
         const textSpan = button.querySelector('.button-text');
         const loaderSpan = button.querySelector('.button-loader');
         
-        button.disabled = isLoading;
+        if (textSpan) textSpan.style.display = isLoading ? 'none' : '';
+        if (loaderSpan) loaderSpan.style.display = isLoading ? 'inline-block' : 'none';
         
-        if (textSpan && loaderSpan) {
-            textSpan.style.display = isLoading ? 'none' : '';
-            loaderSpan.style.display = isLoading ? 'inline-block' : 'none';
+        if (text && textSpan && !isLoading) {
+            textSpan.textContent = text;
         }
     }
     
     function showToast(message, type = 'info') {
         if (!Elements.toast) return;
-        
         Elements.toast.textContent = message;
         Elements.toast.className = `toast ${type}`;
         showElement(Elements.toast);
-        
-        setTimeout(() => {
-            hideElement(Elements.toast);
-        }, 3000);
+        setTimeout(() => { hideElement(Elements.toast); }, 3000);
     }
     
     // ============================================
     // VALIDATION FUNCTIONS
     // ============================================
-    
     function isValidEmail(email) {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(String(email).toLowerCase());
     }
-    
-    function isValidPhone(phone) {
-        return /^[0-9]{10}$/.test(phone);
-    }
-    
+    function isValidPhone(phone) { return /^[0-9]{10}$/.test(phone); }
     function isValidPassword(password) {
-        return password.length >= 8 &&
-                /[A-Z]/.test(password) &&
-                /[0-9]/.test(password) &&
-                /[^A-Za-z0-9]/.test(password);
+        return password.length >= 8 && /[A-Z]/.test(password) && /[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password);
     }
     
     function setError(input, messageKey) {
         if (!input) return;
-        
         let message = messageKey;
-        if (typeof langStrings !== 'undefined' && 
-            langStrings[AppState.currentLang]?.[messageKey]) {
+        if (langStrings[AppState.currentLang]?.[messageKey]) {
             message = langStrings[AppState.currentLang][messageKey];
         }
-
         const formGroup = input.closest('.form-group');
         if (!formGroup) return;
-        
         const errorDisplay = formGroup.querySelector('.error-message');
-        if (errorDisplay) {
-            errorDisplay.textContent = message;
-        }
-        
+        if (errorDisplay) errorDisplay.textContent = message;
         formGroup.classList.add('error');
-        input.setAttribute('aria-invalid', 'true');
     }
-
     function setSuccess(input) {
         if (!input) return;
-        
         const formGroup = input.closest('.form-group');
         if (!formGroup) return;
-        
         const errorDisplay = formGroup.querySelector('.error-message');
-        if (errorDisplay) {
-            errorDisplay.textContent = '';
-        }
-        
+        if (errorDisplay) errorDisplay.textContent = '';
         formGroup.classList.remove('error');
-        input.setAttribute('aria-invalid', 'false');
     }
     
     function validateStep1() {
@@ -280,44 +204,29 @@ document.addEventListener("DOMContentLoaded", function() {
         
         if (AppState.registrationType === 'email') {
             const emailValue = Elements.emailInput?.value.trim();
-            
             if (!emailValue) {
-                setError(Elements.emailInput, 'errRequired');
-                isValid = false;
+                setError(Elements.emailInput, 'errRequired'); isValid = false;
             } else if (!isValidEmail(emailValue)) {
-                setError(Elements.emailInput, 'errEmail');
-                isValid = false;
-            } else {
-                setSuccess(Elements.emailInput);
-            }
+                setError(Elements.emailInput, 'errEmail'); isValid = false;
+            } else { setSuccess(Elements.emailInput); }
             
             const passwordValue = Elements.passwordInput?.value.trim();
             if (!passwordValue) {
-                setError(Elements.passwordInput, 'errRequired');
-                isValid = false;
+                setError(Elements.passwordInput, 'errRequired'); isValid = false;
             } else if (!isValidPassword(passwordValue)) {
-                setError(Elements.passwordInput, 'errPassRequirements');
-                isValid = false;
-            } else {
-                setSuccess(Elements.passwordInput);
-            }
+                setError(Elements.passwordInput, 'errPassRequirements'); isValid = false;
+            } else { setSuccess(Elements.passwordInput); }
             
         } else { // 'phone'
             const phoneValue = Elements.phoneInput?.value.trim();
-            
             if (!phoneValue) {
-                setError(Elements.phoneInput, 'errRequired');
-                isValid = false;
+                setError(Elements.phoneInput, 'errRequired'); isValid = false;
             } else if (!isValidPhone(phoneValue)) {
-                setError(Elements.phoneInput, 'errPhoneLength');
-                isValid = false;
-            } else {
-                setSuccess(Elements.phoneInput);
-            }
+                setError(Elements.phoneInput, 'errPhoneLength'); isValid = false;
+            } else { setSuccess(Elements.phoneInput); }
             
-            setSuccess(Elements.passwordInput);
+            setSuccess(Elements.passwordInput); // Not required for phone
         }
-        
         return isValid;
     }
     
@@ -335,103 +244,68 @@ document.addEventListener("DOMContentLoaded", function() {
         
         requiredFields.forEach(field => {
             if (!field.input?.value.trim()) {
-                setError(field.input, field.key);
-                isValid = false;
-            } else {
-                setSuccess(field.input);
-            }
+                setError(field.input, field.key); isValid = false;
+            } else { setSuccess(field.input); }
         });
-        
         return isValid;
     }
 
     // ============================================
     // PASSWORD HANDLING
     // ============================================
-    
     function updatePasswordChecklist(password) {
         if (!Elements.passChecklist) return;
-        
         const checks = [
             { element: Elements.passLength, valid: password.length >= 8 },
             { element: Elements.passCapital, valid: /[A-Z]/.test(password) },
             { element: Elements.passNumber, valid: /[0-9]/.test(password) },
             { element: Elements.passSymbol, valid: /[^A-Za-z0-9]/.test(password) }
         ];
-        
-        checks.forEach(check => {
-            check.element?.classList.toggle('valid', check.valid);
-        });
+        checks.forEach(check => { check.element?.classList.toggle('valid', check.valid); });
     }
-    
-    Elements.passwordInput?.addEventListener('focus', () => {
-        showElement(Elements.passChecklist);
-    });
-    
+    Elements.passwordInput?.addEventListener('focus', () => { showElement(Elements.passChecklist); });
     Elements.passwordInput?.addEventListener('blur', () => {
-        if (!isValidPassword(Elements.passwordInput.value) && Elements.passwordInput.value.length > 0) {
-            return;
-        }
+        if (!isValidPassword(Elements.passwordInput.value) && Elements.passwordInput.value.length > 0) return;
         hideElement(Elements.passChecklist);
     });
-    
-    Elements.passwordInput?.addEventListener('input', (e) => {
-        updatePasswordChecklist(e.target.value);
-    });
-    
+    Elements.passwordInput?.addEventListener('input', (e) => { updatePasswordChecklist(e.target.value); });
     Elements.passwordToggle?.addEventListener('click', function() {
         if (!Elements.passwordInput) return;
-        
         const type = Elements.passwordInput.type === 'password' ? 'text' : 'password';
         Elements.passwordInput.type = type;
-        
         const icon = this.querySelector('i');
         icon?.classList.toggle('fa-eye');
         icon?.classList.toggle('fa-eye-slash');
-        
-        this.setAttribute('aria-label', 
-            type === 'password' ? 'Show password' : 'Hide password'
-        );
+        this.setAttribute('aria-label', type === 'password' ? 'Show password' : 'Hide password');
     });
 
     // ============================================
     // TOGGLE HANDLERS
     // ============================================
-    
     function setupSlidingToggle(selectorElement) {
         if (!selectorElement) return;
-        
         const glider = selectorElement.querySelector('.glider');
         const buttons = selectorElement.querySelectorAll('.role-button');
-        
         if (!glider || buttons.length === 0) return;
-
         const updateGlider = (button) => {
             glider.style.width = `${button.offsetWidth}px`;
             glider.style.transform = `translateX(${button.offsetLeft}px)`;
         };
-
         const activeButton = selectorElement.querySelector('.role-button.active');
-        if (activeButton) {
-            updateGlider(activeButton);
-        }
-
+        if (activeButton) updateGlider(activeButton);
         buttons.forEach(button => {
             button.addEventListener('click', function() {
                 if (this.disabled) return;
-                
                 buttons.forEach(btn => {
                     btn.classList.remove('active');
                     btn.setAttribute('aria-checked', 'false');
                 });
-                
                 this.classList.add('active');
                 this.setAttribute('aria-checked', 'true');
                 updateGlider(this);
             });
         });
     }
-    
     setupSlidingToggle(Elements.signupAsSelector);
     setupSlidingToggle(Elements.registerWithSelector);
     
@@ -443,16 +317,14 @@ document.addEventListener("DOMContentLoaded", function() {
     
     Elements.registerEmailBtn?.addEventListener('click', function() {
         if (this.disabled) return;
-        
         AppState.registrationType = 'email';
         AppState.otpVerified = false; 
         showElement(Elements.emailFormGroup);
-        showElement(Elements.passwordInput?.closest('.form-group')); 
+        showElement(Elements.passwordFormGroup); 
         hideElement(Elements.phoneFormGroup);
         hideElement(Elements.otpSection); 
         showElement(Elements.sendOtpButton);
         updateContinueButtonText(AppState.currentLang);
-
         if (Elements.phoneInput) {
             setSuccess(Elements.phoneInput);
             Elements.phoneInput.value = '';
@@ -461,20 +333,17 @@ document.addEventListener("DOMContentLoaded", function() {
     
     Elements.registerPhoneBtn?.addEventListener('click', function() {
         if (this.disabled) return;
-        
         AppState.registrationType = 'phone';
         AppState.otpVerified = false; 
         hideElement(Elements.emailFormGroup);
-        hideElement(Elements.passwordInput?.closest('.form-group')); 
+        hideElement(Elements.passwordFormGroup); 
         showElement(Elements.phoneFormGroup);
         showElement(Elements.sendOtpButton); 
         updateContinueButtonText(AppState.currentLang); 
-        
         if (Elements.emailInput) {
             setSuccess(Elements.emailInput);
             Elements.emailInput.value = '';
         }
-        
         if (Elements.passwordInput) {
             setSuccess(Elements.passwordInput);
             Elements.passwordInput.value = '';
@@ -484,88 +353,61 @@ document.addEventListener("DOMContentLoaded", function() {
     // ============================================
     // OTP HANDLING
     // ============================================
-    
     function setupOtpInputs() {
         Elements.otpInputs.forEach((input, index) => {
             input.addEventListener('input', function() {
                 this.value = this.value.replace(/[^0-9]/g, '');
-                
                 if (this.value && index < Elements.otpInputs.length - 1) {
                     Elements.otpInputs[index + 1].focus();
                 }
             });
-            
             input.addEventListener('keydown', (e) => {
                 if (e.key === 'Backspace' && !input.value && index > 0) {
                     e.preventDefault();
                     Elements.otpInputs[index - 1].focus();
                 }
-                if (e.key === 'ArrowLeft' && index > 0) {
-                    Elements.otpInputs[index - 1].focus();
-                }
-                if (e.key === 'ArrowRight' && index < Elements.otpInputs.length - 1) {
-                    Elements.otpInputs[index + 1].focus();
-                }
-            });
-            
-            input.addEventListener('paste', function(e) {
-                e.preventDefault();
-                const pastedData = e.clipboardData.getData('text').replace(/[^0-9]/g, '');
-                
-                for (let i = 0; i < pastedData.length && index + i < Elements.otpInputs.length; i++) {
-                    Elements.otpInputs[index + i].value = pastedData[i];
-                }
-                
-                const lastIndex = Math.min(index + pastedData.length - 1, Elements.otpInputs.length - 1);
-                Elements.otpInputs[lastIndex].focus();
             });
         });
     }
-    
     setupOtpInputs();
     
     function startOtpTimer() {
         AppState.otpCountdown = 60;
+        if (Elements.resendOtpButton) hideElement(Elements.resendOtpButton);
+        if (Elements.otpTimerDisplay) showElement(Elements.otpTimerDisplay);
         
-        if (Elements.resendOtpButton) {
-            hideElement(Elements.resendOtpButton);
-        }
-        if (Elements.otpTimer) {
-            showElement(Elements.otpTimer);
-        }
-        
-        if (AppState.otpTimer) {
-            clearInterval(AppState.otpTimer);
-        }
+        if (AppState.otpTimer) clearInterval(AppState.otpTimer);
         
         AppState.otpTimer = setInterval(() => {
             AppState.otpCountdown--;
-            
             if (Elements.otpCountdownSpan) {
                 Elements.otpCountdownSpan.textContent = AppState.otpCountdown;
             }
-            
             if (AppState.otpCountdown <= 0) {
                 clearInterval(AppState.otpTimer);
-                hideElement(Elements.otpTimer);
+                hideElement(Elements.otpTimerDisplay);
                 showElement(Elements.resendOtpButton);
             }
         }, 1000);
     }
     
     function getOtpCode() {
-        return Array.from(Elements.otpInputs)
-            .map(input => input.value)
-            .join('');
+        return Array.from(Elements.otpInputs).map(input => input.value).join('');
     }
-    
     function clearOtpInputs() {
-        Elements.otpInputs.forEach(input => {
-            input.value = '';
-        });
+        Elements.otpInputs.forEach(input => { input.value = ''; });
         Elements.otpInputs[0]?.focus();
     }
     
+    function disableStep1Inputs(disabled) {
+        if (Elements.emailInput) Elements.emailInput.disabled = disabled;
+        if (Elements.phoneInput) Elements.phoneInput.disabled = disabled;
+        if (Elements.passwordInput) Elements.passwordInput.disabled = disabled;
+        Elements.signupAsSelector?.classList.toggle('disabled', disabled);
+        Elements.registerWithSelector?.classList.toggle('disabled', disabled);
+    }
+    
+    // --- "Continue" / "Send OTP" Button ---
     Elements.sendOtpButton?.addEventListener('click', async function() {
         if (!validateStep1()) {
             showToast('Please fix the errors before continuing', 'error');
@@ -575,8 +417,6 @@ document.addEventListener("DOMContentLoaded", function() {
         setButtonLoading(this, true);
         
         if (AppState.registrationType === 'email') {
-            // NOTE: Email verification happens AFTER Step 2
-            // We just proceed to the next step
             AppState.otpVerified = true; 
             
             hideElement(Elements.step1);
@@ -601,12 +441,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 startOtpTimer();
                 hideElement(Elements.sendOtpButton);
                 
-                [Elements.phoneInput, Elements.passwordInput].forEach(input => {
-                    if (input) input.disabled = true;
-                });
+                disableStep1Inputs(true);
                 
-                Elements.signupAsSelector?.classList.add('disabled');
-                Elements.registerWithSelector?.classList.add('disabled');
                 showToast('OTP sent successfully!', 'success');
                 Elements.otpInputs[0]?.focus();
 
@@ -650,12 +486,10 @@ document.addEventListener("DOMContentLoaded", function() {
     
     Elements.verifyOtpButton?.addEventListener('click', async function() {
         const otpCode = getOtpCode();
-        
         if (otpCode.length !== 6) {
             showToast('Please enter the complete OTP code', 'error');
             return;
         }
-        
         setButtonLoading(this, true);
         
         try {
@@ -688,7 +522,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // ============================================
     // STEP NAVIGATION
     // ============================================
-    
     Elements.backButton?.addEventListener('click', function() {
         hideElement(Elements.step2);
         showElement(Elements.step1);
@@ -703,20 +536,18 @@ document.addEventListener("DOMContentLoaded", function() {
             clearOtpInputs();
         }
         
-        [Elements.emailInput, Elements.phoneInput, Elements.passwordInput].forEach(input => {
-            if (input) input.disabled = false;
-        });
-        
-        Elements.signupAsSelector?.classList.remove('disabled');
-        Elements.registerWithSelector?.classList.remove('disabled');
+        disableStep1Inputs(false);
         
         confirmationResult = null;
+        // If the user was logged in via phone, log them out
+        if (auth.currentUser && AppState.registrationType === 'phone') {
+            signOut(auth);
+        }
     });
 
     // ============================================
-    // FORM SUBMISSIONS (EMAIL VERIFICATION ADDED)
+    // FORM SUBMISSIONS (FINAL)
     // ============================================
-    
     Elements.signupFormStep2?.addEventListener('submit', async function(e) {
         e.preventDefault();
         
@@ -729,9 +560,8 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
         
-        // Security check for phone path
-        if (AppState.registrationType === 'phone' && !AppState.otpVerified) {
-            showToast('OTP was not verified. Please go back.', 'error');
+        if (!AppState.otpVerified) { // Security check
+            showToast('Account not verified. Please go back.', 'error');
             setButtonLoading(submitButton, false);
             return;
         }
@@ -750,51 +580,38 @@ document.addEventListener("DOMContentLoaded", function() {
                 day: Elements.daySelect?.value,
                 year: Elements.yearSelect?.value
             },
-            [AppState.registrationType]: AppState.registrationType === 'email' 
-                ? Elements.emailInput?.value.trim()
-                : '+63' + (Elements.phoneInput?.value.trim().startsWith('0') ? Elements.phoneInput?.value.trim().substring(1) : Elements.phoneInput?.value.trim()),
-            createdAt: new Date().toISOString()
+            createdAt: serverTimestamp() // Use server time
         };
 
         try {
             let user;
 
             if (AppState.registrationType === 'email') {
-                // --- NEW EMAIL FLOW ---
+                // --- EMAIL PATH ---
                 const email = Elements.emailInput.value;
                 const password = Elements.passwordInput.value;
+                formData.email = email;
                 
-                // 1. Create user
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 user = userCredential.user;
 
-                // 2. Save profile data
                 await setDoc(doc(db, "users", user.uid), formData);
-
-                // 3. Send verification email
                 await sendEmailVerification(user);
-
-                // 4. Log them out (so they must verify to log in)
-                await signOut(auth);
-
-                console.log('Account created, profile saved, verification email sent.');
+                await signOut(auth); // Log them out
                 
-                // 5. Redirect to "please verify" page
                 window.location.href = 'verify-email.html'; 
-                // No toast, the new page will explain
 
             } else {
-                // --- PHONE FLOW (Unchanged) ---
+                // --- PHONE PATH ---
                 user = auth.currentUser;
                 if (!user) throw new Error("User not found. Please sign up again.");
 
-                // Save profile data
+                formData.phone = user.phoneNumber;
+                
                 await setDoc(doc(db, "users", user.uid), formData);
                 
-                console.log('Account created and profile saved:', user.uid, formData);
                 showToast('Account created successfully!', 'success');
                 
-                // Redirect to login
                 setTimeout(() => {
                     window.location.href = 'login.html';
                 }, 2000);
@@ -809,23 +626,12 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // ============================================
-    // PHONE INPUT FORMATTING
-    // ============================================
-    
-    Elements.phoneInput?.addEventListener('input', function() {
-        this.value = this.value.replace(/[^0-9]/g, '');
-    });
-
-    // ============================================
     // BIRTHDAY DROPDOWNS
     // ============================================
-    
     function populateDays() {
         if (!Elements.daySelect) return;
-        
         const currentDay = Elements.daySelect.value;
-        Elements.daySelect.innerHTML = '<option value="" disabled selected hidden data-key="day">Day</option>'; // Reset
-        
+        Elements.daySelect.innerHTML = '<option value="" disabled selected hidden data-key="day">Day</option>'; 
         for (let i = 1; i <= 31; i++) {
             const option = document.createElement('option');
             option.value = i;
@@ -834,17 +640,13 @@ document.addEventListener("DOMContentLoaded", function() {
             Elements.daySelect.appendChild(option);
         }
     }
-
     function populateYears() {
         if (!Elements.yearSelect) return;
-        
         const currentYearValue = Elements.yearSelect.value;
-        Elements.yearSelect.innerHTML = '<option value="" disabled selected hidden data-key="year">Year</option>'; // Reset
-
+        Elements.yearSelect.innerHTML = '<option value="" disabled selected hidden data-key="year">Year</option>';
         const currentYear = new Date().getFullYear();
-        const maxYear = currentYear - 18; // Must be 18+
-        const minYear = currentYear - 100; // Max 100 years old
-
+        const maxYear = currentYear - 18; 
+        const minYear = currentYear - 100;
         for (let i = maxYear; i >= minYear; i--) {
             const option = document.createElement('option');
             option.value = i;
@@ -853,7 +655,6 @@ document.addEventListener("DOMContentLoaded", function() {
             Elements.yearSelect.appendChild(option);
         }
     }
-
     populateDays();
     populateYears();
     setLanguage(AppState.currentLang); 
@@ -861,72 +662,41 @@ document.addEventListener("DOMContentLoaded", function() {
     // ============================================
     // SLIDESHOW
     // ============================================
-    
     let slideIndex = 0;
     let slideInterval;
-
     function showSlide(n) {
         if (Elements.slides.length === 0) return;
-        
         slideIndex = (n + Elements.slides.length) % Elements.slides.length;
-        
         Elements.slides.forEach((slide, index) => {
             slide.classList.toggle('active', index === slideIndex);
         });
-        
         Elements.dots.forEach((dot, index) => {
             const isActive = index === slideIndex;
             dot.classList.toggle('active', isActive);
             dot.setAttribute('aria-selected', isActive);
         });
     }
-
-    function nextSlide() {
-        showSlide(++slideIndex);
-    }
-
-    function prevSlide() {
-        showSlide(--slideIndex);
-    }
-
+    function nextSlide() { showSlide(++slideIndex); }
+    function prevSlide() { showSlide(--slideIndex); }
     function resetSlideTimer() {
         clearInterval(slideInterval);
         slideInterval = setInterval(nextSlide, 4000);
     }
-
     Elements.dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            showSlide(index);
-            resetSlideTimer();
-        });
+        dot.addEventListener('click', () => { showSlide(index); resetSlideTimer(); });
     });
-
-    Elements.slidePrevBtn?.addEventListener('click', () => {
-        prevSlide();
-        resetSlideTimer();
-    });
-
-    Elements.slideNextBtn?.addEventListener('click', () => {
-        nextSlide();
-        resetSlideTimer();
-    });
-
+    Elements.slidePrevBtn?.addEventListener('click', () => { prevSlide(); resetSlideTimer(); });
+    Elements.slideNextBtn?.addEventListener('click', () => { nextSlide(); resetSlideTimer(); });
     showSlide(slideIndex);
     resetSlideTimer();
-
-    const slideshowContainer = document.querySelector('.slideshow-container');
-    slideshowContainer?.addEventListener('mouseenter', () => {
-        clearInterval(slideInterval);
-    });
     
-    slideshowContainer?.addEventListener('mouseleave', () => {
-        resetSlideTimer();
-    });
+    const slideshowContainer = document.querySelector('.slideshow-container');
+    slideshowContainer?.addEventListener('mouseenter', () => { clearInterval(slideInterval); });
+    slideshowContainer?.addEventListener('mouseleave', () => { resetSlideTimer(); });
 
     // ============================================
     // CLEANUP
     // ============================================
-    
     window.addEventListener('beforeunload', () => {
         clearInterval(slideInterval);
         clearInterval(AppState.otpTimer);

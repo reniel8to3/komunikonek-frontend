@@ -22,16 +22,18 @@
     align-items: center;
     margin-bottom: 30px;
 }
-.page-header h1 {
-    margin: 0;
-}
-.page-header p {
-    margin: 5px 0 0 0;
+.page-header h1 { margin: 0; }
+.page-header p { margin: 5px 0 0 0; }
+.page-header .form-button-filled { /* Sizing for the Add New button */
+    padding: 12px 25px;
+    border-radius: 100px;
+    font-size: 1em;
+    font-weight: 500;
 }
 
 .table-container {
-    padding: 0; /* Let the table handle padding */
-    overflow-x: auto; /* Allow horizontal scrolling on small screens */
+    padding: 0; 
+    overflow-x: auto; 
 }
 
 .data-table {
@@ -53,34 +55,14 @@
     background-color: #f7f9fc;
 }
 
-.data-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-.data-table tbody tr:hover {
-    background-color: #f0f5ff;
-}
-
-.data-table td {
-    color: #333;
-    font-size: 0.95rem;
-}
-
-.complainant-name {
-    font-weight: 500;
-}
-
-.placeholder-cell {
-    text-align: center;
-    color: #6c757d;
-    padding: 40px;
-}
+.data-table tbody tr:last-child td { border-bottom: none; }
+.data-table tbody tr:hover { background-color: #f0f5ff; }
+.data-table td { color: #333; font-size: 0.95rem; }
+.complainant-name { font-weight: 500; }
+.placeholder-cell { text-align: center; color: #6c757d; padding: 40px; }
 
 /* --- Action Buttons --- */
-.action-btn-group {
-    display: flex;
-    gap: 10px;
-}
+.action-btn-group { display: flex; gap: 10px; }
 .action-btn {
     background-color: #0038A8;
     color: #ffffff;
@@ -92,30 +74,16 @@
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
-.action-btn:hover {
-    background-color: #002a7e;
-}
-.action-btn.edit {
-    background-color: #0038A8;
-}
-.action-btn.edit:hover {
-    background-color: #002a7e;
-}
-.action-btn.delete {
-    background-color: #CE1126;
-}
-.action-btn.delete:hover {
-    background-color: #a00d1e;
-}
-.form-button-filled.delete {
-    background-color: #CE1126;
-}
-.form-button-filled.delete:hover {
-    background-color: #a00d1e;
-}
+.action-btn:hover { background-color: #002a7e; }
+.action-btn.edit { background-color: #0038A8; }
+.action-btn.edit:hover { background-color: #002a7e; }
+.action-btn.delete { background-color: #CE1126; }
+.action-btn.delete:hover { background-color: #a00d1e; }
+.form-button-filled.delete { background-color: #CE1126; }
+.form-button-filled.delete:hover { background-color: #a00d1e; }
 
 
-/* --- Status Badges --- */
+/* --- NEW Status Badges --- */
 .status-badge {
     font-size: 0.9rem;
     font-weight: 600;
@@ -123,10 +91,14 @@
     border-radius: 20px;
     text-transform: capitalize;
 }
-.status-badge.pending { background-color: #fff8e1; color: #f57f17; }
-.status-badge.in-progress { background-color: #e3f2fd; color: #0d6efd; }
-.status-badge.resolved { background-color: #e8f5e9; color: #198754; }
-.status-badge.ready-for-pickup { background-color: #e6f7ff; color: #0056b3; }
+.status-badge.pending { background-color: #fff8e1; color: #f57f17; } /* Yellow */
+.status-badge.approved { background-color: #e3f2fd; color: #0d6efd; } /* Blue */
+.status-badge.processing { background-color: #e0e7ff; color: #4338ca; } /* Indigo */
+.status-badge.ready-for-pickup { background-color: #cff4fc; color: #055160; } /* Cyan */
+.status-badge.resolved, 
+.status-badge.completed { background-color: #e8f5e9; color: #198754; } /* Green */
+.status-badge.rejected { background-color: #f8d7da; color: #842029; } /* Red */
+
 .status-badge.draft { background-color: #f4f4f4; color: #555; }
 .status-badge.published { background-color: #e8f5e9; color: #198754; }
 .status-badge.admin { background-color: #e0e9ff; color: #0038A8; }
@@ -149,10 +121,7 @@
     visibility: hidden;
     transition: all 0.3s ease;
 }
-.modal-overlay.is-open {
-    opacity: 1;
-    visibility: visible;
-}
+.modal-overlay.is-open { opacity: 1; visibility: visible; }
 .modal-content {
     background: #ffffff;
     border-radius: 12px;
@@ -163,76 +132,16 @@
     transform: translateY(20px);
     transition: all 0.3s ease;
 }
-.modal-overlay.is-open .modal-content {
-    transform: translateY(0);
-}
-.modal-content h2 {
-    margin-top: 0;
-    font-size: 1.6rem;
-}
-.modal-content .form-group {
-    margin-bottom: 20px;
-    position: relative;
-}
-.modal-content .form-group label {
-    position: static;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #333;
-    background: none;
-    padding: 0;
-    margin-bottom: 8px;
-    display: block;
-}
-.modal-content .form-input {
-    width: 100%;
-    border: 1px solid #8e9190;
-    border-radius: 4px;
-    padding: 12px 15px;
-    background-color: #ffffff;
-    transition: border-color 0.3s;
-    font-family: inherit;
-    font-size: 1em;
-    color: #212529;
-    box-sizing: border-box;
-}
-.modal-content .form-input:focus {
-    outline: none;
-    border-color: #0038A8;
-    box-shadow: 0 0 0 1px #0038A8;
-}
-.modal-content .button-group {
-    display: flex;
-    justify-content: flex-end;
-    gap: 15px;
-    margin-top: 20px;
-    border-top: none;
-    padding-top: 0;
-}
-.modal-content .form-button-filled,
-.modal-content .form-button-outlined {
-    padding: 12px 25px;
-    border: 1px solid #0038A8;
-    border-radius: 100px;
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: 500;
-    transition: all 0.2s ease;
-    font-family: inherit;
-}
-.modal-content .form-button-filled {
-    background-color: #0038A8;
-    color: white;
-}
+.modal-overlay.is-open .modal-content { transform: translateY(0); }
+.modal-content h2 { margin-top: 0; font-size: 1.6rem; }
+.modal-content .form-group { margin-bottom: 20px; position: relative; }
+.modal-content .form-group label { position: static; font-size: 0.9rem; font-weight: 500; color: #333; background: none; padding: 0; margin-bottom: 8px; display: block; }
+.modal-content .form-input { width: 100%; border: 1px solid #8e9190; border-radius: 4px; padding: 12px 15px; background-color: #ffffff; transition: border-color 0.3s; font-family: inherit; font-size: 1em; color: #212529; box-sizing: border-box; }
+.modal-content .form-input:focus { outline: none; border-color: #0038A8; box-shadow: 0 0 0 1px #0038A8; }
+.modal-content .button-group { display: flex; justify-content: flex-end; gap: 15px; margin-top: 20px; border-top: none; padding-top: 0; }
+.modal-content .form-button-filled, .modal-content .form-button-outlined { padding: 12px 25px; border: 1px solid #0038A8; border-radius: 100px; cursor: pointer; font-size: 1em; font-weight: 500; transition: all 0.2s ease; font-family: inherit; }
+.modal-content .form-button-filled { background-color: #0038A8; color: white; }
 .modal-content .form-button-filled:hover { background-color: #002a7e; }
-.modal-content .form-button-outlined {
-    background-color: transparent;
-    color: #0038A8;
-}
+.modal-content .form-button-outlined { background-color: transparent; color: #0038A8; }
 .modal-content .form-button-outlined:hover { background-color: #f0f5ff; }
-
-.modal-content .form-button-filled:disabled {
-    background-color: #a0a0a0;
-    border-color: #a0a0a0;
-    cursor: not-allowed;
-}
+.modal-content .form-button-filled:disabled { background-color: #a0a0a0; border-color: #a0a0a0; cursor: not-allowed; }

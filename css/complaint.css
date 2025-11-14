@@ -72,6 +72,53 @@ select.form-input + .form-label {
     box-shadow: 0 0 0 1px #0038A8;
 }
 
+/* --- NEW: Footer for char count and errors --- */
+.form-group-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4px;
+    padding: 0 5px;
+}
+.char-counter {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+.error-message {
+    display: none; 
+    color: #CE1126;
+    font-size: 0.85em;
+    font-weight: 500;
+}
+.form-group.error .error-message {
+    display: block; /* Show on error */
+}
+.form-group.error .form-input {
+    border-color: #CE1126;
+}
+.form-group.error .form-input:focus {
+    border-color: #CE1126;
+    box-shadow: 0 0 0 1px #CE1126;
+}
+.form-group.error .form-label {
+    color: #CE1126;
+}
+/* --- END NEW --- */
+
+
+/* Static label (for file upload) */
+.form-label-static {
+    display: block;
+    font-size: 0.85rem;
+    color: #6c757d;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+.file-upload-wrapper { display: flex; align-items: center; }
+.file-upload-input { display: none; }
+.file-upload-button { background: #f0f5ff; border: 1px dashed #0038A8; color: #0038A8; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-weight: 500; }
+.file-name { margin-left: 15px; font-size: 0.9rem; color: #6c757d; }
+
 /* --- Button Group --- */
 .button-group {
     display: flex;
@@ -106,45 +153,4 @@ select.form-input + .form-label {
     background-color: #a0a0a0;
     border-color: #a0a0a0;
     cursor: not-allowed;
-}
-
-/* --- File Upload Styling --- */
-.form-label-static {
-    display: block;
-    font-size: 0.85rem;
-    color: #6c757d;
-    font-weight: 500;
-    margin-bottom: 8px;
-}
-.file-upload-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-/* We hide the ugly default input */
-.file-upload-input {
-    display: none; 
-}
-/* We style the label to look like a button */
-.file-upload-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background-color: #f0f5ff;
-    border: 1px dashed #0038A8;
-    color: #0038A8;
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 0.95rem;
-    transition: background-color 0.2s ease;
-}
-.file-upload-button:hover {
-    background-color: #e0e9ff;
-}
-.file-name {
-    font-size: 0.9rem;
-    color: #6c757d;
-    font-style: italic;
 }
