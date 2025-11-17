@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KomuniKonek | Manage Documents</title>
+    <title>KomuniKonek | Manage Feedback</title>
     
     <link rel="stylesheet" href="css/dashboard.css"> 
     <link rel="stylesheet" href="css/admin-manage.css"> 
@@ -18,7 +18,6 @@
             <div class="sidebar-header">
                 <h3>KomuniKonek <span class="admin-badge">Admin</span></h3>
             </div>
-
             <ul class="sidebar-nav">
                 <li class="nav-item">
                     <a href="admin.html">
@@ -44,7 +43,7 @@
                         <span>Manage Announcements</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a href="manage-feedback.html">
                         <i class="fa-solid fa-message"></i>
                         <span>Manage Feedback</span>
@@ -72,7 +71,7 @@
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <div class="header-content">
-                    <h1>Manage Document Requests</h1>
+                    <h1>Manage Feedback</h1>
                 </div>
                 <div class="header-icons">
                     <div class="profile-dropdown-container">
@@ -95,22 +94,22 @@
             </header>
             
             <div class="main-container">
-                <p>Review, update, and fulfill user-submitted document requests.</p>
+                <p>Review feedback, suggestions, and bug reports from users.</p>
                 
                 <div class="table-container dashboard-card">
-                    <table class="data-table" id="documents-table">
+                    <table class="data-table" id="feedback-table">
                         <thead>
                             <tr>
                                 <th>Date</th>
-                                <th>Document Type</th>
-                                <th>Requester</th>
+                                <th>Subject</th>
+                                <th>From User</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="table-body">
                             <tr>
-                                <td colspan="5" class="placeholder-cell">Loading requests...</td>
+                                <td colspan="5" class="placeholder-cell">Loading feedback...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -121,35 +120,24 @@
     
     <div class="modal-overlay" id="modal-overlay">
         <div class="modal-content">
-            <h2 id="modal-title">Update Status</h2>
-            <form id="update-form">
-                
-                <div class="form-group">
-                    <label for="modal-status">New Status</label>
-                    <select id="modal-status" class="form-input">
-                        <option value="Pending">Pending</option>
-                        <option value="Approved">Approved</option>
-                        <option value="Processing">Processing</option>
-                        <option value="Ready for Pickup">Ready for Pickup</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Rejected">Rejected</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="modal-notes">Notes (visible to user)</label>
-                    <textarea id="modal-notes" class="form-input" rows="4" placeholder="e.g., 'Your document is ready for pickup at the barangay hall.'"></textarea>
-                </div>
-                <div class="button-group">
-                    <button type="button" class="form-button-outlined" id="modal-cancel-btn">CANCEL</button>
-                    <button type="submit" class="form-button-filled" id="modal-save-btn">SAVE UPDATE</button>
-                </div>
-            </form>
+            <h2 id="modal-title">View Feedback</h2>
+            <div class="feedback-info">
+                <strong>From:</strong> <span id="modal-user-name">...</span><br>
+                <strong>Subject:</strong> <span id="modal-subject">...</span>
+            </div>
+            <p class="feedback-body" id="modal-feedback-text">
+                Loading...
+            </p>
+            <div class="button-group">
+                <button type="button" class="form-button-outlined" id="modal-cancel-btn">CLOSE</button>
+                <button type="button" class="form-button-filled" id="modal-read-btn">MARK AS READ</button>
+            </div>
         </div>
     </div>
 
     <div id="toast" class="toast hidden"></div>
 
-    <script type="module" src="js/manage-documents.js"></script>
+    <script type="module" src="js/manage-feedback.js"></script>
     <script type="module" src="js/main-ui.js"></script>
 </body>
 </html>
