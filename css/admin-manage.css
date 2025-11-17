@@ -177,3 +177,38 @@
 .modal-content .feedback-info strong {
     color: #333;
 }
+
+
+.filter-container {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-group label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #6c757d;
+}
+
+.filter-select {
+    padding: 8px 12px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background-color: #ffffff;
+    cursor: pointer;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #0038A8;
+    box-shadow: 0 0 0 1px #0038A8;
+}

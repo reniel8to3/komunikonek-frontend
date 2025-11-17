@@ -1,6 +1,6 @@
 // js/manage-documents.js
 import { protectPage, setupLogoutButton } from './auth-guard.js';
-import { db, collection, query, getDocs, doc, getDoc, updateDoc, orderBy } from './firebase.js';
+import { db, collection, query, getDocs, doc, getDoc, updateDoc, where } from './firebase.js';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -12,30 +12,45 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalOverlay = document.getElementById('modal-overlay');
     const modalCancelBtn = document.getElementById('modal-cancel-btn');
     const updateForm = document.getElementById('update-form');
+    const statusFilter = document.getElementById('status-filter'); // <-- NEW
     
     let activeDocId = null;
-    let activeDocType = 'document_requests'; // Set the collection name
+    let activeDocType = 'document_requests'; 
 
     document.addEventListener('user-loaded', (e) => {
         const adminNameEl = document.getElementById('admin-name');
         if (adminNameEl) {
             adminNameEl.textContent = e.detail.userData.firstName || 'Admin';
         }
-        loadDocuments();
+        loadDocuments(); // Load all on initial page load
+    });
+    
+    // --- NEW: EVENT LISTENER FOR THE FILTER ---
+    statusFilter?.addEventListener('change', () => {
+        loadDocuments(statusFilter.value);
     });
 
-    // --- 2. LOAD ALL DOCUMENT REQUESTS ---
-    async function loadDocuments() {
+    // --- 2. LOAD ALL DOCUMENT REQUESTS (NOW WITH FILTER) ---
+    async function loadDocuments(filter = 'all') { // <-- UPDATED
         if (!tableBody) return;
         tableBody.innerHTML = '<tr><td colspan="5" class="placeholder-cell">Loading requests...</td></tr>';
         
         try {
             const requestsRef = collection(db, activeDocType);
-            const q = query(requestsRef, orderBy("createdAt", "desc"));
+            
+            // --- UPDATED QUERY LOGIC ---
+            let q;
+            if (filter === 'all') {
+                q = query(requestsRef);
+            } else {
+                q = query(requestsRef, where("status", "==", filter));
+            }
+            // --- END UPDATED QUERY ---
+            
             const querySnapshot = await getDocs(q);
 
             if (querySnapshot.empty) {
-                tableBody.innerHTML = '<tr><td colspan="5" class="placeholder-cell">No document requests found.</td></tr>';
+                tableBody.innerHTML = `<tr><td colspan="5" class="placeholder-cell">No document requests found with status: ${filter}</td></tr>`;
                 return;
             }
 
@@ -55,6 +70,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             const userDocs = await Promise.all(userFetchPromises);
+
+            // --- NEW: Sort by date in JavaScript (avoids index errors) ---
+            requestData.sort((a, b) => {
+                const dateA = a.createdAt ? a.createdAt.toDate() : new Date(0);
+                const dateB = b.createdAt ? b.createdAt.toDate() : new Date(0);
+                return dateB - dateA;
+            });
+            // --- END SORT ---
 
             requestData.forEach((request, index) => {
                 let requesterName = "Unknown User";
@@ -147,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             showToast("Status updated successfully!", "success");
             closeModal();
-            loadDocuments(); // Refresh the table
+            loadDocuments(statusFilter.value); // <-- UPDATED: Refresh table with current filter
             
         } catch (error) {
             console.error("Error updating status:", error);
@@ -160,5 +183,29 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // --- UTILITY FUNCTIONS ---
-function setButtonLoading(button, isLoading, loadingText = "Loading...") { /* ... same as before ... */ }
-function showToast(message, type = 'info') { /* ... same as before ... */ }
+function setButtonLoading(button, isLoading, loadingText = "Loading...") {
+    if (!button) return;
+    const originalText = button.dataset.originalText || button.textContent;
+    if (!button.dataset.originalText) {
+        button.dataset.originalText = button.textContent;
+    }
+    
+    button.disabled = isLoading;
+    button.textContent = isLoading ? loadingText : originalText;
+}
+function showToast(message, type = 'info') {
+    let toast = document.getElementById('toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'toast';
+        document.body.appendChild(toast);
+    }
+    
+    toast.textContent = message;
+    toast.className = `toast ${type}`;
+    toast.classList.remove('hidden');
+    
+    setTimeout(() => {
+        toast.classList.add('hidden');
+    }, 3000);
+}

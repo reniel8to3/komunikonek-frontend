@@ -18,7 +18,6 @@
             <div class="sidebar-header">
                 <h3>KomuniKonek <span class="admin-badge">Admin</span></h3>
             </div>
-
             <ul class="sidebar-nav">
                 <li class="nav-item">
                     <a href="admin.html">
@@ -32,7 +31,7 @@
                         <span>Manage Complaints</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item active"> 
                     <a href="manage-documents.html">
                         <i class="fa-solid fa-file-lines"></i>
                         <span>Manage Documents</span>
@@ -80,16 +79,7 @@
                             <i class="fa-solid fa-user-shield"></i>
                         </button>
                         <div class="profile-dropdown" id="profile-dropdown">
-                            <div class="profile-dropdown-header">
-                                Signed in as: <strong id="admin-name">Admin...</strong>
-                            </div>
-                            <a href="index.html" class="dropdown-link">
-                                <i class="fa-solid fa-user"></i> <span>View User Dashboard</span>
-                            </a>
-                            <a href="#" id="logout-button-alt" class="dropdown-link logout separator-top">
-                                <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
-                            </a>
-                        </div>
+                           </div>
                     </div>
                 </div>
             </header>
@@ -97,6 +87,20 @@
             <div class="main-container">
                 <p>Review, update, and fulfill user-submitted document requests.</p>
                 
+                <div class="filter-container">
+                    <div class="filter-group">
+                        <label for="status-filter">Filter by status:</label>
+                        <select id="status-filter" class="filter-select">
+                            <option value="all">All</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Processing">Processing</option>
+                            <option value="Ready for Pickup">Ready for Pickup</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="table-container dashboard-card">
                     <table class="data-table" id="documents-table">
                         <thead>

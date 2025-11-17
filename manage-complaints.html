@@ -25,7 +25,7 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li class="nav-item"> 
+                <li class="nav-item active"> 
                     <a href="manage-complaints.html">
                         <i class="fa-solid fa-comment-dots"></i>
                         <span>Manage Complaints</span>
@@ -79,16 +79,7 @@
                             <i class="fa-solid fa-user-shield"></i>
                         </button>
                         <div class="profile-dropdown" id="profile-dropdown">
-                            <div class="profile-dropdown-header">
-                                Signed in as: <strong id="admin-name">Admin...</strong>
                             </div>
-                            <a href="index.html" class="dropdown-link">
-                                <i class="fa-solid fa-user"></i> <span>View User Dashboard</span>
-                            </a>
-                            <a href="#" id="logout-button-alt" class="dropdown-link logout separator-top">
-                                <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
-                            </a>
-                        </div>
                     </div>
                 </div>
             </header>
@@ -96,13 +87,26 @@
             <div class="main-container">
                 <p>Review, update, and resolve user-submitted complaints.</p>
                 
+                <div class="filter-container">
+                    <div class="filter-group">
+                        <label for="status-filter">Filter by status:</label>
+                        <select id="status-filter" class="filter-select">
+                            <option value="all">All</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Processing">Processing</option>
+                            <option value="Resolved">Resolved</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="table-container dashboard-card">
                     <table class="data-table" id="complaints-table">
+                        
                         <thead>
                             <tr>
-                                <th>Date</th>
-                                <th>Subject</th>
-                                <th>Complainant</th>
+                                <th class="sortable-header" data-sort="createdAt">Date</th>
+                                <th class="sortable-header" data-sort="subject">Subject</th>
+                                <th class="sortable-header" data-sort="complainant">Complainant</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -122,7 +126,6 @@
         <div class="modal-content">
             <h2 id="modal-title">Update Status</h2>
             <form id="update-form">
-                
                 <div class="form-group">
                     <label for="modal-status">New Status</label>
                     <select id="modal-status" class="form-input">
