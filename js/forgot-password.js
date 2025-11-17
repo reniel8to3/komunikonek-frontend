@@ -1,6 +1,10 @@
+// 1. IMPORT FIREBASE FUNCTIONS FIRST
+import { auth, sendPasswordResetEmail } from './firebase.js';
+import { langStrings } from './translations.js';
+
 document.addEventListener("DOMContentLoaded", function() {
     
-    // --- 1. Get ALL Elements ---
+    // --- Get ALL Elements ---
     const forgotForm = document.getElementById('forgot-form');
     const emailInput = document.getElementById('email');
     const langEnBtn = document.getElementById('lang-en');
@@ -56,7 +60,6 @@ document.addEventListener("DOMContentLoaded", function() {
         console.error("translations.js not found. Page will not be translated.");
     }
 
-
     // --- =============================== ---
     // --- VALIDATION LOGIC ---
     // --- =============================== ---
@@ -87,17 +90,20 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function isValidEmail(email) {
-        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0.9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
     }
 
     if (forgotForm) {
         forgotForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            e.stopPropagation();
+            console.log('Form submit prevented - handling with JavaScript');
             
             let isValid = true;
             const emailValue = emailInput.value.trim();
 
+            // --- 1. Validate Form ---
             if (emailValue === '') {
                 setError(emailInput, 'errRequired');
                 isValid = false;
@@ -108,13 +114,32 @@ document.addEventListener("DOMContentLoaded", function() {
                 setSuccess(emailInput);
             }
             
+            // --- 2. If Valid, Call Firebase ---
             if (isValid) {
-                console.log('Form is Valid! Sending reset link... (simulation)');
-                // Show a success message
-                const card = document.querySelector('.login-card');
-                card.innerHTML = `<h2 class="welcome-header">Check Your Email</h2>
-                                  <p class="sign-in-text">A password reset link has been sent to ${emailValue}.</p>
-                                  <a href="login.html" class="signup-link">Back to Sign in</a>`;
+                console.log('Form is Valid! Calling Firebase...');
+                
+                // Call the Firebase function
+                sendPasswordResetEmail(auth, emailValue)
+                    .then(() => {
+                        // SUCCESS! Show the success message.
+                        console.log("Password reset email sent successfully.");
+                        const card = document.querySelector('.login-card');
+                        card.innerHTML = `<h2 class="welcome-header">Check Your Email</h2>
+                                          <p class="sign-in-text">A password reset link has been sent to ${emailValue}.</p>
+                                          <a href="login.html" class="signup-link">Back to Sign in</a>`;
+                    })
+                    .catch((error) => {
+                        // ERROR! Use your existing setError function.
+                        console.error("Firebase Error:", error.code, error.message);
+                        
+                        if (error.code === 'auth/user-not-found') {
+                            // Use a specific error key for translation
+                            setError(emailInput, 'errUserNotFound'); 
+                        } else {
+                            // A generic error for other issues
+                            setError(emailInput, 'errGeneric');
+                        }
+                    });
             }
         });
     }
