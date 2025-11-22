@@ -115,7 +115,10 @@ select.form-input + .form-label {
     margin-bottom: 8px;
 }
 .file-upload-wrapper { display: flex; align-items: center; }
-.file-upload-input { display: none; }
+
+/* THIS IS THE CRITICAL LINE THAT HIDES THE DEFAULT BUTTON */
+.file-upload-input { display: none; } 
+
 .file-upload-button { background: #f0f5ff; border: 1px dashed #0038A8; color: #0038A8; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-weight: 500; }
 .file-name { margin-left: 15px; font-size: 0.9rem; color: #6c757d; }
 

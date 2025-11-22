@@ -472,3 +472,36 @@ body {
 .button-loader {
     font-size: 1.2rem;
 }
+
+/* --- UPDATED: Integrated Status Message (Error & Success) --- */
+.login-status-banner {
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between icon and text */
+    width: 100%;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+/* Error State (Red) */
+.status-error {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border: 1px solid #ef4444;
+}
+
+/* Success State (Green) */
+.status-success {
+    background-color: #d1fae5; /* Light Green */
+    color: #065f46;            /* Dark Green */
+    border: 1px solid #10b981; /* Green Border */
+}
+
+.login-status-banner i {
+    font-size: 16px;
+}

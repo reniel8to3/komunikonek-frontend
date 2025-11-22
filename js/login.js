@@ -82,8 +82,11 @@ document.addEventListener("DOMContentLoaded", function() {
         slidePrevBtn: document.getElementById('slide-prev'),
         slideNextBtn: document.getElementById('slide-next'),
         
-        // Toast
-        toast: document.getElementById('toast')
+        // Toast & Status
+        toast: document.getElementById('toast'),
+        statusMsg: document.getElementById('login-status-msg'),
+        statusIcon: document.getElementById('status-icon'),
+        statusText: document.getElementById('status-text')
     };
 
     // ============================================
@@ -182,6 +185,26 @@ document.addEventListener("DOMContentLoaded", function() {
         if (errorDisplay) errorDisplay.textContent = '';
         formGroup.classList.remove('error');
     }
+    
+    // --- NEW: Helper for Integrated Status Message ---
+    function showStatusMessage(type, message) {
+        if (!Elements.statusMsg || !Elements.statusIcon || !Elements.statusText) return;
+        
+        // Reset classes
+        Elements.statusMsg.classList.remove('status-error', 'status-success');
+        
+        // Add new class based on type
+        if (type === 'error') {
+            Elements.statusMsg.classList.add('status-error');
+            Elements.statusIcon.className = 'fa-solid fa-circle-exclamation';
+        } else {
+            Elements.statusMsg.classList.add('status-success');
+            Elements.statusIcon.className = 'fa-solid fa-circle-check';
+        }
+        
+        Elements.statusText.textContent = message;
+        Elements.statusMsg.style.display = 'flex';
+    }
 
     // ============================================
     // UI HANDLERS (Slideshow, Toggles)
@@ -269,10 +292,13 @@ document.addEventListener("DOMContentLoaded", function() {
     // LOGIN LOGIC
     // ============================================
 
-    // --- 1. Email Login ---
+    // --- 1. Email Login (UPDATED FOR INTEGRATED SUCCESS) ---
     Elements.loginForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
         if (Elements.emailLoginSection.style.display === 'none') return;
+        
+        // Hide any previous status message
+        if(Elements.statusMsg) Elements.statusMsg.style.display = 'none';
         
         setButtonLoading(Elements.emailLoginBtn, true);
         let isValid = true;
@@ -301,7 +327,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if (!user.emailVerified && !user.email.endsWith('@test.com')) {
                 await signOut(auth); 
-                showToast(langStrings[AppState.currentLang]['errEmailNotVerified'] || "Please verify your email first. Check your inbox.", "error");
+                showStatusMessage('error', langStrings[AppState.currentLang]['errEmailNotVerified'] || "Please verify your email first. Check your inbox.");
                 setButtonLoading(Elements.emailLoginBtn, false);
                 return;
             }
@@ -311,7 +337,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if (!userDoc.exists()) {
                 await signOut(auth);
-                showToast("Error: User profile not found.", "error");
+                showStatusMessage('error', "Error: User profile not found.");
                 setButtonLoading(Elements.emailLoginBtn, false);
                 return;
             }
@@ -322,13 +348,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if (expectedRole === 'admin' && actualRole !== 'admin') {
                 await signOut(auth);
-                showToast("Login failed: You do not have admin permissions.", "error");
+                showStatusMessage('error', "Login failed: You do not have admin permissions.");
                 setButtonLoading(Elements.emailLoginBtn, false);
                 return;
             }
 
-            showToast("Login successful!", "success");
+            // --- SUCCESS HANDLING ---
+            showStatusMessage('success', "Login successful! Redirecting...");
             
+            // Slight delay to let the user read the success message
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
             if (actualRole === 'admin') {
                 window.location.href = 'admin.html'; 
             } else {
@@ -341,7 +371,8 @@ document.addEventListener("DOMContentLoaded", function() {
             if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
                 msg = langStrings[AppState.currentLang]['errInvalidLogin'] || "Invalid email or password.";
             }
-            showToast(msg, "error");
+            
+            showStatusMessage('error', msg);
             setButtonLoading(Elements.emailLoginBtn, false);
         }
     });

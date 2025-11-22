@@ -21,11 +21,13 @@
 
     <div class="dashboard-container">
 
+        <!-- Sidebar (Unified) -->
         <nav class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <h3>KomuniKonek</h3>
             </div>
             <ul class="sidebar-nav">
+                <!-- 1. Dashboard -->
                 <li class="nav-item">
                     <a href="index.html">
                         <i class="fa-solid fa-house"></i>
@@ -33,6 +35,23 @@
                     </a>
                 </li>
 
+                <!-- 2. Submit Complaint -->
+                <li class="nav-item">
+                    <a href="submit-complaint.html">
+                        <i class="fa-solid fa-bullhorn"></i>
+                        <span>Submit a Complaint</span>
+                    </a>
+                </li>
+
+                <!-- 3. Request Document -->
+                <li class="nav-item">
+                    <a href="request-document.html">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span>Request a Document</span>
+                    </a>
+                </li>
+
+                <!-- 4. My Activity -->
                 <li class="nav-item">
                     <a href="my-activity.html">
                         <i class="fa-solid fa-list-check"></i>
@@ -40,6 +59,7 @@
                     </a>
                 </li>
 
+                <!-- 5. Send Feedback -->
                 <li class="nav-item">
                     <a href="feedback.html">
                         <i class="fa-solid fa-comments"></i>
@@ -47,40 +67,15 @@
                     </a>
                 </li>
 
-
-                <li class="nav-item">
+                <!-- 6. Settings (Active Page) -->
+                <li class="nav-item active">
                     <a href="settings.html">
                         <i class="fa-solid fa-gear"></i>
                         <span>Settings</span>
                     </a>
                 </li>
             </ul>
-
-                <li class="nav-item">
-                    <a href="submit-complaint.html">
-                        <i class="fa-solid fa-bullhorn"></i>
-                        <span>Submit a Complaint</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="request-document.html">
-                        <i class="fa-solid fa-file-lines"></i>
-                        <span>Request a Document</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="my-activity.html">
-                        <i class="fa-solid fa-list-check"></i>
-                        <span>My Activity</span>
-                    </a>
-                </li>
-                <li class="nav-item active"> <!-- This page is active -->
-                    <a href="settings.html">
-                        <i class="fa-solid fa-gear"></i>
-                        <span>Settings</span>
-                    </a>
-                </li>
-            </ul>
+            
             <div class="sidebar-footer">
                 <button id="logout-button" class="logout-btn">
                     <i class="fa-solid fa-right-from-bracket"></i>
@@ -92,18 +87,16 @@
         <!-- Main Content Area -->
         <main class="main-content">
             
-            <!-- === THIS IS THE FIX === -->
+            <!-- Header with Gradient and Title -->
             <header class="main-header is-dashboard"> 
                 <button class="mobile-menu-button" id="mobile-menu-button">
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 
-                <!-- 1. H1 is now inside the header -->
                 <div class="header-content">
                     <h1>Settings</h1>
                 </div>
 
-                <!-- 2. Icons are wrapped in a div -->
                 <div class="header-icons">
                     <div class="profile-dropdown-container">
                         <button class="profile-button" id="profile-button">
@@ -132,8 +125,7 @@
             
             <!-- Settings Form Content -->
             <div class="form-container">
-                <!-- 3. H1 is REMOVED from here -->
-
+                
                 <!-- Profile Details Card -->
                 <div class="form-card">
                     <form id="profile-form" novalidate>
@@ -209,7 +201,7 @@
             </p>
             <div class="button-group">
                 <button type="button" class="form-button-outlined" id="confirm-modal-cancel">CANCEL</button>
-                <button type,"submit" class="form-button-filled" id="confirm-modal-confirm">SEND LINK</button>
+                <button type="button" class="form-button-filled" id="confirm-modal-confirm">SEND LINK</button>
             </div>
         </div>
     </div>

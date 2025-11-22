@@ -9,8 +9,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     
+    <!-- Using dashboard.css for the unified sidebar styles -->
     <link rel="stylesheet" href="css/dashboard.css"> 
-    <!-- css/complaint.css is NO LONGER LOADED -->
+    <!-- Using complaint.css for the specific form styles -->
+    <link rel="stylesheet" href="css/complaint.css">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -19,19 +21,37 @@
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
     <div class="dashboard-container">
-        <!-- Sidebar -->
+        <!-- Sidebar (Unified with Dashboard) -->
         <nav class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <h3>KomuniKonek</h3>
             </div>
             <ul class="sidebar-nav">
+                <!-- 1. Dashboard -->
                 <li class="nav-item">
                     <a href="index.html">
                         <i class="fa-solid fa-house"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <!-- ... (other nav-items) ... -->
+
+                <!-- 2. Submit Complaint (Active Page) -->
+                <li class="nav-item active">
+                    <a href="submit-complaint.html">
+                        <i class="fa-solid fa-bullhorn"></i>
+                        <span>Submit a Complaint</span>
+                    </a>
+                </li>
+
+                <!-- 3. Request Document -->
+                <li class="nav-item">
+                    <a href="request-document.html">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span>Request a Document</span>
+                    </a>
+                </li>
+
+                <!-- 4. My Activity -->
                 <li class="nav-item">
                     <a href="my-activity.html">
                         <i class="fa-solid fa-list-check"></i>
@@ -39,6 +59,7 @@
                     </a>
                 </li>
 
+                <!-- 5. Send Feedback -->
                 <li class="nav-item">
                     <a href="feedback.html">
                         <i class="fa-solid fa-comments"></i>
@@ -46,6 +67,7 @@
                     </a>
                 </li>
 
+                <!-- 6. Settings -->
                 <li class="nav-item">
                     <a href="settings.html">
                         <i class="fa-solid fa-gear"></i>
@@ -53,33 +75,9 @@
                     </a>
                 </li>
             </ul>
-                <li class="nav-item active"> <!-- This page is active -->
-                    <a href="submit-complaint.html">
-                        <i class="fa-solid fa-bullhorn"></i>
-                        <span>Submit a Complaint</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="request-document.html">
-                        <i class="fa-solid fa-file-lines"></i>
-                        <span>Request a Document</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="my-activity.html">
-                        <i class="fa-solid fa-list-check"></i>
-                        <span>My Activity</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="settings.html">
-                        <i class="fa-solid fa-gear"></i>
-                        <span>Settings</span>
-                    </a>
-                </li>
-            </ul>
+            
             <div class="sidebar-footer">
-                <!-- Main Logout Button (for auth-guard.js) -->
+                <!-- Logout Button (Matches the red style in your screenshot) -->
                 <button id="logout-button" class="logout-btn">
                     <i class="fa-solid fa-right-from-bracket"></i>
                     <span>Logout</span>
@@ -90,8 +88,8 @@
         <!-- Main Content Area -->
         <main class="main-content">
             
-            <!-- New Header with Hamburger -->
-            <header class="main-header is-dashboard"> <!-- Gradient Header -->
+            <!-- Header -->
+            <header class="main-header is-dashboard">
                 <button class="mobile-menu-button" id="mobile-menu-button">
                     <i class="fa-solid fa-bars"></i>
                 </button>
@@ -112,13 +110,9 @@
                             <a href="my-activity.html" class="dropdown-link">
                                 <i class="fa-solid fa-clipboard-list"></i> <span>Track Complaints</span>
                             </a>
-                            <a href="my-activity.html#documents" class="dropdown-link">
-                                <i class="fa-solid fa-folder-open"></i> <span>Track Document Requests</span>
-                            </a>
                             <a href="settings.html" class="dropdown-link separator-top">
                                 <i class="fa-solid fa-gear"></i> <span>Settings</span>
                             </a>
-                            <!-- Alternate Logout Button -->
                             <a href="#" id="logout-button-alt" class="dropdown-link logout">
                                 <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
                             </a>
@@ -127,11 +121,10 @@
                 </div>
             </header>
             
-            <!-- Your Original Form Content -->
+            <!-- Form Content -->
             <div class="form-container">
                 <div class="form-card">
                     <form id="complaint-form" novalidate>
-                        <!-- H1 is removed from here -->
                         
                         <div class="form-group">
                             <select id="complaint-type" class="form-input" required value="">
@@ -167,7 +160,7 @@
                             </div>
                         </div>
                         
-                        <!-- File Upload is now VISIBLE -->
+                        <!-- File Upload -->
                         <div class="form-group">
                             <label class="form-label-static">Upload Evidence (Photos)</label>
                             <div class="file-upload-wrapper">
@@ -187,7 +180,6 @@
                     </form>
                 </div>
             </div>
-            <!-- End of Original Form Content -->
 
         </main>
     </div>

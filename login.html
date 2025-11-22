@@ -67,7 +67,14 @@
 
             <div class="login-panel">
                 
-
+                <!-- 
+                LANGUAGE TOGGLE (DISABLED/REMOVED)
+                <div class="lang-toggle-container">
+                    <button id="lang-en" class="lang-button active" data-key="langEn">ENG</button>
+                    <span class="lang-separator">|</span>
+                    <button id="lang-fil" class="lang-button" data-key="langFil">FIL</button>
+                </div> 
+                -->
 
                 <p class="login-as-text"><span data-key="loginAs">Login as</span></p>
                 
@@ -104,6 +111,12 @@
                             <a href="forgot-password.html" class="forgot-password" data-key="forgotPassword">Forgot password?</a>
                         </div>
 
+                        <!-- UPDATED: Generic Status Message Container -->
+                        <div id="login-status-msg" class="login-status-banner" style="display: none;">
+                            <i id="status-icon" class="fa-solid"></i> 
+                            <span id="status-text"></span>
+                        </div>
+
                         <button type="submit" class="sign-in-button" id="email-login-btn">
                             <span class="button-text" data-key="signInButton">Sign in</span>
                             <span class="button-loader hidden" aria-hidden="true"><i class="fa-solid fa-spinner fa-spin"></i></span>
@@ -128,7 +141,7 @@
                             <small class="error-message"></small>
                         </div>
                         
-                        <!-- ADDED: reCAPTCHA container -->
+                        <!-- reCAPTCHA container -->
                         <div id="recaptcha-container"></div>
                         
                         <button type="button" id="login-send-otp-btn" class="sign-in-button">
@@ -166,10 +179,9 @@
         </div>
     </div>
 
-    <!-- ADDED: Toast Notification -->
+    <!-- Toast Notification (Still used for OTP and non-login errors) -->
     <div id="toast" class="toast hidden" role="alert" aria-live="polite" aria-atomic="true"></div>
 
-  
     <script type="module" src="js/login.js"></script>
 
 </body>
