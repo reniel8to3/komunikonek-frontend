@@ -1,6 +1,6 @@
 // js/index.js
 import { protectPage, setupLogoutButton } from './auth-guard.js';
-import { db, collection, query, where, getDocs, limit, orderBy } from './firebase.js';
+import { db, collection, query, where, getDocs, limit, orderBy, getCountFromServer } from './firebase.js';
 
 let announcementSlideInterval;
 let announcementSlideIndex = 0;
@@ -14,7 +14,7 @@ document.addEventListener('user-loaded', (e) => {
     
     const welcomeEl = document.getElementById('user-name');
     if (welcomeEl) {
-        welcomeEl.textContent = userData.firstName || user.email;
+        welcomeEl.textContent = userData.firstName || user.email.split('@')[0];
     }
     
     loadDashboardData(user.uid);
@@ -41,7 +41,7 @@ async function fetchStats(userId) {
         const pendingComplaintsQuery = query(complaintsRef, where("userId", "==", userId), where("status", "==", "Pending"));
         const pendingRequestsQuery = query(requestsRef, where("userId", "==", userId), where("status", "==", "Pending"));
         const resolvedComplaintsQuery = query(complaintsRef, where("userId", "==", userId), where("status", "==", "Resolved"));
-        const resolvedRequestsQuery = query(requestsRef, where("userId", "==", userId), where("status", "==", "Resolved"));
+        const resolvedRequestsQuery = query(requestsRef, where("userId", "==", userId), where("status", "in", ["Resolved", "Completed"]));
 
         const [
             pendingComplaintsSnap, 
@@ -49,22 +49,22 @@ async function fetchStats(userId) {
             resolvedComplaintsSnap, 
             resolvedRequestsSnap
         ] = await Promise.all([
-            getDocs(pendingComplaintsQuery),
-            getDocs(pendingRequestsQuery),
-            getDocs(resolvedComplaintsQuery),
-            getDocs(resolvedRequestsQuery)
+            getCountFromServer(pendingComplaintsQuery),
+            getCountFromServer(pendingRequestsQuery),
+            getCountFromServer(resolvedComplaintsQuery), 
+            getCountFromServer(resolvedRequestsQuery)
         ]);
 
-        document.getElementById('stats-pending-complaints').textContent = pendingComplaintsSnap.size;
-        document.getElementById('stats-pending-requests').textContent = pendingRequestsSnap.size;
-        document.getElementById('stats-resolved').textContent = resolvedComplaintsSnap.size + resolvedRequestsSnap.size;
+        document.getElementById('stats-pending-complaints').textContent = pendingComplaintsSnap.data().count;
+        document.getElementById('stats-pending-requests').textContent = pendingRequestsSnap.data().count;
+        document.getElementById('stats-resolved').textContent = resolvedComplaintsSnap.data().count + resolvedRequestsSnap.data().count;
 
     } catch (error) {
         console.error("Error fetching stats:", error);
     }
 }
 
-// --- 4. FETCH ANNOUNCEMENTS (NEWS CARD STYLE) ---
+// --- 4. FETCH ANNOUNCEMENTS (NEW CARD STYLE) ---
 async function fetchAnnouncements() {
     const slideshowContainer = document.getElementById('announcements-slideshow');
     const dotsContainer = document.getElementById('announcement-dots');
@@ -73,7 +73,7 @@ async function fetchAnnouncements() {
 
     try {
         const announcementsRef = collection(db, "announcements");
-        const q = query(announcementsRef, orderBy("createdAt", "desc"), limit(5));
+        const q = query(announcementsRef, where("status", "==", "Published"));
         const querySnapshot = await getDocs(q);
 
         slideshowContainer.innerHTML = ''; 
@@ -81,65 +81,84 @@ async function fetchAnnouncements() {
 
         if (querySnapshot.empty) {
             slideshowContainer.innerHTML = `
-                <div class="announcement-slide active empty-state">
-                    <div class="icon-circle"><i class="fa-solid fa-bell-slash"></i></div>
-                    <h4>No Announcements</h4>
-                    <p>There is no new information at this time.</p>
+                <div class="announcement-slide active" style="display:block; text-align:center; padding:30px;">
+                    <h4 style="color:#666;">No active announcements.</h4>
                 </div>`;
             return;
         }
 
+        let announcements = [];
+        querySnapshot.forEach(doc => {
+            announcements.push({ id: doc.id, ...doc.data() });
+        });
+
+        announcements.sort((a, b) => {
+            const dateA = a.createdAt ? a.createdAt.toMillis() : 0;
+            const dateB = b.createdAt ? b.createdAt.toMillis() : 0;
+            return dateB - dateA; 
+        });
+
+        const recentAnnouncements = announcements.slice(0, 5);
+
         let slideIndex = 0;
-        querySnapshot.forEach((doc) => {
-            const announcement = doc.data();
+        let slidesHTML = '';
+        let dotsHTML = '';
+
+        recentAnnouncements.forEach((data) => {
             const isActive = slideIndex === 0 ? 'active' : '';
             
-            // Format Date
-            const dateStr = announcement.createdAt ? announcement.createdAt.toDate().toLocaleDateString('en-US', { 
+            const dateStr = data.createdAt ? data.createdAt.toDate().toLocaleDateString('en-US', { 
                 year: 'numeric', month: 'long', day: 'numeric' 
             }) : 'Just now';
 
-            // Get author name, default to 'Admin'
-            const author = announcement.authorName || 'Admin';
+            const author = data.authorName || 'Admin';
             
-            // Create a placeholder image (you can change this URL later)
-            const imageUrl = `https://placehold.co/600x400/0038A8/FFFFFF?text=${encodeURIComponent(announcement.title.substring(0, 10))}`;
+            // --- IMAGE LOGIC ---
+            let imageStyle = ''; 
+            // Generate Initials: Take first 2 letters of title
+            let initials = data.title ? data.title.substring(0, 2).toUpperCase() : 'AN';
+            let imageContent = `<h2>${initials}</h2>`; 
+            
+            if (data.imageUrl) {
+                imageStyle = `background-image: url('${data.imageUrl}');`;
+                imageContent = ''; 
+            }
 
-            // Create Slide
-            const slide = document.createElement('div');
-            slide.className = `announcement-slide ${isActive}`;
-            slide.dataset.index = slideIndex;
-            
-            // --- THIS HTML MATCHES THE NEW CSS ---
-            slide.innerHTML = `
-                <img class="announcement-image" src="${imageUrl}" alt="${announcement.title}">
-                <div class="announcement-content">
-                    <span class="announcement-date"><i class="fa-regular fa-calendar"></i> ${dateStr}</span>
-                    <h4 class="announcement-title">${announcement.title}</h4>
-                    <div class="announcement-body">${announcement.body}</div>
-                    <div class="announcement-footer">
-                        <span class="announcement-author">Posted by: <strong>${author}</strong></span>
+            const description = data.shortDescription || data.body || 'Click to read more...';
+
+            slidesHTML += `
+                <div class="announcement-slide ${isActive}" data-index="${slideIndex}" onclick="viewAnnouncement('${data.title}', '${data.body?.replace(/'/g, "\\'")}')">
+                    <div class="announcement-image-box" style="${imageStyle}">
+                        ${imageContent}
+                    </div>
+                    <div class="announcement-content">
+                        <div class="ann-date"><i class="fa-regular fa-calendar"></i> ${dateStr}</div>
+                        <h3 class="ann-title">${data.title}</h3>
+                        <p class="ann-short-desc">${description}</p>
+                        <div class="ann-footer">
+                            <div class="ann-author">Posted by: <strong>${author}</strong></div>
+                            <span class="read-more-btn">Read More</span>
+                        </div>
                     </div>
                 </div>
             `;
-            
-            slideshowContainer.appendChild(slide);
 
-            // Create Dot
-            const dot = document.createElement('span');
-            dot.className = `dot ${isActive}`;
-            dot.dataset.index = slideIndex;
-            dot.addEventListener('click', () => showAnnouncementSlide(dot.dataset.index));
-            dotsContainer.appendChild(dot);
-            
+            dotsHTML += `<span class="dot ${isActive}" data-index="${slideIndex}"></span>`;
             slideIndex++;
+        });
+
+        slideshowContainer.innerHTML = slidesHTML;
+        dotsContainer.innerHTML = dotsHTML;
+
+        document.querySelectorAll('.dot').forEach(dot => {
+            dot.addEventListener('click', (e) => showAnnouncementSlide(e.target.dataset.index));
         });
 
         startAnnouncementSlideshow();
 
     } catch (error) {
         console.error("Error fetching announcements:", error);
-        slideshowContainer.innerHTML = '<div class="announcement-slide active"><h4>Error</h4><p>Could not load announcements.</p></div>';
+        slideshowContainer.innerHTML = '<div class="announcement-slide active"><h4>Error loading announcements.</h4></div>';
     }
 }
 
@@ -162,6 +181,8 @@ function showAnnouncementSlide(index) {
 
 function nextAnnouncementSlide() {
     const slides = document.querySelectorAll('#announcements-slideshow .announcement-slide');
+    if (!slides.length) return;
+    
     let nextIndex = announcementSlideIndex + 1;
     if (nextIndex >= slides.length) {
         nextIndex = 0;
@@ -179,6 +200,11 @@ function resetAnnouncementTimer() {
     announcementSlideInterval = setInterval(nextAnnouncementSlide, 6000);
 }
 
+// Function to handle click (Simple Alert for now)
+window.viewAnnouncement = (title, body) => {
+    alert(`📢 ${title}\n\n${body}`);
+};
+
 
 // --- 5. FETCH RECENT ACTIVITY ---
 async function fetchRecentActivity(userId) {
@@ -187,24 +213,22 @@ async function fetchRecentActivity(userId) {
 
     try {
         const complaintsRef = collection(db, "complaints");
-        const complaintsQuery = query(complaintsRef, where("userId", "==", userId), orderBy("createdAt", "desc"), limit(2));
-        
+        const qC = query(complaintsRef, where("userId", "==", userId));
         const requestsRef = collection(db, "document_requests");
-        const requestsQuery = query(requestsRef, where("userId", "==", userId), orderBy("createdAt", "desc"), limit(2));
+        const qD = query(requestsRef, where("userId", "==", userId));
 
-        const [complaintsSnap, requestsSnap] = await Promise.all([
-            getDocs(complaintsQuery),
-            getDocs(requestsQuery)
-        ]);
+        const [snapC, snapD] = await Promise.all([getDocs(qC), getDocs(qD)]);
 
         let allActivity = [];
 
-        complaintsSnap.forEach(doc => {
-            allActivity.push({ ...doc.data(), type: 'complaint', createdAt: doc.data().createdAt.toDate() });
+        snapC.forEach(doc => {
+            const d = doc.data();
+            if(d.createdAt) allActivity.push({ ...d, type: 'complaint', createdAt: d.createdAt.toDate() });
         });
 
-        requestsSnap.forEach(doc => {
-            allActivity.push({ ...doc.data(), type: 'request', createdAt: doc.data().createdAt.toDate() });
+        snapD.forEach(doc => {
+            const d = doc.data();
+            if(d.createdAt) allActivity.push({ ...d, type: 'request', createdAt: d.createdAt.toDate() });
         });
 
         allActivity.sort((a, b) => b.createdAt - a.createdAt);
@@ -234,7 +258,9 @@ async function fetchRecentActivity(userId) {
 
             li.innerHTML = `
                 <div class="activity-info">
-                    <i class="${iconClass}"></i>
+                    <div class="activity-icon">
+                        <i class="${iconClass}"></i>
+                    </div>
                     <div class="activity-details">
                         <p>${title}</p>
                         <span class="date">Submitted on ${item.createdAt.toLocaleDateString()}</span>
@@ -249,4 +275,4 @@ async function fetchRecentActivity(userId) {
         console.error("Error fetching recent activity:", error);
         activityList.innerHTML = '<li class="activity-item-placeholder">Could not load activity.</li>';
     }
-}   
+}

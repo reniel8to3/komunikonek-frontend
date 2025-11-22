@@ -20,40 +20,22 @@
             </div>
             <ul class="sidebar-nav">
                 <li class="nav-item">
-                    <a href="admin.html">
-                        <i class="fa-solid fa-chart-pie"></i>
-                        <span>Dashboard</span>
-                    </a>
+                    <a href="admin.html"><i class="fa-solid fa-chart-pie"></i><span>Dashboard</span></a>
                 </li>
                 <li class="nav-item"> 
-                    <a href="manage-complaints.html">
-                        <i class="fa-solid fa-comment-dots"></i>
-                        <span>Manage Complaints</span>
-                    </a>
+                    <a href="manage-complaints.html"><i class="fa-solid fa-comment-dots"></i><span>Manage Complaints</span></a>
                 </li>
                 <li class="nav-item">
-                    <a href="manage-documents.html">
-                        <i class="fa-solid fa-file-lines"></i>
-                        <span>Manage Documents</span>
-                    </a>
+                    <a href="manage-documents.html"><i class="fa-solid fa-file-lines"></i><span>Manage Documents</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a href="manage-announcements.html"><i class="fa-solid fa-bullhorn"></i><span>Manage Announcements</span></a>
                 </li>
                 <li class="nav-item">
-                    <a href="manage-announcements.html">
-                        <i class="fa-solid fa-bullhorn"></i>
-                        <span>Manage Announcements</span>
-                    </a>
+                    <a href="manage-feedback.html"><i class="fa-solid fa-message"></i><span>Manage Feedback</span></a>
                 </li>
                 <li class="nav-item">
-                    <a href="manage-feedback.html">
-                        <i class="fa-solid fa-message"></i>
-                        <span>Manage Feedback</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="manage-users.html">
-                        <i class="fa-solid fa-users"></i>
-                        <span>Manage Users</span>
-                    </a>
+                    <a href="manage-users.html"><i class="fa-solid fa-users"></i><span>Manage Users</span></a>
                 </li>
             </ul>
             <div class="sidebar-footer">
@@ -80,7 +62,7 @@
                         </button>
                         <div class="profile-dropdown" id="profile-dropdown">
                             <div class="profile-dropdown-header">
-                                Signed in as: <strong id="admin-name">Admin...</strong>
+                                Signed in as: <strong id="admin-name">Admin</strong>
                             </div>
                             <a href="index.html" class="dropdown-link">
                                 <i class="fa-solid fa-user"></i> <span>View User Dashboard</span>
@@ -95,15 +77,13 @@
             
             <div class="main-container">
                 <div class="page-header">
-                    <div>
-                        <p>Create, edit, and publish announcements for users.</p>
-                    </div>
+                    <p>Create, edit, and publish announcements for users.</p>
                     <button class="form-button-filled" id="create-new-btn">
                         <i class="fa-solid fa-plus" style="margin-right: 8px;"></i> Create New
                     </button>
                 </div>
                 
-                <div class="table-container dashboard-card">
+                <div class="table-container">
                     <table class="data-table" id="announcements-table">
                         <thead>
                             <tr>
@@ -115,7 +95,26 @@
                         </thead>
                         <tbody id="table-body">
                             <tr>
-                                <td colspan="4" class="placeholder-cell">Loading announcements...</td>
+                                <td class="complainant-name">Barangay Cleanup Drive</td>
+                                <td>11/17/2025</td>
+                                <td><span class="status-badge published">Published</span></td>
+                                <td>
+                                    <div class="action-btn-group">
+                                        <button class="action-btn edit"><i class="fa-solid fa-pen"></i> Edit</button>
+                                        <button class="action-btn delete"><i class="fa-solid fa-trash"></i> Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="complainant-name">Libreng Sakay</td>
+                                <td>11/14/2025</td>
+                                <td><span class="status-badge published">Published</span></td>
+                                <td>
+                                    <div class="action-btn-group">
+                                        <button class="action-btn edit"><i class="fa-solid fa-pen"></i> Edit</button>
+                                        <button class="action-btn delete"><i class="fa-solid fa-trash"></i> Delete</button>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -124,18 +123,37 @@
         </main>
     </div>
     
+    <!-- Create Modal -->
     <div class="modal-overlay" id="modal-overlay">
         <div class="modal-content">
             <h2 id="modal-title">Create Announcement</h2>
             <form id="update-form">
+                
+                <!-- Title Field -->
                 <div class="form-group">
                     <label for="modal-title-input">Title</label>
                     <input type="text" id="modal-title-input" class="form-input" required>
                 </div>
+
+                <!-- NEW: Short Description Field -->
+                <div class="form-group">
+                    <label for="modal-short-desc">Short Description</label>
+                    <input type="text" id="modal-short-desc" class="form-input" placeholder="A brief summary shown on the card..." required>
+                </div>
+
+                <!-- Body Field -->
                 <div class="form-group">
                     <label for="modal-body">Body</label>
-                    <textarea id="modal-body" class="form-input" rows="6" placeholder="Write the full announcement text here..."></textarea>
+                    <textarea id="modal-body" class="form-input" rows="6" placeholder="Write the full announcement text here..." required></textarea>
                 </div>
+
+                <!-- NEW: Image Upload Field -->
+                <div class="form-group">
+                    <label for="modal-image">Announcement Image (Optional)</label>
+                    <input type="file" id="modal-image" class="form-input" accept="image/*">
+                </div>
+
+                <!-- Status Field -->
                 <div class="form-group">
                     <label for="modal-status">Status</label>
                     <select id="modal-status" class="form-input">
@@ -143,6 +161,7 @@
                         <option value="Draft">Draft (Hidden)</option>
                     </select>
                 </div>
+
                 <div class="button-group">
                     <button type="button" class="form-button-outlined" id="modal-cancel-btn">CANCEL</button>
                     <button type="submit" class="form-button-filled" id="modal-save-btn">SAVE</button>
@@ -151,20 +170,27 @@
         </div>
     </div>
     
-    <div class="modal-overlay" id="delete-modal-overlay">
-        <div class="modal-content">
-            <h2>Are you sure?</h2>
-            <p>Do you really want to delete this announcement? This action cannot be undone.</p>
-            <div class="button-group">
-                <button type="button" class="form-button-outlined" id="delete-modal-cancel">CANCEL</button>
-                <button type="button" class="form-button-filled delete" id="delete-modal-confirm">DELETE</button>
-            </div>
-        </div>
-    </div>
-
     <div id="toast" class="toast hidden"></div>
 
-    <script type="module" src="js/manage-announcements.js"></script>
     <script type="module" src="js/main-ui.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('modal-overlay');
+            const createBtn = document.getElementById('create-new-btn');
+            const cancelBtn = document.getElementById('modal-cancel-btn');
+
+            if(createBtn && modal) {
+                createBtn.addEventListener('click', () => {
+                    modal.classList.add('is-open');
+                });
+            }
+            if(cancelBtn && modal) {
+                cancelBtn.addEventListener('click', () => {
+                    modal.classList.remove('is-open');
+                });
+            }
+        });
+    </script>
 </body>
 </html>

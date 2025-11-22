@@ -1,143 +1,19 @@
-/* --- Global Styles --- */
-body {
-    /* NEW: Noto Sans Font */
-    font-family: "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #e0e7ed; 
-}
+/* css/admin.css */
 
-.admin-layout {
-    display: flex;
-}
+/* NOTE: Basic layout, sidebar, and header styles are handled by 'dashboard.css'.
+   This file contains overrides and specific styles for Admin components. */
 
-/* ======================= */
-/* SIDEBAR (NAV)      */
-/* ======================= */
-.sidebar {
-    width: 260px;
-    background-color: #ffffff;
-    height: 100vh;
-    position: fixed;
-    left: 0;
-    top: 0;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s ease-in-out;
-    z-index: 1000;
-}
-
-.sidebar-header {
-    padding: 20px;
-    text-align: center;
-    border-bottom: 1px solid #f0f0f0;
-}
-.sidebar-header h3 {
-    margin: 0;
-    color: #0038A8;
-    font-size: 1.5em;
-}
-
-.sidebar-nav {
-    flex-grow: 1;
-    padding: 20px 0;
-}
-.sidebar-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-.sidebar-nav a {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 15px 25px;
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-    border-left: 4px solid transparent;
-    transition: all 0.3s;
-}
-.sidebar-nav a:hover {
-    background-color: #f8f9fa;
-    color: #0038A8;
-}
-.sidebar-nav li.active a {
-    color: #0038A8;
-    background-color: #f0f5ff;
-    border-left-color: #0038A8;
-}
-.sidebar-nav a i {
-    width: 20px;
-    text-align: center;
-}
-
-.sidebar-footer {
-    padding: 20px;
-    border-top: 1px solid #f0f0f0;
-}
-.logout-link {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    text-decoration: none;
-    color: #CE1126;
-    font-weight: 500;
-    padding: 10px 5px;
-}
-
-/* ======================= */
-/* MAIN CONTENT       */
-/* ======================= */
+/* --- MAIN CONTENT FIX --- */
 .main-content {
     margin-left: 260px;
-    width: 100%;
+    /* FIX: Subtract sidebar width so it fits on screen */
+    width: calc(100% - 260px); 
     padding: 20px;
     box-sizing: border-box;
     min-height: 100vh;
 }
 
-.admin-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-.menu-toggle {
-    display: none; 
-    background: none;
-    border: none;
-    font-size: 1.5em;
-    cursor: pointer;
-    color: #333;
-}
-.admin-header h2 {
-    display: none;
-}
-.desktop-title {
-    margin-top: 0;
-    font-size: 2em;
-    color: #212529;
-}
-
-/* --- Stat Cards --- */
-.stat-grid {
-    display: grid;
-    gap: 20px;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    margin-bottom: 30px;
-}
-.stat-card {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
-}
+/* --- Stat Cards (Admin Specific Overrides) --- */
 .card-content .card-value {
     font-size: 2.5em;
     font-weight: 700;
@@ -147,108 +23,88 @@ body {
     font-size: 1em;
     color: #6c757d;
 }
-.stat-card .card-icon i {
-    font-size: 3em;
-    color: #0038A8;
-    opacity: 0.2;
+
+/* --- Analytics Charts Layout --- */
+.charts-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Activity chart is wider */
+    gap: 20px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    /* Ensure it doesn't overflow parent padding */
+    width: 100%; 
+    box-sizing: border-box;
 }
 
-/* Section for tables, etc. */
+.chart-container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #f0f0f0;
+    /* Ensure contents don't spill out */
+    overflow: hidden; 
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.chart-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.chart-filter {
+    padding: 5px 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: #555;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+.canvas-wrapper {
+    position: relative;
+    flex: 1;
+    min-height: 250px; 
+    width: 100%;
+}
+
+/* --- Content Section Wrapper --- */
 .content-section {
     background: #fff;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
 }
 
-/* --- Mobile Overlay --- */
-.sidebar-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 999;
+/* --- Responsive Tweaks --- */
+@media (max-width: 992px) {
+    .charts-grid {
+        grid-template-columns: 1fr; /* Stack charts vertically on tablet */
+    }
+    .chart-container {
+        min-height: 300px;
+    }
 }
 
-/* ======================= */
-/* MOBILE RESPONSIVENESS   */
-/* ======================= */
 @media (max-width: 768px) {
-    .sidebar {
-        transform: translateX(-100%);
-    }
-    .sidebar.active {
-        transform: translateX(0);
-    }
-    
-    .sidebar-overlay.active {
-        display: block;
-    }
-
+    /* On mobile, sidebar is hidden, so content takes full width */
     .main-content {
         margin-left: 0;
-        padding: 15px;
+        width: 100%;
     }
-    
-    .menu-toggle {
-        display: block;
-    }
-    .admin-header h2 {
-        display: block;
-        margin: 0;
-        font-size: 1.2em;
-    }
-    
-    .desktop-title {
-        display: none;
-    }
-}
 
-/* --- ADMIN LANG TOGGLE --- */
-.lang-toggle-container-admin {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    background-color: #f0f0f0;
-    padding: 5px 10px;
-    border-radius: 20px;
-}
-.lang-toggle-container-admin .lang-separator {
-    color: #dee2e6;
-    font-size: 0.9em;
-}
-.lang-toggle-container-admin .lang-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 0.9em;
-    font-weight: 500;
-    color: #6c757d;
-    padding: 5px;
-    border-radius: 20px;
-    transition: all 0.3s ease;
-}
-.lang-toggle-container-admin .lang-button.active {
-    color: #212529;
-    font-weight: 700;
-}
-
-@media (min-width: 769px) {
-    .lang-toggle-container-admin {
-        position: absolute;
-        top: 20px;
-        right: 30px;
-    }
-}
-@media (max-width: 768px) {
-    .admin-header {
-        gap: 10px;
-    }
-    .admin-header h2 {
-        display: none;
+    .charts-grid {
+        padding: 0; /* Remove extra padding on mobile to save space */
+        gap: 15px;
     }
 }
